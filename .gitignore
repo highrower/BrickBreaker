@@ -97,3 +97,16 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+/.vscode/
+# macOS Junk
+.DS_Store
+
+# Builds and Artifacts
+*_BackUpThisFolder_ButDontShipItWithYourGame/
+*_BurstDebugInformation_DoNotShip/
+*.zip
+
+# Modern Solution Files
+*.slnx
+
+Assets/TextMesh Pro/
