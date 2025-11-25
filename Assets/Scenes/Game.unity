@@ -279,10 +279,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 324800418}
-  - component: {fileID: 324800419}
   - component: {fileID: 324800417}
   - component: {fileID: 324800416}
   - component: {fileID: 324800415}
+  - component: {fileID: 324800419}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -420,7 +420,7 @@ Transform:
   m_GameObject: {fileID: 324800414}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -439,7 +439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   speed: 10
-  startPosition: {x: 0, y: 2, z: 0}
+  startPosition: {x: 0, y: -1, z: 0}
 --- !u!1 &332389602 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 317632653432467627, guid: 7e87ccca829ee44aeb9329b96da9f0e6, type: 3}
@@ -715,6 +715,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040746cb69caa4a1f834ba942dd125a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  margin: 0.5
+  brickPrefab: {fileID: 3563394605807932878, guid: a29b0a49edeb1470dad441d1d4cb27eb, type: 3}
+  grid:
+  - columns: 01000000010000000100000001000000010000000100000001000000
+  - columns: 01000000010000000000000001000000000000000100000001000000
+  - columns: 01000000010000000000000001000000000000000100000001000000
+  - columns: 01000000010000000100000001000000010000000100000001000000
+  - columns: 01000000010000000100000001000000010000000100000001000000
+  leftWall: {fileID: 1556206641}
+  rightWall: {fileID: 2048421564}
+  upperWall: {fileID: 332389602}
 --- !u!1 &959480687
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,6 +738,8 @@ GameObject:
   - component: {fileID: 959480688}
   - component: {fileID: 959480690}
   - component: {fileID: 959480691}
+  - component: {fileID: 959480692}
+  - component: {fileID: 959480693}
   m_Layer: 0
   m_Name: Paddle
   m_TagString: Player
@@ -858,6 +871,115 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   leftWall: {fileID: 1556206641}
   rightWall: {fileID: 2048421564}
+--- !u!114 &959480692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959480687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf57d956100543a49bf883759d9e1a53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PaddleTwist
+  snapDuration: 0.2
+  snapCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.29511195
+      value: 0.510435
+      inSlope: 2.3409982
+      outSlope: 2.3409982
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.16454546
+    - serializedVersion: 3
+      time: 0.59688133
+      value: 1.1243947
+      inSlope: -0.1023552
+      outSlope: -0.1023552
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.26338765
+    - serializedVersion: 3
+      time: 0.7916754
+      value: 0.9398743
+      inSlope: 0.07866892
+      outSlope: 0.07866892
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.3973698
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.91365004
+      value: 1.0275358
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.987486
+      value: 0.9653679
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.0513065
+      value: 1.0030961
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!50 &959480693
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959480687}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!1 &1556206641 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 317632653432467627, guid: 7e87ccca829ee44aeb9329b96da9f0e6, type: 3}
