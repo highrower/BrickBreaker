@@ -1,23 +1,28 @@
 using UnityEngine;
 
 public class Brick : MonoBehaviour {
-	public int health;
+	public  float         health;
+	private BoxCollider2D _collider;
 
-	public void Initialize(int startHealth) {
+	void Awake() { _collider = GetComponent<BoxCollider2D>(); }
+
+	public void Initialize(float startHealth) {
 		health = startHealth;
 		UpdateVisuals();
 	}
 
+	public void SetIsTrigger(bool isTrigger) { _collider.isTrigger = isTrigger; }
+
 	void UpdateVisuals() {
 		var spriteRenderer = GetComponent<SpriteRenderer>();
 
-		if (health      == 1) spriteRenderer.color = Color.white;
-		else if (health == 2) spriteRenderer.color = Color.green;
-		else spriteRenderer.color                  = Color.red;
+		if (Mathf.Approximately(health,      1)) spriteRenderer.color = Color.white;
+		else if (Mathf.Approximately(health, 2)) spriteRenderer.color = Color.green;
+		else spriteRenderer.color                                     = Color.red;
 	}
 
-	public void TakeDamage() {
-		health--;
+	public void TakeDamage(float damage = 1) {
+		health -= damage;
 		if (health <= 0) {
 			Destroy(gameObject);
 		}

@@ -29,6 +29,7 @@ public class LevelLoader : MonoBehaviour {
 
 		if (grid.Count == 0) return;
 
+
 		var gridWidth                 = grid[0].columns.Count - 1;
 		if (gridWidth <= 0) gridWidth = 1;
 
@@ -45,6 +46,7 @@ public class LevelLoader : MonoBehaviour {
 				var spawnPos  = new Vector2(brickXPos, brickYPos);
 
 				GameObject newBrick = Instantiate(brickPrefab, spawnPos, Quaternion.identity);
+				newBrick.transform.SetParent(transform);
 
 				Brick brickScript = newBrick.GetComponent<Brick>();
 				brickScript.Initialize(brickHealth);
