@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Walls : MonoBehaviour {
@@ -5,8 +6,7 @@ public class Walls : MonoBehaviour {
 	[SerializeField] private GameObject rightWall;
 	[SerializeField] private GameObject topWall;
 
-	private void Awake()
-	{
+	private void Awake() {
 		var cam   = Camera.main;
 		var zDist = Mathf.Abs(leftWall.transform.position.z - cam.transform.position.z);
 

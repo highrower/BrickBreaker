@@ -35,7 +35,7 @@ public class BallBustThrough : MonoBehaviour {
 
 		if (hit.collider != null) {
 			if (hit.collider.TryGetComponent<Brick>(out var brick)) {
-				if (brick.health < _ball.CurrentDamage) {
+				if (brick.CurrentHealth < _ball.CurrentDamage) {
 					_brick = brick;
 					brick.SetIsTrigger(true);
 				}
@@ -49,7 +49,7 @@ public class BallBustThrough : MonoBehaviour {
 	}
 
 	private void BreakThrough() {
-		_rb.linearVelocity *= bustThroughResistance / _brick.health;
+		_rb.linearVelocity *= bustThroughResistance / _brick.CurrentHealth;
 		Destroy(_brick.gameObject);
 		_brick = null;
 	}
