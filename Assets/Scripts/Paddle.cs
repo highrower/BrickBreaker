@@ -4,9 +4,6 @@ using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class Paddle : MonoBehaviour {
-	[SerializeField] private GameObject leftWall;
-	[SerializeField] private GameObject rightWall;
-
 	public static Action DragRelease;
 
 	private Camera      _cam;
@@ -23,8 +20,8 @@ public class Paddle : MonoBehaviour {
 	void Awake() => _rb = GetComponent<Rigidbody2D>();
 
 	private void Start() {
-		_cam = Camera.main;
-		RecalculateBoundaries();
+		_cam                              =  Camera.main;
+		PlayArea.Instance.OnBoundsChanged += RecalculateBoundaries;
 	}
 
 	private void Update() {
@@ -58,7 +55,7 @@ public class Paddle : MonoBehaviour {
 
 	private void RecalculateBoundaries() {
 		var paddleHalfWidth = GetComponent<SpriteRenderer>().bounds.extents.x;
-		_minBoundary = leftWall.GetComponent<SpriteRenderer>().bounds.max.x  + paddleHalfWidth;
-		_maxBoundary = rightWall.GetComponent<SpriteRenderer>().bounds.min.x - paddleHalfWidth;
+		_minBoundary = PlayArea.Instance.WorldBounds.xMin + paddleHalfWidth;
+		_maxBoundary = PlayArea.Instance.WorldBounds.xMax - paddleHalfWidth;
 	}
 }

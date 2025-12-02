@@ -2,56 +2,31 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UI : MonoBehaviour {
-	const            string        ClassTopBar         = "top-bar";
-	const            string        ClassButtonDisabled = "top-bar__button--disabled";
-	[SerializeField] GameObject    topWall;
-	private          VisualElement _shopContainer;
-	private          Button        _menuButton;
-	private          VisualElement _topMenuBar;
+	public const string TopBarClass = "top-bar";
 
-	void OnEnable() {
-		var uiDoc = GetComponent<UIDocument>();
-		var root  = uiDoc.rootVisualElement;
-
-		_shopContainer      =  root.Q<VisualElement>(className: "shop-container");
-		_menuButton         =  root.Q<Button>("MenuButton");
-		_menuButton.clicked += ToggleShop;
-
-		_topMenuBar = root.Q(className: "top-bar");
-
-		if (_topMenuBar != null) {
-			_topMenuBar.RegisterCallback<GeometryChangedEvent>(AlignWallToUI);
-		}
+	private static class Ids {
+		public const string ShopOpen = "shop-container--open";
+		public const string Shop     = "shop-container";
+		public const string MenuBtn  = "MenuButton";
 	}
 
-	private void AlignWallToUI(GeometryChangedEvent evt) {
-		if (topWall == null) return;
+	private VisualElement _shopContainer;
+	private Button        _menuButton;
 
-		var uiHeightPanelUnits = _topMenuBar.resolvedStyle.height;
-		var screenZero         = new Vector2(0, 0);
-		var screenHundred      = new Vector2(0, 100);
-		var panelZero          = RuntimePanelUtils.ScreenToPanel(_topMenuBar.panel, screenZero);
-		var panelHundred       = RuntimePanelUtils.ScreenToPanel(_topMenuBar.panel, screenHundred);
-		var panelDist          = Mathf.Abs(panelHundred.y - panelZero.y);
-		var pixelsPerUnit      = 100f               / panelDist;
-		var uiHeightPixels     = uiHeightPanelUnits * pixelsPerUnit;
-		var cutLinePixelY      = Camera.main.pixelHeight - uiHeightPixels;
-		var distFromCam        = Mathf.Abs(Camera.main.transform.position.z - topWall.transform.position.z);
-		var cutLineWorldPos    = Camera.main.ScreenToWorldPoint(new Vector3(0, cutLinePixelY, distFromCam));
-		var wallCollider       = topWall.GetComponent<Collider2D>();
-		var halfHeightWorld    = wallCollider.bounds.extents.y;
+	private void OnEnable() {
+		var root = GetComponent<UIDocument>().rootVisualElement;
 
-		topWall.transform.position = new Vector3(topWall.transform.position.x,
-		                                         cutLineWorldPos.y + halfHeightWorld,
-		                                         topWall.transform.position.z);
+		_shopContainer = root.Q<VisualElement>(className: Ids.Shop);
+		_menuButton    = root.Q<Button>(Ids.MenuBtn);
 
-		Debug.Log($"MATH FIXED: UI Units: {uiHeightPanelUnits} | Ratio: {pixelsPerUnit} | Real Pixels: {uiHeightPixels}");
+		if (_menuButton != null)
+			_menuButton.clicked += ToggleShop;
 	}
 
-	private void ToggleShop() {
-		if (_shopContainer.ClassListContains("shop-container--open"))
-			_shopContainer.RemoveFromClassList("shop-container--open");
-		else
-			_shopContainer.AddToClassList("shop-container--open");
+	private void OnDisable() {
+		if (_menuButton != null)
+			_menuButton.clicked -= ToggleShop;
 	}
+
+	private void ToggleShop() { _shopContainer.ToggleInClassList(Ids.ShopOpen); }
 }

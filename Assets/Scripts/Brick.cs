@@ -7,13 +7,17 @@ public class Brick : MonoBehaviour {
 	[SerializeField] private float         health;
 	[SerializeField] private TMP_Text      healthLabel;
 	private                  BoxCollider2D _collider;
+	public                   float         GridX { get; set; }
+	public                   float         GridY { get; set; }
 
 	public float CurrentHealth => health;
 
 	void Awake() { _collider = GetComponent<BoxCollider2D>(); }
 
-	public void Initialize(float startHealth) {
+	public void Initialize(float startHealth, float x, float y) {
 		health = startHealth;
+		GridX  = x;
+		GridY  = y;
 		UpdateVisuals();
 	}
 

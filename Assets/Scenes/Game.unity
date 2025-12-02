@@ -471,6 +471,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3121359155128293300, guid: 7e87ccca829ee44aeb9329b96da9f0e6, type: 3}
   m_PrefabInstance: {fileID: 2030197857}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &352783098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 352783100}
+  - component: {fileID: 352783099}
+  m_Layer: 0
+  m_Name: PlayArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &352783099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352783098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b375f2d409033476a9c8791ff69064e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  uiDocument: {fileID: 853385336}
+--- !u!4 &352783100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352783098}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -959,8 +1004,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b574b471ff2741369b9c524aeb8de9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  leftWall: {fileID: 1556206641}
-  rightWall: {fileID: 2048421564}
 --- !u!114 &959480692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1118,9 +1161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed08cd5fd0912465c9940be687884c65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  leftWall: {fileID: 1556206641}
-  rightWall: {fileID: 2048421564}
-  topWall: {fileID: 332389602}
 --- !u!1 &1694867061
 GameObject:
   m_ObjectHideFlags: 0
@@ -1362,6 +1402,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
+  - {fileID: 352783100}
   - {fileID: 729044838}
   - {fileID: 1690309950}
   - {fileID: 959480689}

@@ -1,22 +1,44 @@
 using System;
+using NUnit.Framework;
 using UnityEngine;
 
 public class Walls : MonoBehaviour {
-	[SerializeField] private GameObject leftWall;
-	[SerializeField] private GameObject rightWall;
-	[SerializeField] private GameObject topWall;
+	private GameObject _leftWall;
+	private GameObject _rightWall;
+	private GameObject _topWall;
 
 	private void Awake() {
-		var cam   = Camera.main;
-		var zDist = Mathf.Abs(leftWall.transform.position.z - cam.transform.position.z);
+		if (transform.Find("LeftWall")) _leftWall   = transform.Find("LeftWall").gameObject;
+		if (transform.Find("RightWall")) _rightWall = transform.Find("RightWall").gameObject;
+		if (transform.Find("UpperWall")) _topWall   = transform.Find("UpperWall").gameObject;
+		Assert.True(_leftWall != null && _rightWall != null && _topWall != null,
+		            "Walls: One or more wall GameObjects not found as children.");
+	}
 
-		var leftEdge = cam.ScreenToWorldPoint(new Vector3(0, Screen.height / 2f, zDist));
-		leftWall.transform.position = leftEdge;
+	private void Start() {
+		if (PlayArea.Instance != null)
+			PlayArea.Instance.OnBoundsChanged += AlignWalls;
+	}
 
-		var rightEdge = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height / 2f, zDist));
-		rightWall.transform.position = rightEdge;
+	private void OnDestroy() {
+		if (PlayArea.Instance != null)
+			PlayArea.Instance.OnBoundsChanged -= AlignWalls;
+	}
 
-		var topEdge = cam.ScreenToWorldPoint(new Vector3(Screen.width / 2f, Screen.height, zDist));
-		topWall.transform.position = topEdge;
+	private void AlignWalls() {
+		var bounds = PlayArea.Instance.WorldBounds;
+		MoveWall(_topWall,   new Vector2(bounds.center.x, bounds.yMax),     Vector2.up);
+		MoveWall(_leftWall,  new Vector2(bounds.xMin,     bounds.center.y), Vector2.left);
+		MoveWall(_rightWall, new Vector2(bounds.xMax,     bounds.center.y), Vector2.right);
+	}
+
+	private void MoveWall(GameObject wall, Vector2 targetEdge, Vector2 directionOut) {
+		var col     = wall.GetComponent<BoxCollider2D>();
+		var extents = col.bounds.extents;
+		var offset  = directionOut * (directionOut.x != 0 ? extents.x : extents.y);
+
+		wall.transform.position = new Vector3(targetEdge.x + offset.x,
+		                                      targetEdge.y + offset.y,
+		                                      wall.transform.position.z);
 	}
 }
