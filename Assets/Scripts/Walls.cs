@@ -7,6 +7,8 @@ public class Walls : MonoBehaviour {
 	private GameObject _rightWall;
 	private GameObject _topWall;
 
+	[SerializeField] private RectReference playAreaBounds;
+
 	private void Awake() {
 		if (transform.Find("LeftWall")) _leftWall   = transform.Find("LeftWall").gameObject;
 		if (transform.Find("RightWall")) _rightWall = transform.Find("RightWall").gameObject;
@@ -16,17 +18,13 @@ public class Walls : MonoBehaviour {
 	}
 
 	private void Start() {
-		if (PlayArea.Instance != null)
-			PlayArea.Instance.OnBoundsChanged += AlignWalls;
+		playAreaBounds.variable.OnValueChanged += AlignWalls;
+		AlignWalls(playAreaBounds);
 	}
 
-	private void OnDestroy() {
-		if (PlayArea.Instance != null)
-			PlayArea.Instance.OnBoundsChanged -= AlignWalls;
-	}
+	private void OnDestroy() { playAreaBounds.variable.OnValueChanged -= AlignWalls; }
 
-	private void AlignWalls() {
-		var bounds = PlayArea.Instance.WorldBounds;
+	private void AlignWalls(Rect bounds) {
 		MoveWall(_topWall,   new Vector2(bounds.center.x, bounds.yMax),     Vector2.up);
 		MoveWall(_leftWall,  new Vector2(bounds.xMin,     bounds.center.y), Vector2.left);
 		MoveWall(_rightWall, new Vector2(bounds.xMax,     bounds.center.y), Vector2.right);

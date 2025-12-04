@@ -461,61 +461,11 @@ MonoBehaviour:
   brickLayer:
     serializedVersion: 2
     m_Bits: 64
---- !u!1 &332389602 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 317632653432467627, guid: 7e87ccca829ee44aeb9329b96da9f0e6, type: 3}
-  m_PrefabInstance: {fileID: 2030197857}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &332389606 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3121359155128293300, guid: 7e87ccca829ee44aeb9329b96da9f0e6, type: 3}
   m_PrefabInstance: {fileID: 2030197857}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &352783098
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 352783100}
-  - component: {fileID: 352783099}
-  m_Layer: 0
-  m_Name: PlayArea
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &352783099
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 352783098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b375f2d409033476a9c8791ff69064e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  uiDocument: {fileID: 853385336}
---- !u!4 &352783100
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 352783098}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,7 +698,7 @@ GameObject:
   - component: {fileID: 729044838}
   - component: {fileID: 729044839}
   m_Layer: 0
-  m_Name: LevelLoader
+  m_Name: BrickManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -781,17 +731,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040746cb69caa4a1f834ba942dd125a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  margin: 0.5
   brickPrefab: {fileID: 3563394605807932878, guid: a29b0a49edeb1470dad441d1d4cb27eb, type: 3}
-  grid:
-  - columns: 01000000010000000200000002000000020000000100000001000000
-  - columns: 01000000010000000000000001000000000000000100000001000000
-  - columns: 01000000010000000000000001000000000000000100000001000000
-  - columns: 01000000010000000100000001000000010000000100000001000000
-  - columns: 01000000010000000100000001000000010000000100000001000000
-  leftWall: {fileID: 1556206641}
-  rightWall: {fileID: 2048421564}
-  upperWall: {fileID: 332389602}
+  margin: 0.5
+  gridSize: 6
+  brickType: 0
+  spawnChance: 0.5
+  spawnRatePerSecond: 0.5
+  brickBounds:
+    useConstant: 0
+    constantValue:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    variable: {fileID: 11400000, guid: 85dd9f38268a245228b32ddede98712f, type: 2}
 --- !u!1 &853385335
 GameObject:
   m_ObjectHideFlags: 0
@@ -860,7 +814,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abbc0e3e2ab464cdfab1164bac5d5432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  topWall: {fileID: 332389602}
+  playArea: {fileID: 11400000, guid: 85dd9f38268a245228b32ddede98712f, type: 2}
 --- !u!1 &959480687
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,8 +825,8 @@ GameObject:
   m_Component:
   - component: {fileID: 959480689}
   - component: {fileID: 959480688}
-  - component: {fileID: 959480690}
   - component: {fileID: 959480691}
+  - component: {fileID: 959480690}
   - component: {fileID: 959480692}
   - component: {fileID: 959480693}
   m_Layer: 0
@@ -1004,6 +958,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b574b471ff2741369b9c524aeb8de9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  bounds:
+    useConstant: 0
+    constantValue:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    variable: {fileID: 11400000, guid: 85dd9f38268a245228b32ddede98712f, type: 2}
 --- !u!114 &959480692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1104,11 +1067,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!1 &1556206641 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 317632653432467627, guid: 7e87ccca829ee44aeb9329b96da9f0e6, type: 3}
-  m_PrefabInstance: {fileID: 7025010012548038492}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1556206645 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3121359155128293300, guid: 7e87ccca829ee44aeb9329b96da9f0e6, type: 3}
@@ -1161,6 +1119,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed08cd5fd0912465c9940be687884c65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  playAreaBounds:
+    useConstant: 0
+    constantValue:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    variable: {fileID: 11400000, guid: 85dd9f38268a245228b32ddede98712f, type: 2}
 --- !u!1 &1694867061
 GameObject:
   m_ObjectHideFlags: 0
@@ -1313,11 +1280,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e87ccca829ee44aeb9329b96da9f0e6, type: 3}
---- !u!1 &2048421564 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 317632653432467627, guid: 7e87ccca829ee44aeb9329b96da9f0e6, type: 3}
-  m_PrefabInstance: {fileID: 277205369}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2048421568 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3121359155128293300, guid: 7e87ccca829ee44aeb9329b96da9f0e6, type: 3}
@@ -1402,11 +1364,10 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 352783100}
+  - {fileID: 1694867064}
   - {fileID: 729044838}
+  - {fileID: 853385337}
   - {fileID: 1690309950}
   - {fileID: 959480689}
   - {fileID: 324800418}
   - {fileID: 77130263}
-  - {fileID: 1694867064}
-  - {fileID: 853385337}

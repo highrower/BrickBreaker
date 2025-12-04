@@ -6,11 +6,14 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 public class Paddle : MonoBehaviour {
 	public static Action DragRelease;
 
+	[SerializeField] private RectReference bounds;
+
 	private Camera      _cam;
 	private Rigidbody2D _rb;
 	private float       _maxBoundary;
 	private float       _minBoundary;
 	private bool        _isTwisting = false;
+	private float       _halfWidth;
 
 
 	private void OnEnable() { EnhancedTouchSupport.Enable(); }
@@ -20,8 +23,8 @@ public class Paddle : MonoBehaviour {
 	void Awake() => _rb = GetComponent<Rigidbody2D>();
 
 	private void Start() {
-		_cam                              =  Camera.main;
-		PlayArea.Instance.OnBoundsChanged += RecalculateBoundaries;
+		_cam       = Camera.main;
+		_halfWidth = GetComponent<SpriteRenderer>().bounds.extents.x;
 	}
 
 	private void Update() {
@@ -29,7 +32,7 @@ public class Paddle : MonoBehaviour {
 			return;
 		var screenPosition = Touch.activeTouches[0].screenPosition;
 		var worldPosition  = _cam.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, 10f));
-		var clampedX       = Mathf.Clamp(worldPosition.x, _minBoundary, _maxBoundary);
+		var clampedX       = Mathf.Clamp(worldPosition.x, bounds.Value.xMin + _halfWidth, bounds.Value.xMax - _halfWidth);
 		var finalTargetPos = new Vector2(clampedX, transform.position.y);
 
 		var smoothedPosition = Vector2.Lerp(_rb.position, finalTargetPos, Time.deltaTime * 500);
@@ -51,11 +54,5 @@ public class Paddle : MonoBehaviour {
 			_isTwisting = false;
 			DragRelease?.Invoke();
 		}
-	}
-
-	private void RecalculateBoundaries() {
-		var paddleHalfWidth = GetComponent<SpriteRenderer>().bounds.extents.x;
-		_minBoundary = PlayArea.Instance.WorldBounds.xMin + paddleHalfWidth;
-		_maxBoundary = PlayArea.Instance.WorldBounds.xMax - paddleHalfWidth;
 	}
 }
