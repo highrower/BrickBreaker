@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 324800415}
   - component: {fileID: 324800419}
   - component: {fileID: 324800420}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -734,9 +734,7 @@ MonoBehaviour:
   brickPrefab: {fileID: 3563394605807932878, guid: a29b0a49edeb1470dad441d1d4cb27eb, type: 3}
   margin: 0.5
   gridSize: 6
-  brickType: 0
-  spawnChance: 0.5
-  spawnRatePerSecond: 0.5
+  brickType: {fileID: 11400000, guid: a930a05f5a74e4007965f0726dd37376, type: 2}
   brickBounds:
     useConstant: 0
     constantValue:
