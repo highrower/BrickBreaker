@@ -5,6 +5,7 @@ using System.Globalization;
 using TMPro;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Brick : MonoBehaviour {
 	private TMP_Text       _healthLabel;
@@ -43,12 +44,16 @@ public class Brick : MonoBehaviour {
 		UpdateVisuals();
 	}
 
-	private void Die() {
+	public void Die() {
 		if (_isDead) return;
+
 		_isDead              = true;
 		_collider.enabled    = false;
 		_renderer.enabled    = false;
 		_healthLabel.enabled = false;
+
+		if (_settings.drop != null && Random.value <= _settings.dropChance)
+			Instantiate(_settings.drop, transform.position, Quaternion.identity);
 		StartCoroutine(SpawnRoutine());
 	}
 

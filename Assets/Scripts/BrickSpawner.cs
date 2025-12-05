@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class BrickManager : MonoBehaviour {
+public class BrickSpawner : MonoBehaviour {
 
 	[SerializeField] private GameObject    brickPrefab;
 	[SerializeField] private float         margin   = 0.5f;

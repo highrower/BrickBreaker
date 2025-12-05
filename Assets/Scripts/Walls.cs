@@ -30,7 +30,7 @@ public class Walls : MonoBehaviour {
 		MoveWall(_rightWall, new Vector2(bounds.xMax,     bounds.center.y), Vector2.right);
 	}
 
-	private void MoveWall(GameObject wall, Vector2 targetEdge, Vector2 directionOut) {
+	private static void MoveWall(GameObject wall, Vector2 targetEdge, Vector2 directionOut) {
 		var col     = wall.GetComponent<BoxCollider2D>();
 		var extents = col.bounds.extents;
 		var offset  = directionOut * (directionOut.x != 0 ? extents.x : extents.y);

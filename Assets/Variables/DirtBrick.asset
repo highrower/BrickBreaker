@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BrickSettings
   hp: 1
   spawnChance: 0.8
+  drop: {fileID: 3869982315915732659, guid: efe158bee0a464fd29e7d3e6daddabdb, type: 3}
+  dropChance: 1
