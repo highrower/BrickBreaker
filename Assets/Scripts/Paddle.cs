@@ -7,6 +7,7 @@ public class Paddle : MonoBehaviour {
 	public static Action DragRelease;
 
 	[SerializeField] private RectReference bounds;
+	[SerializeField] private Bank          bank;
 
 	private Camera      _cam;
 	private Rigidbody2D _rb;
@@ -16,11 +17,14 @@ public class Paddle : MonoBehaviour {
 	private float       _halfWidth;
 
 
-	private void OnEnable() { EnhancedTouchSupport.Enable(); }
+	private void OnEnable() {
+		bank.ResetBank();
+		EnhancedTouchSupport.Enable();
+	}
 
 	private void OnDisable() { EnhancedTouchSupport.Disable(); }
 
-	void Awake() => _rb = GetComponent<Rigidbody2D>();
+	private void Awake() => _rb = GetComponent<Rigidbody2D>();
 
 	private void Start() {
 		_cam       = Camera.main;
@@ -54,5 +58,16 @@ public class Paddle : MonoBehaviour {
 			_isTwisting = false;
 			DragRelease?.Invoke();
 		}
+	}
+
+	private void OnTriggerEnter2D(Collider2D other) {
+		if (other.CompareTag("Drop"))
+			CollectDrop(other);
+	}
+
+	private void CollectDrop(Collider2D drop) {
+		if (bank)
+			bank.AddCoins(drop.GetComponent<Drop>().Value);
+		Destroy(drop.gameObject);
 	}
 }

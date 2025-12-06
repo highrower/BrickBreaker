@@ -814,6 +814,7 @@ GameObject:
   - component: {fileID: 853385337}
   - component: {fileID: 853385336}
   - component: {fileID: 853385338}
+  - component: {fileID: 853385339}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -872,6 +873,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   playArea: {fileID: 11400000, guid: 85dd9f38268a245228b32ddede98712f, type: 2}
+--- !u!114 &853385339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853385335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2638a6276d0e4c24828951fe1fdc0650, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CurrencyView
+  bank: {fileID: 11400000, guid: d7bb8f353f30c4f6390edd7f5b7590fa, type: 2}
 --- !u!1 &959480687
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025,6 +1039,7 @@ MonoBehaviour:
       width: 0
       height: 0
     variable: {fileID: 11400000, guid: 85dd9f38268a245228b32ddede98712f, type: 2}
+  bank: {fileID: 11400000, guid: d7bb8f353f30c4f6390edd7f5b7590fa, type: 2}
 --- !u!114 &959480692
 MonoBehaviour:
   m_ObjectHideFlags: 0

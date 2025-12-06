@@ -16,9 +16,19 @@
     flex-direction: row;
 }
 
+
+.current-coins-label {
+    margin: 0 5%;
+    border-width: 0;
+    -unity-background-scale-mode: scale-to-fit;
+    font-size: 40px;
+    -unity-font-style: bold;
+    align-self: center;
+    flex-shrink: 0;
+}
+
 .top-bar__button {
     width: 20%;
-    height: 60%;
     margin: 0 5%;
     background-color: transparent;
     border-width: 0;

@@ -8,49 +8,42 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Brick : MonoBehaviour {
-	private TMP_Text       _healthLabel;
-	private BoxCollider2D  _collider;
-	private SpriteRenderer _renderer;
-	private BrickSettings  _settings;
-	private bool           _isDead;
+	private BoxCollider2D _collider;
+	private BrickSettings _settings;
+	private BrickView     _view;
 
 	[SerializeField] private float     spawnRatePerSecond = 0.5f;
 	[SerializeField] private LayerMask ballLayer;
 
 	public float GridX         { get; set; }
 	public float GridY         { get; set; }
-	public float CurrentHealth { get; private set; }
+	public int   CurrentHealth { get; private set; }
 
 	private void Awake() {
-		_collider    = GetComponent<BoxCollider2D>();
-		_renderer    = GetComponent<SpriteRenderer>();
-		_healthLabel = GetComponentInChildren<TMP_Text>();
+		_collider = GetComponent<BoxCollider2D>();
+		_view     = GetComponent<BrickView>();
 	}
 
 	public void Initialize(BrickSettings settings, float x, float y) {
 		_settings     = settings;
-		CurrentHealth = _settings.hp;
+		CurrentHealth = _settings.maxHealth;
 		GridX         = x;
 		GridY         = y;
-		UpdateVisuals();
+		_view.Refresh(CurrentHealth, _settings);
 	}
 
 	public void SetIsTrigger(bool isTrigger) { _collider.isTrigger = isTrigger; }
 
-	public void TakeDamage(float damage = 1) {
+	public void TakeDamage(int damage = 1) {
 		CurrentHealth -= damage;
 		if (CurrentHealth <= 0 || MathF.Floor(CurrentHealth) <= 0)
 			Die();
-		UpdateVisuals();
+		_view.Refresh(CurrentHealth, _settings);
 	}
 
 	public void Die() {
-		if (_isDead) return;
-
-		_isDead              = true;
-		_collider.enabled    = false;
-		_renderer.enabled    = false;
-		_healthLabel.enabled = false;
+		_collider.enabled = false;
+		_view.Refresh(CurrentHealth, _settings);
 
 		if (_settings.drop != null && Random.value <= _settings.dropChance)
 			Instantiate(_settings.drop, transform.position, Quaternion.identity);
@@ -60,13 +53,12 @@ public class Brick : MonoBehaviour {
 	private IEnumerator SpawnRoutine() {
 		while (true) {
 			yield return new WaitForSeconds(1f / spawnRatePerSecond);
-			if (UnityEngine.Random.value <= _settings.spawnChance)
+			if (Random.value <= _settings.spawnChance)
 				break;
 		}
 
-		while (IsBallInside()) {
+		while (IsBallInside())
 			yield return new WaitForSeconds(0.1f);
-		}
 
 		Respawn();
 	}
@@ -85,19 +77,8 @@ public class Brick : MonoBehaviour {
 	}
 
 	private void Respawn() {
-		CurrentHealth        = _settings.hp;
-		_isDead              = false;
-		_collider.enabled    = true;
-		_renderer.enabled    = true;
-		_healthLabel.enabled = true;
-		UpdateVisuals();
-	}
-
-	private void UpdateVisuals() {
-		_healthLabel.text = Mathf.Round(CurrentHealth).ToString(CultureInfo.InvariantCulture);
-
-		if ((int)(CurrentHealth)    == 1) _renderer.color = Color.white;
-		else if ((int)CurrentHealth == 2) _renderer.color = Color.green;
-		else _renderer.color                              = Color.red;
+		CurrentHealth     = _settings.maxHealth;
+		_collider.enabled = true;
+		_view.Refresh(CurrentHealth, _settings);
 	}
 }

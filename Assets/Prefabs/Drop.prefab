@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4915040749817786917}
   - component: {fileID: 1369330200674042478}
   - component: {fileID: -7426201430026393029}
+  - component: {fileID: 8812360605242093997}
   - component: {fileID: -6857333001660593509}
   m_Layer: 8
   m_Name: Drop
@@ -139,6 +140,20 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8812360605242093997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3869982315915732659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe774b528d0d4a9b9d0a55f32d32733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Drop
+  dropSpeed: 5
+  settings: {fileID: 11400000, guid: 4ad1d2613c8a947928813ced8abb238e, type: 2}
 --- !u!50 &-6857333001660593509
 Rigidbody2D:
   serializedVersion: 5

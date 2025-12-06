@@ -4,13 +4,11 @@
     <ui:Template name="Shop"
                  src="project://database/Assets/Resources/UI/Shop.uxml?fileID=9197481963319205126&amp;guid=af5eaa2832e7e415cad6ff63d239779d&amp;type=3#Shop"/>
     <Style src="project://database/Assets/Resources/UI/Game.uss?fileID=7433441132597879392&amp;guid=91736ea33bcf4e948b1b5eb4213c71b9&amp;type=3#Game"/>
-    <ui:VisualElement class="top-bar">
+    <ui:VisualElement name="VisualElement" class="top-bar">
         <ui:Button name="MenuButton"
                    icon-image="project://database/Assets/Resources/Media/Images/menu-bar-500.png?fileID=21300000&amp;guid=01f6acfbea937437d910e4ba7d6a0224&amp;type=3#menu-bar-500"
-                   class="top-bar__button"/>
-        <ui:Button name="FastForwardButton"
-                   icon-image="project://database/Assets/Resources/Media/Images/fast-forward-512.png?fileID=-5671178348688689913&amp;guid=14e2b3c3fb9a3420a964a5656f00226c&amp;type=3#fast-forward-512_0"
-                   class="top-bar__button top-bar__button--disabled"/>
+                   class="top-bar__button" style="height: 83px;"/>
+        <ui:Label name="" text="11" class="current-coins-label"/>
     </ui:VisualElement>
     <ui:VisualElement class="main-content">
         <ui:Instance template="Shop" style="width: 100%; height: 100%; position: absolute;"/>

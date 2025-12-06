@@ -7,7 +7,13 @@ public class Ball : MonoBehaviour {
 
 	private Rigidbody2D _rb;
 
-	public float CurrentDamage => _rb.linearVelocity.magnitude * settings.speedToDamageRatio;
+	public int CurrentDamage {
+		get {
+			var efficiency = Mathf.InverseLerp(settings.minSpeed, settings.maxSpeed, _rb.linearVelocity.magnitude);
+			var damage     = Mathf.Lerp(settings.minDamage, settings.maxDamage, efficiency);
+			return Mathf.RoundToInt(damage);
+		}
+	}
 
 	private void Start() {
 		_rb = GetComponent<Rigidbody2D>();
