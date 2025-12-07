@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Settings/BrickSettings")]
+[CreateAssetMenu(menuName = "Settings/Brick Settings")]
 public class BrickSettings : ScriptableObject {
 	public int        maxHealth;
 	public float      spawnChance;

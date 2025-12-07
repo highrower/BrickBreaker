@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Variables/RectVariable")]
+[CreateAssetMenu(menuName = "Variables/Rect Variable")]
 public class RectVariable : ScriptableObject {
 
 	[SerializeField] private Rect value;

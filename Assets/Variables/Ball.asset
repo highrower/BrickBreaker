@@ -12,9 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18306fb8d47c4809804b5a50b45a1642, type: 3}
   m_Name: Ball
   m_EditorClassIdentifier: Assembly-CSharp::BallSettings
+  damageTiers:
+  - minDamage: 1
+    maxDamage: 5
+  - minDamage: 2
+    maxDamage: 7
+  - minDamage: 3
+    maxDamage: 9
+  - minDamage: 4
+    maxDamage: 10
   minSpeed: 5
   maxSpeed: 15
   speedThreshold: 10
   lookAheadDistance: 0.5
   bustThroughResistance: 0.8
-  speedToDamageRatio: 0.2

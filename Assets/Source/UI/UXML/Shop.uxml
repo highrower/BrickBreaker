@@ -1,9 +1,8 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements"
          xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
          editor-extension-mode="False">
-    <Style src="project://database/Assets/Resources/UI/Shop.uss?fileID=7433441132597879392&amp;guid=5a30bad322e104aaa98449573bdef304&amp;type=3#Shop"/>
-    <ui:VisualElement class="shop-container">
-        <ui:Button/>
-        <ui:Button/>
+    <Style src="project://database/Assets/Source/UI/USS/Shop.uss?fileID=7433441132597879392&amp;guid=5a30bad322e104aaa98449573bdef304&amp;type=3#Shop"/>
+    <ui:VisualElement name="" class="shop-container">
+        <ui:VisualElement name="ShopListContainer" style="flex-grow: 1;"/>
     </ui:VisualElement>
 </ui:UXML>

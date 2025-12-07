@@ -1,5 +1,5 @@
 using UnityEngine;
 
 
-[CreateAssetMenu(menuName = "Settings/BallSettings")]
+[CreateAssetMenu(menuName = "Settings/Paddle Settings")]
 public class PaddleSettings : ScriptableObject { }

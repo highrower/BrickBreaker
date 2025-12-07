@@ -1,0 +1,66 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+public class Shop : MonoBehaviour {
+	[SerializeField] private VisualTreeAsset shopEntryTemplate;
+	[SerializeField] private Bank            bank;
+	[SerializeField] private List<ShopItem>  availableUpgrades;
+
+	private readonly List<VisualElement> _shopItems = new();
+
+	private void OnEnable() {
+		var root          = GetComponent<UIDocument>().rootVisualElement;
+		var listContainer = root.Q<VisualElement>("ShopListContainer");
+
+		listContainer.Clear();
+		_shopItems.Clear();
+
+		if (bank != null) bank.OnCoinsChanged += OnCoinsChanged;
+
+		foreach (var item in availableUpgrades) {
+			var entry = shopEntryTemplate.Instantiate();
+
+			entry.Q<Label>(className: "shop-item__name").text = item.title;
+			var buyBtn = entry.Q<Button>(className: "shop-item__buy");
+
+			entry.userData = item;
+
+			RefreshEntry(entry);
+
+			buyBtn.clicked += () => TryBuy(item);
+			listContainer.Add(entry);
+			_shopItems.Add(entry);
+		}
+	}
+
+	private void OnDisable() {
+		if (bank != null) bank.OnCoinsChanged -= OnCoinsChanged;
+	}
+
+	private void OnCoinsChanged(int obj) {
+		foreach (var item in _shopItems)
+			RefreshEntry(item);
+	}
+
+	private void TryBuy(ShopItem item) {
+		var cost = item.GetCost();
+		if (!item.IsMaxed && bank.TrySpendCoins(cost))
+			item.ApplyUpgrade();
+	}
+
+	private void RefreshEntry(VisualElement item) {
+		var shopItem  = (ShopItem)item.userData;
+		var buyBtn    = item.Q<Button>(className: "shop-item__buy");
+		var costLabel = item.Q<Label>(className: "shop-item__cost");
+
+		if (shopItem.IsMaxed) {
+			costLabel.text = "MAX";
+			buyBtn.SetEnabled(false);
+		}
+		else {
+			costLabel.text = shopItem.GetCost().ToString();
+			buyBtn.SetEnabled(bank.currentCoins >= shopItem.GetCost());
+		}
+	}
+}

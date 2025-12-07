@@ -32,17 +32,11 @@ public class DropSpawner : MonoBehaviour {
 		return drop;
 	}
 
-	private static void OnTakeFromPool(Drop drop) {
-		drop.gameObject.SetActive(true);
-	}
+	private static void OnTakeFromPool(Drop drop) => drop.gameObject.SetActive(true);
 
-	private static void OnReturnToPool(Drop drop) {
-		drop.gameObject.SetActive(false);
-	}
+	private static void OnReturnToPool(Drop drop) => drop.gameObject.SetActive(false);
 
-	private static void OnDestroyDrop(Drop drop) {
-		Destroy(drop.gameObject);
-	}
+	private static void OnDestroyDrop(Drop drop) => Destroy(drop.gameObject);
 
 	public void SpawnDrop(Vector3 position) {
 		var drop = _pool.Get();

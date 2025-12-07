@@ -14,7 +14,7 @@ public class Bank : ScriptableObject {
 		OnCoinsChanged?.Invoke(currentCoins);
 	}
 
-	public bool SpendCoins(int amount) {
+	public bool TrySpendCoins(int amount) {
 		if (currentCoins < amount)
 			return false;
 		currentCoins -= amount;

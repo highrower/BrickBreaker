@@ -9,8 +9,9 @@ public class Ball : MonoBehaviour {
 
 	public int CurrentDamage {
 		get {
+			var tierData   = settings.GetTierData(GameProgress.DamageLevel);
 			var efficiency = Mathf.InverseLerp(settings.minSpeed, settings.maxSpeed, _rb.linearVelocity.magnitude);
-			var damage     = Mathf.Lerp(settings.minDamage, settings.maxDamage, efficiency);
+			var damage     = Mathf.Lerp(tierData.minDamage, tierData.maxDamage, efficiency);
 			return Mathf.RoundToInt(damage);
 		}
 	}
