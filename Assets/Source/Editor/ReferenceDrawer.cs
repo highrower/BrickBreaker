@@ -4,10 +4,10 @@ using UnityEngine;
 namespace Editor {
 [CustomPropertyDrawer(typeof(RectReference))]
 public class ReferenceDrawer : PropertyDrawer {
-	private readonly string[] popupOptions =
+	readonly string[] popupOptions =
 		{ "Use Constant", "Use Variable" };
 
-	private GUIStyle _popupStyle;
+	GUIStyle _popupStyle;
 
 	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
 		_popupStyle ??= new GUIStyle(GUI.skin.GetStyle("PaneOptions")) {

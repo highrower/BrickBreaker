@@ -3,27 +3,27 @@ using UnityEngine;
 
 namespace TMPro.Examples {
 public class VertexJitter : MonoBehaviour {
-	public  float AngleMultiplier = 1.0f;
-	public  float SpeedMultiplier = 1.0f;
-	public  float CurveScale      = 1.0f;
-	private bool  hasTextChanged;
+	public float AngleMultiplier = 1.0f;
+	public float SpeedMultiplier = 1.0f;
+	public float CurveScale      = 1.0f;
+	bool         hasTextChanged;
 
-	private TMP_Text m_TextComponent;
+	TMP_Text m_TextComponent;
 
-	private void Awake() { m_TextComponent = GetComponent<TMP_Text>(); }
+	void Awake() { m_TextComponent = GetComponent<TMP_Text>(); }
 
 
-	private void Start() { StartCoroutine(AnimateVertexColors()); }
+	void Start() { StartCoroutine(AnimateVertexColors()); }
 
-	private void OnEnable() {
+	void OnEnable() {
 		// Subscribe to event fired when text object has been regenerated.
 		TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
 	}
 
-	private void OnDisable() { TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(ON_TEXT_CHANGED); }
+	void OnDisable() { TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(ON_TEXT_CHANGED); }
 
 
-	private void ON_TEXT_CHANGED(Object obj) {
+	void ON_TEXT_CHANGED(Object obj) {
 		if (obj == m_TextComponent)
 			hasTextChanged = true;
 	}
@@ -32,7 +32,7 @@ public class VertexJitter : MonoBehaviour {
 	///     Method to animate vertex colors of a TMP Text object.
 	/// </summary>
 	/// <returns></returns>
-	private IEnumerator AnimateVertexColors() {
+	IEnumerator AnimateVertexColors() {
 		// We force an update of the text object since it would only be updated at the end of the frame. Ie. before this code is executed on the first frame.
 		// Alternatively, we could yield and wait until the end of the frame when the text object will be generated.
 		m_TextComponent.ForceMeshUpdate();
@@ -142,7 +142,7 @@ public class VertexJitter : MonoBehaviour {
 	/// <summary>
 	///     Structure to hold pre-computed animation data.
 	/// </summary>
-	private struct VertexAnim {
+	struct VertexAnim {
 		public float angleRange;
 		public float angle;
 		public float speed;

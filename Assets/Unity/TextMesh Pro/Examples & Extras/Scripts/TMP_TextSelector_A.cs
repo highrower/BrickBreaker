@@ -3,15 +3,15 @@ using UnityEngine.EventSystems;
 
 namespace TMPro.Examples {
 public class TMP_TextSelector_A : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
-	private Camera m_Camera;
+	Camera m_Camera;
 
-	private bool        m_isHoveringObject;
-	private int         m_lastCharIndex = -1;
-	private int         m_lastWordIndex = -1;
-	private int         m_selectedLink  = -1;
-	private TextMeshPro m_TextMeshPro;
+	bool        m_isHoveringObject;
+	int         m_lastCharIndex = -1;
+	int         m_lastWordIndex = -1;
+	int         m_selectedLink  = -1;
+	TextMeshPro m_TextMeshPro;
 
-	private void Awake() {
+	void Awake() {
 		m_TextMeshPro = gameObject.GetComponent<TextMeshPro>();
 		m_Camera      = Camera.main;
 
@@ -20,7 +20,7 @@ public class TMP_TextSelector_A : MonoBehaviour, IPointerEnterHandler, IPointerE
 	}
 
 
-	private void LateUpdate() {
+	void LateUpdate() {
 		m_isHoveringObject = false;
 
 		if (TMP_TextUtilities.IsIntersectingRectTransform(m_TextMeshPro.rectTransform, Input.mousePosition, Camera.main)) m_isHoveringObject = true;

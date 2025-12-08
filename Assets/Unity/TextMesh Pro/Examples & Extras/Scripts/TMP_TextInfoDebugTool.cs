@@ -16,16 +16,16 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 
 	[Space(10)] [TextArea(2, 2)] public string ObjectStats;
 
-	[SerializeField] private TMP_Text m_TextComponent;
+	[SerializeField] TMP_Text m_TextComponent;
 
-	private Transform    m_Transform;
-	private TMP_TextInfo m_TextInfo;
+	Transform    m_Transform;
+	TMP_TextInfo m_TextInfo;
 
-	private float m_ScaleMultiplier;
-	private float m_HandleSize;
+	float m_ScaleMultiplier;
+	float m_HandleSize;
 
 
-	private void OnDrawGizmos() {
+	void OnDrawGizmos() {
 		if (m_TextComponent == null) {
 			m_TextComponent = GetComponent<TMP_Text>();
 
@@ -118,7 +118,7 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 	///     Method to draw a rectangle around each character.
 	/// </summary>
 	/// <param name="text"></param>
-	private void DrawCharactersBounds() {
+	void DrawCharactersBounds() {
 		var characterCount = m_TextInfo.characterCount;
 
 		for (var i = 0; i < characterCount; i++) {
@@ -285,7 +285,7 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 	///     Method to draw rectangles around each word of the text.
 	/// </summary>
 	/// <param name="text"></param>
-	private void DrawWordBounds() {
+	void DrawWordBounds() {
 		for (var i = 0; i < m_TextInfo.wordCount; i++) {
 			var wInfo = m_TextInfo.wordInfo[i];
 
@@ -383,7 +383,7 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 	///     Draw rectangle around each of the links contained in the text.
 	/// </summary>
 	/// <param name="text"></param>
-	private void DrawLinkBounds() {
+	void DrawLinkBounds() {
 		var textInfo = m_TextComponent.textInfo;
 
 		for (var i = 0; i < textInfo.linkCount; i++) {
@@ -484,7 +484,7 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 	///     Draw Rectangles around each lines of the text.
 	/// </summary>
 	/// <param name="text"></param>
-	private void DrawLineBounds() {
+	void DrawLineBounds() {
 		var lineCount = m_TextInfo.lineCount;
 
 		for (var i = 0; i < lineCount; i++) {
@@ -571,7 +571,7 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 	/// <summary>
 	///     Draw Rectangle around the bounds of the text object.
 	/// </summary>
-	private void DrawBounds() {
+	void DrawBounds() {
 		var meshBounds = m_TextComponent.bounds;
 
 		// Get Bottom Left and Top Right position of each word
@@ -582,7 +582,7 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 	}
 
 
-	private void DrawTextBounds() {
+	void DrawTextBounds() {
 		var textBounds = m_TextComponent.textBounds;
 
 		var bottomLeft = m_TextComponent.transform.position + (textBounds.center - textBounds.extents);
@@ -593,7 +593,7 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 
 
 	// Draw Rectangles
-	private void DrawRectangle(Vector3 BL, Vector3 TR, Color color) {
+	void DrawRectangle(Vector3 BL, Vector3 TR, Color color) {
 		Gizmos.color = color;
 
 		Gizmos.DrawLine(new Vector3(BL.x, BL.y, 0), new Vector3(BL.x, TR.y, 0));
@@ -602,7 +602,7 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 		Gizmos.DrawLine(new Vector3(TR.x, BL.y, 0), new Vector3(BL.x, BL.y, 0));
 	}
 
-	private void DrawDottedRectangle(Vector3 bottomLeft, Vector3 topRight, Color color, float size = 5.0f) {
+	void DrawDottedRectangle(Vector3 bottomLeft, Vector3 topRight, Color color, float size = 5.0f) {
 		Handles.color = color;
 		Handles.DrawDottedLine(bottomLeft, new Vector3(bottomLeft.x, topRight.y, bottomLeft.z), size);
 		Handles.DrawDottedLine(new Vector3(bottomLeft.x,             topRight.y, bottomLeft.z), topRight,                                            size);
@@ -610,13 +610,13 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 		Handles.DrawDottedLine(new Vector3(topRight.x,                                                                  bottomLeft.y, bottomLeft.z), bottomLeft, size);
 	}
 
-	private void DrawSolidRectangle(Vector3 bottomLeft, Vector3 topRight, Color color, float size = 5.0f) {
+	void DrawSolidRectangle(Vector3 bottomLeft, Vector3 topRight, Color color, float size = 5.0f) {
 		Handles.color = color;
 		var rect = new Rect(bottomLeft, topRight - bottomLeft);
 		Handles.DrawSolidRectangleWithOutline(rect, color, Color.black);
 	}
 
-	private void DrawSquare(Vector3 position, float size, Color color) {
+	void DrawSquare(Vector3 position, float size, Color color) {
 		Handles.color = color;
 		var bottomLeft  = new Vector3(position.x - size, position.y - size, position.z);
 		var topLeft     = new Vector3(position.x - size, position.y + size, position.z);
@@ -629,7 +629,7 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 		Handles.DrawLine(bottomRight, bottomLeft);
 	}
 
-	private void DrawCrosshair(Vector3 position, float size, Color color) {
+	void DrawCrosshair(Vector3 position, float size, Color color) {
 		Handles.color = color;
 
 		Handles.DrawLine(new Vector3(position.x - size, position.y, position.z),
@@ -640,7 +640,7 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 
 
 	// Draw Rectangles
-	private void DrawRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color) {
+	void DrawRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color) {
 		Gizmos.color = color;
 
 		Gizmos.DrawLine(bl, tl);
@@ -651,7 +651,7 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 
 
 	// Draw Rectangles
-	private void DrawDottedRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color) {
+	void DrawDottedRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color) {
 		var cam        = Camera.current;
 		var dotSpacing = (cam.WorldToScreenPoint(br).x - cam.WorldToScreenPoint(bl).x) / 75f;
 		Handles.color = color;

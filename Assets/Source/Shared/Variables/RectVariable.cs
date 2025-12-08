@@ -4,8 +4,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Variables/Rect Variable")]
 public class RectVariable : ScriptableObject {
 
-	[SerializeField] private Rect value;
-	public                   Rect Value => value;
+	[SerializeField] Rect value;
+	public           Rect Value => value;
 
 	public event Action<Rect> OnValueChanged;
 
@@ -14,5 +14,5 @@ public class RectVariable : ScriptableObject {
 		OnValueChanged?.Invoke(value);
 	}
 
-	private void OnEnable() => value = Rect.zero;
+	void OnEnable() => value = Rect.zero;
 }

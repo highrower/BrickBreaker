@@ -8,8 +8,8 @@ public class CameraController : MonoBehaviour {
 	//private float prev_ZoomDelta;
 
 
-	private const string event_SmoothingValue = "Slider - Smoothing Value";
-	private const string event_FollowDistance = "Slider - Camera Zoom";
+	const string event_SmoothingValue = "Slider - Smoothing Value";
+	const string event_FollowDistance = "Slider - Camera Zoom";
 
 	public Transform CameraTarget;
 
@@ -33,19 +33,19 @@ public class CameraController : MonoBehaviour {
 
 	public float MoveSensitivity = 2.0f;
 
-	private Transform cameraTransform;
+	Transform cameraTransform;
 
-	private Vector3   currentVelocity = Vector3.zero;
-	private Vector3   desiredPosition;
-	private Transform dummyTarget;
-	private float     mouseWheel;
-	private float     mouseX;
-	private float     mouseY;
-	private Vector3   moveVector;
-	private bool      previousSmoothing;
+	Vector3   currentVelocity = Vector3.zero;
+	Vector3   desiredPosition;
+	Transform dummyTarget;
+	float     mouseWheel;
+	float     mouseX;
+	float     mouseY;
+	Vector3   moveVector;
+	bool      previousSmoothing;
 
 
-	private void Awake() {
+	void Awake() {
 		if (QualitySettings.vSyncCount > 0)
 			Application.targetFrameRate = 60;
 		else
@@ -60,7 +60,7 @@ public class CameraController : MonoBehaviour {
 
 
 	// Use this for initialization
-	private void Start() {
+	void Start() {
 		if (CameraTarget == null) {
 			// If we don't have a target (assigned by the player, create a dummy in the center of the scene).
 			dummyTarget  = new GameObject("Camera Target").transform;
@@ -69,7 +69,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	private void LateUpdate() {
+	void LateUpdate() {
 		GetPlayerInput();
 
 
@@ -106,7 +106,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 
-	private void GetPlayerInput() {
+	void GetPlayerInput() {
 		moveVector = Vector3.zero;
 
 		// Check Mouse Wheel Input prior to Shift Key so we can apply multiplier on Shift for Scrolling

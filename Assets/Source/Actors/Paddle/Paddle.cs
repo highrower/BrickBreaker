@@ -1,71 +1,65 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class Paddle : MonoBehaviour {
-	public static Action DragRelease;
+	public Action DragRelease;
 
-	[SerializeField] private RectReference bounds;
-	[SerializeField] private Bank          bank;
+	[SerializeField] RectReference bounds;
+	[SerializeField] Bank          bank;
 
-	private Camera      _cam;
-	private Rigidbody2D _rb;
-	private float       _maxBoundary;
-	private float       _minBoundary;
-	private bool        _isTwisting = false;
-	private float       _halfWidth;
+	Camera       _cam;
+	Rigidbody2D  _rb;
+	IPaddleInput _input;
+	bool         _isTwisting;
+	float        _halfWidth;
 
 
-	private void OnEnable() {
+	void OnEnable() {
 		bank.ResetBank();
 		EnhancedTouchSupport.Enable();
 	}
 
-	private void OnDisable() { EnhancedTouchSupport.Disable(); }
+	void OnDisable() { EnhancedTouchSupport.Disable(); }
 
-	private void Awake() => _rb = GetComponent<Rigidbody2D>();
+	void Awake() {
+		_rb = GetComponent<Rigidbody2D>();
+#if UNITY_EDITOR
+		_input = new EditorPaddleInput();
+#else
+		_input = new MobilePaddleInput();
+#endif
+	}
 
-	private void Start() {
+	void Start() {
 		_cam       = Camera.main;
 		_halfWidth = GetComponent<SpriteRenderer>().bounds.extents.x;
 	}
 
-	private void Update() {
-		if (Touch.activeTouches.Count <= 0)
-			return;
-		var screenPosition = Touch.activeTouches[0].screenPosition;
-		var worldPosition  = _cam.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, 10f));
-		var clampedX       = Mathf.Clamp(worldPosition.x, bounds.Value.xMin + _halfWidth, bounds.Value.xMax - _halfWidth);
-		var finalTargetPos = new Vector2(clampedX, transform.position.y);
-
+	void Update() {
+		var targetX          = _input.GetTargetX(_cam, bounds.Value, _halfWidth);
+		var finalTargetPos   = new Vector2(targetX, transform.position.y);
 		var smoothedPosition = Vector2.Lerp(_rb.position, finalTargetPos, Time.deltaTime * 500);
 		transform.position = smoothedPosition;
-		// _rb.MovePosition(smoothedPosition); // too chaotic. lets let the paddle teleport x wise
 
-		if (Touch.activeTouches.Count > 1) {
+		if (_input.IsTwisting(_cam, out float targetAngle)) {
 			_isTwisting = true;
-
-			var dragPosition           = Touch.activeTouches[1].screenPosition;
-			var dragStartPosition      = Touch.activeTouches[1].startScreenPosition;
-			var dragWorldPosition      = _cam.ScreenToWorldPoint(new Vector3(dragPosition.x,      dragPosition.y,      10f));
-			var dragStartWorldPosition = _cam.ScreenToWorldPoint(new Vector3(dragStartPosition.x, dragStartPosition.y, 10f));
-
-			_rb.MoveRotation(90 + (dragStartWorldPosition.y - dragWorldPosition.y) * 45);
+			_rb.MoveRotation(targetAngle);
 		}
-
 		else if (_isTwisting) {
-			_isTwisting = false;
 			DragRelease?.Invoke();
+			_isTwisting = false;
 		}
 	}
 
-	private void OnTriggerEnter2D(Collider2D other) {
+	void OnTriggerEnter2D(Collider2D other) {
 		if (other.CompareTag("Drop"))
 			CollectDrop(other);
 	}
 
-	private void CollectDrop(Collider2D drop) {
+	void CollectDrop(Collider2D drop) {
 		if (bank)
 			bank.AddCoins(drop.GetComponent<Drop>().Value);
 		drop.GetComponent<Drop>().Deactivate();

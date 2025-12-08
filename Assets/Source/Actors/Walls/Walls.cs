@@ -3,13 +3,13 @@ using NUnit.Framework;
 using UnityEngine;
 
 public class Walls : MonoBehaviour {
-	private GameObject _leftWall;
-	private GameObject _rightWall;
-	private GameObject _topWall;
+	GameObject _leftWall;
+	GameObject _rightWall;
+	GameObject _topWall;
 
-	[SerializeField] private RectReference playAreaBounds;
+	[SerializeField] RectReference playAreaBounds;
 
-	private void Awake() {
+	void Awake() {
 		if (transform.Find("LeftWall")) _leftWall   = transform.Find("LeftWall").gameObject;
 		if (transform.Find("RightWall")) _rightWall = transform.Find("RightWall").gameObject;
 		if (transform.Find("UpperWall")) _topWall   = transform.Find("UpperWall").gameObject;
@@ -17,20 +17,20 @@ public class Walls : MonoBehaviour {
 		            "Walls: One or more wall GameObjects not found as children.");
 	}
 
-	private void Start() {
+	void Start() {
 		playAreaBounds.variable.OnValueChanged += AlignWalls;
 		AlignWalls(playAreaBounds);
 	}
 
-	private void OnDestroy() { playAreaBounds.variable.OnValueChanged -= AlignWalls; }
+	void OnDestroy() { playAreaBounds.variable.OnValueChanged -= AlignWalls; }
 
-	private void AlignWalls(Rect bounds) {
+	void AlignWalls(Rect bounds) {
 		MoveWall(_topWall,   new Vector2(bounds.center.x, bounds.yMax),     Vector2.up);
 		MoveWall(_leftWall,  new Vector2(bounds.xMin,     bounds.center.y), Vector2.left);
 		MoveWall(_rightWall, new Vector2(bounds.xMax,     bounds.center.y), Vector2.right);
 	}
 
-	private static void MoveWall(GameObject wall, Vector2 targetEdge, Vector2 directionOut) {
+	static void MoveWall(GameObject wall, Vector2 targetEdge, Vector2 directionOut) {
 		var col     = wall.GetComponent<BoxCollider2D>();
 		var extents = col.bounds.extents;
 		var offset  = directionOut * (directionOut.x != 0 ? extents.x : extents.y);

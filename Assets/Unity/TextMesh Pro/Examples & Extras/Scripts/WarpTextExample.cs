@@ -13,15 +13,15 @@ public class WarpTextExample : MonoBehaviour {
 	public float SpeedMultiplier = 1.0f;
 	public float CurveScale      = 1.0f;
 
-	private TMP_Text m_TextComponent;
+	TMP_Text m_TextComponent;
 
-	private void Awake() { m_TextComponent = gameObject.GetComponent<TMP_Text>(); }
-
-
-	private void Start() { StartCoroutine(WarpText()); }
+	void Awake() { m_TextComponent = gameObject.GetComponent<TMP_Text>(); }
 
 
-	private AnimationCurve CopyAnimationCurve(AnimationCurve curve) {
+	void Start() { StartCoroutine(WarpText()); }
+
+
+	AnimationCurve CopyAnimationCurve(AnimationCurve curve) {
 		var newCurve = new AnimationCurve();
 
 		newCurve.keys = curve.keys;
@@ -35,7 +35,7 @@ public class WarpTextExample : MonoBehaviour {
 	/// </summary>
 	/// <param name="textComponent"></param>
 	/// <returns></returns>
-	private IEnumerator WarpText() {
+	IEnumerator WarpText() {
 		VertexCurve.preWrapMode  = WrapMode.Clamp;
 		VertexCurve.postWrapMode = WrapMode.Clamp;
 

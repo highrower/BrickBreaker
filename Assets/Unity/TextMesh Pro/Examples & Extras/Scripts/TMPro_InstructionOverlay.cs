@@ -4,18 +4,18 @@ namespace TMPro.Examples {
 public class TMPro_InstructionOverlay : MonoBehaviour {
 	public enum FpsCounterAnchorPositions { TopLeft, BottomLeft, TopRight, BottomRight }
 
-	private const string instructions = "Camera Control - <#ffff00>Shift + RMB\n</color>Zoom - <#ffff00>Mouse wheel.";
+	const string instructions = "Camera Control - <#ffff00>Shift + RMB\n</color>Zoom - <#ffff00>Mouse wheel.";
 
-	public  FpsCounterAnchorPositions AnchorPosition = FpsCounterAnchorPositions.BottomLeft;
-	private Camera                    m_camera;
-	private Transform                 m_frameCounter_transform;
-	private TextContainer             m_textContainer;
+	public FpsCounterAnchorPositions AnchorPosition = FpsCounterAnchorPositions.BottomLeft;
+	Camera                           m_camera;
+	Transform                        m_frameCounter_transform;
+	TextContainer                    m_textContainer;
 
-	private TextMeshPro m_TextMeshPro;
+	TextMeshPro m_TextMeshPro;
 
 	//private FpsCounterAnchorPositions last_AnchorPosition;
 
-	private void Awake() {
+	void Awake() {
 		if (!enabled)
 			return;
 
@@ -43,7 +43,7 @@ public class TMPro_InstructionOverlay : MonoBehaviour {
 	}
 
 
-	private void Set_FrameCounter_Position(FpsCounterAnchorPositions anchor_position) {
+	void Set_FrameCounter_Position(FpsCounterAnchorPositions anchor_position) {
 		switch (anchor_position) {
 			case FpsCounterAnchorPositions.TopLeft:
 				//m_TextMeshPro.anchor = AnchorPositions.TopLeft;

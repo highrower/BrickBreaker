@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class EnvMapAnimator : MonoBehaviour {
 	//private Vector3 TranslationSpeeds;
-	public  Vector3  RotationSpeeds;
-	private Material m_material;
-	private TMP_Text m_textMeshPro;
+	public Vector3 RotationSpeeds;
+	Material       m_material;
+	TMP_Text       m_textMeshPro;
 
 
-	private void Awake() {
+	void Awake() {
 		//Debug.Log("Awake() on Script called.");
 		m_textMeshPro = GetComponent<TMP_Text>();
 		m_material    = m_textMeshPro.fontSharedMaterial;
 	}
 
 	// Use this for initialization
-	private IEnumerator Start() {
+	IEnumerator Start() {
 		var matrix = new Matrix4x4();
 
 		while (true) {

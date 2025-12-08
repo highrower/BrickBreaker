@@ -2,10 +2,10 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Ball : MonoBehaviour {
-	[SerializeField] private Vector3      startPosition;
-	[SerializeField] private BallSettings settings;
+	[SerializeField] Vector3      startPosition;
+	[SerializeField] BallSettings settings;
 
-	private Rigidbody2D _rb;
+	Rigidbody2D _rb;
 
 	public int CurrentDamage {
 		get {
@@ -16,12 +16,12 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
-	private void Start() {
+	void Start() {
 		_rb = GetComponent<Rigidbody2D>();
 		Launch();
 	}
 
-	private void Update() {
+	void Update() {
 		// TODO: make it so the weird interaction with the ball and
 		// the paddle at the edge of the screen doesnt make the ball get stuck on the edge of the wall
 		var targetSpeed = Mathf.Clamp(_rb.linearVelocity.magnitude, settings.minSpeed, settings.maxSpeed);
@@ -30,7 +30,7 @@ public class Ball : MonoBehaviour {
 	}
 
 
-	private void Launch() {
+	void Launch() {
 		transform.localPosition = startPosition;
 		var randomAngle = Random.Range(-30f, 30f);
 		var rotation    = Quaternion.Euler(0, 0, randomAngle);
@@ -38,12 +38,12 @@ public class Ball : MonoBehaviour {
 		_rb.linearVelocity = direction * settings.minSpeed;
 	}
 
-	private void OnTriggerEnter2D(Collider2D collision) {
+	void OnTriggerEnter2D(Collider2D collision) {
 		if (collision.gameObject.CompareTag("Respawn"))
 			Launch();
 	}
 
-	private void OnCollisionEnter2D(Collision2D collision) {
+	void OnCollisionEnter2D(Collision2D collision) {
 		if (!collision.gameObject.CompareTag("Brick"))
 			return;
 		collision.gameObject.GetComponent<Brick>().TakeDamage(CurrentDamage);

@@ -13,10 +13,10 @@ public class Benchmark03 : MonoBehaviour {
 	public Font SourceFont;
 
 
-	private void Awake() { }
+	void Awake() { }
 
 
-	private void Start() {
+	void Start() {
 		TMP_FontAsset fontAsset = null;
 
 		// Create Dynamic Font Asset for the given font file.

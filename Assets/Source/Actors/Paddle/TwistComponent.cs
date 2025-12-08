@@ -7,21 +7,30 @@ public class TwistComponent : MonoBehaviour {
 
 	[SerializeField] AnimationCurve snapCurve;
 
-	private Rigidbody2D _rb;
-	private Coroutine   _currentTween;
+	Rigidbody2D _rb;
+	Coroutine   _currentTween;
+	Paddle      _paddle;
 
-	void Awake() => _rb = GetComponent<Rigidbody2D>();
 
-	private void OnEnable() { Paddle.DragRelease += ReleaseTwist; }
+	void Awake() {
+		_rb     = GetComponent<Rigidbody2D>();
+		_paddle = GetComponent<Paddle>();
+	}
 
-	private void OnDisable() { Paddle.DragRelease -= ReleaseTwist; }
+	void OnEnable() {
+		if (_paddle != null) _paddle.DragRelease += ReleaseTwist;
+	}
 
-	private void ReleaseTwist() {
+	void OnDisable() {
+		if (_paddle != null) _paddle.DragRelease -= ReleaseTwist;
+	}
+
+	void ReleaseTwist() {
 		if (_currentTween != null) StopCoroutine(_currentTween);
 		_currentTween = StartCoroutine(SnapRoutine());
 	}
 
-	private IEnumerator SnapRoutine() {
+	IEnumerator SnapRoutine() {
 		var         startRot  = _rb.rotation;
 		const float targetRot = 90f;
 		var         elapsed   = 0f;
@@ -39,7 +48,6 @@ public class TwistComponent : MonoBehaviour {
 		}
 
 		_rb.MoveRotation(targetRot);
-		_rb.angularVelocity = 0f;
 		_rb.angularVelocity = 0f;
 	}
 }

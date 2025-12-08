@@ -4,22 +4,22 @@ namespace TMPro.Examples {
 public class TMP_FrameRateCounter : MonoBehaviour {
 	public enum FpsCounterAnchorPositions { TopLeft, BottomLeft, TopRight, BottomRight }
 
-	private const string fpsLabel       = "{0:2}</color> <#8080ff>FPS \n<#FF8000>{1:2} <#8080ff>MS";
-	public        float  UpdateInterval = 5.0f;
+	const  string fpsLabel       = "{0:2}</color> <#8080ff>FPS \n<#FF8000>{1:2} <#8080ff>MS";
+	public float  UpdateInterval = 5.0f;
 
 	public FpsCounterAnchorPositions AnchorPosition = FpsCounterAnchorPositions.TopRight;
 
-	private string htmlColorTag;
+	string htmlColorTag;
 
-	private FpsCounterAnchorPositions last_AnchorPosition;
-	private Camera                    m_camera;
-	private Transform                 m_frameCounter_transform;
-	private int                       m_Frames;
-	private float                     m_LastInterval;
+	FpsCounterAnchorPositions last_AnchorPosition;
+	Camera                    m_camera;
+	Transform                 m_frameCounter_transform;
+	int                       m_Frames;
+	float                     m_LastInterval;
 
-	private TextMeshPro m_TextMeshPro;
+	TextMeshPro m_TextMeshPro;
 
-	private void Awake() {
+	void Awake() {
 		if (!enabled)
 			return;
 
@@ -53,12 +53,12 @@ public class TMP_FrameRateCounter : MonoBehaviour {
 		last_AnchorPosition = AnchorPosition;
 	}
 
-	private void Start() {
+	void Start() {
 		m_LastInterval = Time.realtimeSinceStartup;
 		m_Frames       = 0;
 	}
 
-	private void Update() {
+	void Update() {
 		if (AnchorPosition != last_AnchorPosition)
 			Set_FrameCounter_Position(AnchorPosition);
 
@@ -90,7 +90,7 @@ public class TMP_FrameRateCounter : MonoBehaviour {
 	}
 
 
-	private void Set_FrameCounter_Position(FpsCounterAnchorPositions anchor_position) {
+	void Set_FrameCounter_Position(FpsCounterAnchorPositions anchor_position) {
 		//Debug.Log("Changing frame counter anchor position.");
 		m_TextMeshPro.margin = new Vector4(1f, 1f, 1f, 1f);
 

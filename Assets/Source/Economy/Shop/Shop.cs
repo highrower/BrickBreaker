@@ -3,13 +3,13 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class Shop : MonoBehaviour {
-	[SerializeField] private VisualTreeAsset shopEntryTemplate;
-	[SerializeField] private Bank            bank;
-	[SerializeField] private List<ShopItem>  availableUpgrades;
+	[SerializeField] VisualTreeAsset shopEntryTemplate;
+	[SerializeField] Bank            bank;
+	[SerializeField] List<ShopItem>  availableUpgrades;
 
-	private readonly List<VisualElement> _shopItems = new();
+	readonly List<VisualElement> _shopItems = new();
 
-	private void OnEnable() {
+	void OnEnable() {
 		var root          = GetComponent<UIDocument>().rootVisualElement;
 		var listContainer = root.Q<VisualElement>("ShopListContainer");
 
@@ -34,22 +34,22 @@ public class Shop : MonoBehaviour {
 		}
 	}
 
-	private void OnDisable() {
+	void OnDisable() {
 		if (bank != null) bank.OnCoinsChanged -= OnCoinsChanged;
 	}
 
-	private void OnCoinsChanged(int obj) {
+	void OnCoinsChanged(int obj) {
 		foreach (var item in _shopItems)
 			RefreshEntry(item);
 	}
 
-	private void TryBuy(ShopItem item) {
+	void TryBuy(ShopItem item) {
 		var cost = item.GetCost();
 		if (!item.IsMaxed && bank.TrySpendCoins(cost))
 			item.ApplyUpgrade();
 	}
 
-	private void RefreshEntry(VisualElement item) {
+	void RefreshEntry(VisualElement item) {
 		var shopItem  = (ShopItem)item.userData;
 		var buyBtn    = item.Q<Button>(className: "shop-item__buy");
 		var costLabel = item.Q<Label>(className: "shop-item__cost");

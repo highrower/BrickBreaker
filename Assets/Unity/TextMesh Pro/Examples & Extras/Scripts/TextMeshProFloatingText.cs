@@ -5,9 +5,9 @@ namespace TMPro.Examples {
 public class TextMeshProFloatingText : MonoBehaviour {
 	//private int m_frame = 0;
 
-	private static readonly WaitForEndOfFrame k_WaitForEndOfFrame = new();
+	static readonly WaitForEndOfFrame k_WaitForEndOfFrame = new();
 
-	private static readonly WaitForSeconds[] k_WaitForSecondsRandom = {
+	static readonly WaitForSeconds[] k_WaitForSecondsRandom = {
 		new(0.05f), new(0.1f), new(0.15f), new(0.2f), new(0.25f),
 		new(0.3f), new(0.35f), new(0.4f), new(0.45f), new(0.5f),
 		new(0.55f), new(0.6f), new(0.65f), new(0.7f), new(0.75f),
@@ -19,18 +19,18 @@ public class TextMeshProFloatingText : MonoBehaviour {
 	public int  SpawnType;
 	public bool IsTextObjectScaleStatic;
 
-	private Vector3    lastPOS      = Vector3.zero;
-	private Quaternion lastRotation = Quaternion.identity;
-	private Transform  m_cameraTransform;
+	Vector3    lastPOS      = Vector3.zero;
+	Quaternion lastRotation = Quaternion.identity;
+	Transform  m_cameraTransform;
 
-	private GameObject  m_floatingText;
-	private Transform   m_floatingText_Transform;
-	private TextMesh    m_textMesh;
-	private TextMeshPro m_textMeshPro;
+	GameObject  m_floatingText;
+	Transform   m_floatingText_Transform;
+	TextMesh    m_textMesh;
+	TextMeshPro m_textMeshPro;
 
-	private Transform m_transform;
+	Transform m_transform;
 
-	private void Awake() {
+	void Awake() {
 		m_transform    = transform;
 		m_floatingText = new GameObject(name + " floating text");
 
@@ -41,7 +41,7 @@ public class TextMeshProFloatingText : MonoBehaviour {
 		m_cameraTransform = Camera.main.transform;
 	}
 
-	private void Start() {
+	void Start() {
 		if (SpawnType == 0) {
 			// TextMesh Pro Implementation
 			m_textMeshPro                         = m_floatingText.AddComponent<TextMeshPro>();

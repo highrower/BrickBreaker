@@ -2,25 +2,25 @@ using UnityEngine;
 
 public class BrickSpawner : MonoBehaviour {
 
-	[SerializeField] private GameObject    brickPrefab;
-	[SerializeField] private float         margin   = 0.5f;
-	[SerializeField] private int           gridSize = 6;
-	[SerializeField] private BrickSettings brickType;
+	[SerializeField] GameObject    brickPrefab;
+	[SerializeField] float         margin   = 0.5f;
+	[SerializeField] int           gridSize = 6;
+	[SerializeField] BrickSettings brickType;
 
-	[SerializeField] private RectReference brickBounds;
+	[SerializeField] RectReference brickBounds;
 
-	private Brick[,] _brickGrid;
+	Brick[,] _brickGrid;
 
-	private void Start() {
+	void Start() {
 		_brickGrid = new Brick[gridSize, gridSize];
 		SpawnBricks();
 		brickBounds.variable.OnValueChanged += UpdateBrickPositions;
 		UpdateBrickPositions(brickBounds.Value);
 	}
 
-	private void OnDestroy() { brickBounds.variable.OnValueChanged -= UpdateBrickPositions; }
+	void OnDestroy() { brickBounds.variable.OnValueChanged -= UpdateBrickPositions; }
 
-	private void SpawnBricks() {
+	void SpawnBricks() {
 		for (var y = 0; y < gridSize; y++) {
 			for (var x = 0; x < gridSize; x++) {
 				if (_brickGrid[x, y]) continue;
@@ -34,7 +34,7 @@ public class BrickSpawner : MonoBehaviour {
 		}
 	}
 
-	private void UpdateBrickPositions(Rect bounds) {
+	void UpdateBrickPositions(Rect bounds) {
 		if (brickBounds.Value.width <= 0 || brickBounds.Value.height <= 0) return;
 		var leftBound  = bounds.xMin;
 		var upperBound = bounds.yMax;

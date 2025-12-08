@@ -4,19 +4,19 @@ using UnityEngine.UIElements;
 public class UI : MonoBehaviour {
 	public RectVariable playArea;
 
-	private static class Ids {
+	static class Ids {
 		public const string TopBar   = "top-bar";
 		public const string ShopOpen = "shop-container--open";
 		public const string Shop     = "shop-container";
 		public const string MenuBtn  = "MenuButton";
 	}
 
-	private VisualElement _shopContainer;
-	private VisualElement _topMenuBar;
-	private Button        _menuButton;
-	private Camera        _cam;
+	VisualElement _shopContainer;
+	VisualElement _topMenuBar;
+	Button        _menuButton;
+	Camera        _cam;
 
-	private void OnEnable() {
+	void OnEnable() {
 		var root = GetComponent<UIDocument>().rootVisualElement;
 
 		_shopContainer = root.Q<VisualElement>(className: Ids.Shop);
@@ -29,13 +29,13 @@ public class UI : MonoBehaviour {
 			_menuButton.clicked += ToggleShop;
 	}
 
-	private void OnDisable() {
+	void OnDisable() {
 		_topMenuBar?.UnregisterCallback<GeometryChangedEvent>(RecalculateBounds);
 		if (_menuButton != null)
 			_menuButton.clicked -= ToggleShop;
 	}
 
-	private void RecalculateBounds(GeometryChangedEvent evt) {
+	void RecalculateBounds(GeometryChangedEvent evt) {
 		if (_topMenuBar == null) return;
 
 		var bottomTopMenu = _cam.pixelHeight - UIExtensions.PanelToScreenPixels(_topMenuBar);
@@ -51,5 +51,5 @@ public class UI : MonoBehaviour {
 			playArea.SetValue(newBounds);
 	}
 
-	private void ToggleShop() => _shopContainer.ToggleInClassList(Ids.ShopOpen);
+	void ToggleShop() => _shopContainer.ToggleInClassList(Ids.ShopOpen);
 }

@@ -7,19 +7,19 @@ public class ObjectSpin : MonoBehaviour {
 
 	public MotionType Motion;
 
-	public  Vector3   TranslationDistance = new(5, 0, 0);
-	public  float     TranslationSpeed    = 1.0f;
-	public  float     SpinSpeed           = 5;
-	public  int       RotationRange       = 15;
-	private Transform m_transform;
+	public Vector3 TranslationDistance = new(5, 0, 0);
+	public float   TranslationSpeed    = 1.0f;
+	public float   SpinSpeed           = 5;
+	public int     RotationRange       = 15;
+	Transform      m_transform;
 
-	private float   m_time;
-	private Vector3 m_prevPOS;
-	private Vector3 m_initial_Rotation;
-	private Vector3 m_initial_Position;
-	private Color32 m_lightColor;
+	float   m_time;
+	Vector3 m_prevPOS;
+	Vector3 m_initial_Rotation;
+	Vector3 m_initial_Position;
+	Color32 m_lightColor;
 
-	private void Awake() {
+	void Awake() {
 		m_transform        = transform;
 		m_initial_Rotation = m_transform.rotation.eulerAngles;
 		m_initial_Position = m_transform.position;
@@ -30,7 +30,7 @@ public class ObjectSpin : MonoBehaviour {
 
 
 	// Update is called once per frame
-	private void Update() {
+	void Update() {
 		switch (Motion) {
 			case MotionType.Rotation:
 				m_transform.Rotate(0, SpinSpeed * Time.deltaTime, 0);

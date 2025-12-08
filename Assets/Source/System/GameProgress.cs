@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public static class GameProgress {
-	private const string DamageLevelKey = "BallDamageLevel";
+	const string DamageLevelKey = "BallDamageLevel";
 
 	public static int DamageLevel {
 		get => PlayerPrefs.GetInt(DamageLevelKey, 0);

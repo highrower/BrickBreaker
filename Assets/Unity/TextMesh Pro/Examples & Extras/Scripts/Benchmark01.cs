@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace TMPro.Examples {
 public class Benchmark01 : MonoBehaviour {
-	private const string label01 = "The <#0050FF>count is: </color>{0}";
-	private const string label02 = "The <color=#0050FF>count is: </color>";
+	const string label01 = "The <#0050FF>count is: </color>{0}";
+	const string label02 = "The <color=#0050FF>count is: </color>";
 
 	public int BenchmarkType;
 
@@ -14,15 +14,15 @@ public class Benchmark01 : MonoBehaviour {
 	//private string m_string;
 	//private int m_frame;
 
-	private Material      m_material01;
-	private Material      m_material02;
-	private TextContainer m_textContainer;
-	private TextMesh      m_textMesh;
+	Material      m_material01;
+	Material      m_material02;
+	TextContainer m_textContainer;
+	TextMesh      m_textMesh;
 
-	private TextMeshPro m_textMeshPro;
+	TextMeshPro m_textMeshPro;
 
 
-	private IEnumerator Start() {
+	IEnumerator Start() {
 		if (BenchmarkType == 0) // TextMesh Pro Component
 		{
 			m_textMeshPro                       = gameObject.AddComponent<TextMeshPro>();

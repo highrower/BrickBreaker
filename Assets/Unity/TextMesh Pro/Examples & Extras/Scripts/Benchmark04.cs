@@ -8,12 +8,12 @@ public class Benchmark04 : MonoBehaviour {
 	public int MaxPointSize = 64;
 	public int Steps        = 4;
 
-	private Transform m_Transform;
+	Transform m_Transform;
 	//private TextMeshProFloatingText floatingText_Script;
 	//public Material material;
 
 
-	private void Start() {
+	void Start() {
 		m_Transform = transform;
 
 		float lineHeight = 0;

@@ -8,18 +8,18 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Brick : MonoBehaviour {
-	private BoxCollider2D _collider;
-	private BrickSettings _settings;
-	private BrickView     _view;
+	BoxCollider2D _collider;
+	BrickSettings _settings;
+	BrickView     _view;
 
-	[SerializeField] private float     spawnRatePerSecond = 0.5f;
-	[SerializeField] private LayerMask ballLayer;
+	[SerializeField] float     spawnRatePerSecond = 0.5f;
+	[SerializeField] LayerMask ballLayer;
 
 	public float GridX         { get; set; }
 	public float GridY         { get; set; }
 	public int   CurrentHealth { get; private set; }
 
-	private void Awake() {
+	void Awake() {
 		_collider = GetComponent<BoxCollider2D>();
 		_view     = GetComponent<BrickView>();
 	}
@@ -42,6 +42,7 @@ public class Brick : MonoBehaviour {
 	}
 
 	public void Die() {
+		CurrentHealth     = 0;
 		_collider.enabled = false;
 		_view.Refresh(CurrentHealth, _settings);
 
@@ -50,7 +51,7 @@ public class Brick : MonoBehaviour {
 		StartCoroutine(SpawnRoutine());
 	}
 
-	private IEnumerator SpawnRoutine() {
+	IEnumerator SpawnRoutine() {
 		while (true) {
 			yield return new WaitForSeconds(1f / spawnRatePerSecond);
 			if (Random.value <= _settings.spawnChance)
@@ -63,7 +64,7 @@ public class Brick : MonoBehaviour {
 		Respawn();
 	}
 
-	private bool IsBallInside() {
+	bool IsBallInside() {
 		if (!_collider) return false;
 
 		var boxSize = _collider.size;
@@ -76,9 +77,10 @@ public class Brick : MonoBehaviour {
 		                            ballLayer);
 	}
 
-	private void Respawn() {
-		CurrentHealth     = _settings.maxHealth;
-		_collider.enabled = true;
+	void Respawn() {
+		CurrentHealth       = _settings.maxHealth;
+		_collider.enabled   = true;
+		_collider.isTrigger = false;
 		_view.Refresh(CurrentHealth, _settings);
 	}
 }

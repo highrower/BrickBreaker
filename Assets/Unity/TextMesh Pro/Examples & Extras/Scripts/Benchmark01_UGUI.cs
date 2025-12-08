@@ -10,13 +10,13 @@ public class Benchmark01_UGUI : MonoBehaviour {
 	public TMP_FontAsset TMProFont;
 	public Font          TextMeshFont;
 
-	private TextMeshProUGUI m_textMeshPro;
+	TextMeshProUGUI m_textMeshPro;
 
 	//private TextContainer m_textContainer;
-	private Text m_textMesh;
+	Text m_textMesh;
 
-	private const string label01 = "The <#0050FF>count is: </color>";
-	private const string label02 = "The <color=#0050FF>count is: </color>";
+	const string label01 = "The <#0050FF>count is: </color>";
+	const string label02 = "The <color=#0050FF>count is: </color>";
 
 	//private const string label01 = "TextMesh <#0050FF>Pro!</color>  The count is: {0}";
 	//private const string label02 = "Text Mesh<color=#0050FF>        The count is: </color>";
@@ -24,11 +24,11 @@ public class Benchmark01_UGUI : MonoBehaviour {
 	//private string m_string;
 	//private int m_frame;
 
-	private Material m_material01;
-	private Material m_material02;
+	Material m_material01;
+	Material m_material02;
 
 
-	private IEnumerator Start() {
+	IEnumerator Start() {
 		if (BenchmarkType == 0) // TextMesh Pro Component
 		{
 			m_textMeshPro = gameObject.AddComponent<TextMeshProUGUI>();

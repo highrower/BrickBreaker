@@ -5,11 +5,11 @@ public class Benchmark02 : MonoBehaviour {
 	public int SpawnType;
 	public int NumberOfNPC = 12;
 
-	public  bool                    IsTextObjectScaleStatic;
-	private TextMeshProFloatingText floatingText_Script;
+	public bool             IsTextObjectScaleStatic;
+	TextMeshProFloatingText floatingText_Script;
 
 
-	private void Start() {
+	void Start() {
 		for (var i = 0; i < NumberOfNPC; i++)
 			if (SpawnType == 0) {
 				// TextMesh Pro Implementation

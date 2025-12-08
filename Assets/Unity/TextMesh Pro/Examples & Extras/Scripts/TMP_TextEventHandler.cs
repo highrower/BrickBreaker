@@ -5,26 +5,26 @@ using UnityEngine.EventSystems;
 
 namespace TMPro {
 public class TMP_TextEventHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
-	[SerializeField] private CharacterSelectionEvent m_OnCharacterSelection = new();
+	[SerializeField] CharacterSelectionEvent m_OnCharacterSelection = new();
 
-	[SerializeField] private SpriteSelectionEvent m_OnSpriteSelection = new();
+	[SerializeField] SpriteSelectionEvent m_OnSpriteSelection = new();
 
-	[SerializeField] private WordSelectionEvent m_OnWordSelection = new();
+	[SerializeField] WordSelectionEvent m_OnWordSelection = new();
 
-	[SerializeField] private LineSelectionEvent m_OnLineSelection = new();
+	[SerializeField] LineSelectionEvent m_OnLineSelection = new();
 
-	[SerializeField] private LinkSelectionEvent m_OnLinkSelection = new();
+	[SerializeField] LinkSelectionEvent m_OnLinkSelection = new();
 
-	private Camera m_Camera;
-	private Canvas m_Canvas;
-	private int    m_lastCharIndex = -1;
-	private int    m_lastLineIndex = -1;
-	private int    m_lastWordIndex = -1;
+	Camera m_Camera;
+	Canvas m_Canvas;
+	int    m_lastCharIndex = -1;
+	int    m_lastLineIndex = -1;
+	int    m_lastWordIndex = -1;
 
-	private int m_selectedLink = -1;
+	int m_selectedLink = -1;
 
 
-	private TMP_Text m_TextComponent;
+	TMP_Text m_TextComponent;
 
 
 	/// <summary>
@@ -59,7 +59,7 @@ public class TMP_TextEventHandler : MonoBehaviour, IPointerEnterHandler, IPointe
 	/// </summary>
 	public LinkSelectionEvent onLinkSelection { get => m_OnLinkSelection; set => m_OnLinkSelection = value; }
 
-	private void Awake() {
+	void Awake() {
 		// Get a reference to the text component.
 		m_TextComponent = gameObject.GetComponent<TMP_Text>();
 
@@ -79,7 +79,7 @@ public class TMP_TextEventHandler : MonoBehaviour, IPointerEnterHandler, IPointe
 	}
 
 
-	private void LateUpdate() {
+	void LateUpdate() {
 		if (TMP_TextUtilities.IsIntersectingRectTransform(m_TextComponent.rectTransform, Input.mousePosition, m_Camera)) {
 			#region Nearest Character
 
@@ -187,27 +187,27 @@ public class TMP_TextEventHandler : MonoBehaviour, IPointerEnterHandler, IPointe
 	}
 
 
-	private void SendOnCharacterSelection(char character, int characterIndex) {
+	void SendOnCharacterSelection(char character, int characterIndex) {
 		if (onCharacterSelection != null)
 			onCharacterSelection.Invoke(character, characterIndex);
 	}
 
-	private void SendOnSpriteSelection(char character, int characterIndex) {
+	void SendOnSpriteSelection(char character, int characterIndex) {
 		if (onSpriteSelection != null)
 			onSpriteSelection.Invoke(character, characterIndex);
 	}
 
-	private void SendOnWordSelection(string word, int charIndex, int length) {
+	void SendOnWordSelection(string word, int charIndex, int length) {
 		if (onWordSelection != null)
 			onWordSelection.Invoke(word, charIndex, length);
 	}
 
-	private void SendOnLineSelection(string line, int charIndex, int length) {
+	void SendOnLineSelection(string line, int charIndex, int length) {
 		if (onLineSelection != null)
 			onLineSelection.Invoke(line, charIndex, length);
 	}
 
-	private void SendOnLinkSelection(string linkID, string linkText, int linkIndex) {
+	void SendOnLinkSelection(string linkID, string linkText, int linkIndex) {
 		if (onLinkSelection != null)
 			onLinkSelection.Invoke(linkID, linkText, linkIndex);
 	}

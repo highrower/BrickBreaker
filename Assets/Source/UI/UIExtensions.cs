@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UIExtensions {
-	private static readonly Vector2 ScreenSample = new Vector2(0, 100f);
+	static readonly Vector2 ScreenSample = new Vector2(0, 100f);
 
 	public static float PanelToScreenPixels(VisualElement element) {
 		var panel      = element.panel;

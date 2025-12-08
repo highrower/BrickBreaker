@@ -3,10 +3,10 @@ using TMPro;
 using UnityEngine;
 
 public class BrickView : MonoBehaviour {
-	private SpriteRenderer _renderer;
-	private TMP_Text       _healthLabel;
+	SpriteRenderer _renderer;
+	TMP_Text       _healthLabel;
 
-	private void Awake() {
+	void Awake() {
 		_renderer    = GetComponent<SpriteRenderer>();
 		_healthLabel = GetComponentInChildren<TMP_Text>();
 	}
@@ -22,7 +22,7 @@ public class BrickView : MonoBehaviour {
 		_renderer.sprite = settings.damageSprites[spriteIndex];
 	}
 
-	private void ToggleVisible(bool isVisible) {
+	void ToggleVisible(bool isVisible) {
 		_renderer.enabled    = isVisible;
 		_healthLabel.enabled = isVisible;
 	}

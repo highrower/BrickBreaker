@@ -5,12 +5,12 @@ namespace TMPro.Examples {
 public class ShaderPropAnimator : MonoBehaviour {
 	public AnimationCurve GlowCurve;
 
-	public  float    m_frame;
-	private Material m_Material;
+	public float m_frame;
+	Material     m_Material;
 
-	private Renderer m_Renderer;
+	Renderer m_Renderer;
 
-	private void Awake() {
+	void Awake() {
 		// Cache a reference to object's renderer
 		m_Renderer = GetComponent<Renderer>();
 
@@ -18,9 +18,9 @@ public class ShaderPropAnimator : MonoBehaviour {
 		m_Material = m_Renderer.material;
 	}
 
-	private void Start() { StartCoroutine(AnimateProperties()); }
+	void Start() { StartCoroutine(AnimateProperties()); }
 
-	private IEnumerator AnimateProperties() {
+	IEnumerator AnimateProperties() {
 		//float lightAngle;
 		float glowPower;
 		m_frame = Random.Range(0f, 1f);

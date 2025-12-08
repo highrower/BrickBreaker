@@ -6,29 +6,29 @@ using UnityEngine.EventSystems;
 namespace TMPro.Examples {
 public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler,
                                   IPointerUpHandler {
-	private const string        k_LinkText = "You have selected link <#ffff00>";
-	private const string        k_WordText = "Word Index: <#ffff00>";
-	public        RectTransform TextPopup_Prefab_01;
+	const  string        k_LinkText = "You have selected link <#ffff00>";
+	const  string        k_WordText = "Word Index: <#ffff00>";
+	public RectTransform TextPopup_Prefab_01;
 
 	// Flags
-	private bool isHoveringObject;
+	bool isHoveringObject;
 
-	private TMP_MeshInfo[] m_cachedMeshInfoVertexData;
-	private Camera         m_Camera;
-	private Canvas         m_Canvas;
-	private int            m_lastIndex = -1;
+	TMP_MeshInfo[] m_cachedMeshInfoVertexData;
+	Camera         m_Camera;
+	Canvas         m_Canvas;
+	int            m_lastIndex = -1;
 
-	private Matrix4x4 m_matrix;
-	private int       m_selectedLink = -1;
-	private int       m_selectedWord = -1;
+	Matrix4x4 m_matrix;
+	int       m_selectedLink = -1;
+	int       m_selectedWord = -1;
 
 
-	private TextMeshProUGUI m_TextMeshPro;
+	TextMeshProUGUI m_TextMeshPro;
 
-	private RectTransform   m_TextPopup_RectTransform;
-	private TextMeshProUGUI m_TextPopup_TMPComponent;
+	RectTransform   m_TextPopup_RectTransform;
+	TextMeshProUGUI m_TextPopup_TMPComponent;
 
-	private void Awake() {
+	void Awake() {
 		m_TextMeshPro = gameObject.GetComponent<TextMeshProUGUI>();
 
 
@@ -48,7 +48,7 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 	}
 
 
-	private void LateUpdate() {
+	void LateUpdate() {
 		if (isHoveringObject) {
 			// Check if Mouse Intersects any of the characters. If so, assign a random color.
 
@@ -257,12 +257,12 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 	}
 
 
-	private void OnEnable() {
+	void OnEnable() {
 		// Subscribe to event fired when text object has been regenerated.
 		TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
 	}
 
-	private void OnDisable() {
+	void OnDisable() {
 		// UnSubscribe to event fired when text object has been regenerated.
 		TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(ON_TEXT_CHANGED);
 	}
@@ -434,14 +434,14 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 	}
 
 
-	private void ON_TEXT_CHANGED(Object obj) {
+	void ON_TEXT_CHANGED(Object obj) {
 		if (obj == m_TextMeshPro)
 			// Update cached vertex data.
 			m_cachedMeshInfoVertexData = m_TextMeshPro.textInfo.CopyMeshInfoVertexData();
 	}
 
 
-	private void RestoreCachedVertexAttributes(int index) {
+	void RestoreCachedVertexAttributes(int index) {
 		if (index == -1 || index > m_TextMeshPro.textInfo.characterCount - 1) return;
 
 		// Get the index of the material / sub text object used by this character.

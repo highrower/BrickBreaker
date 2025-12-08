@@ -7,15 +7,15 @@ public class TMP_ExampleScript_01 : MonoBehaviour {
 	//private TMP_InputField m_inputfield;
 
 
-	private const string k_label = "The count is <#0080ff>{0}</color>";
+	const string k_label = "The count is <#0080ff>{0}</color>";
 
-	public  objectType ObjectType;
-	public  bool       isStatic;
-	private int        count;
+	public objectType ObjectType;
+	public bool       isStatic;
+	int               count;
 
-	private TMP_Text m_text;
+	TMP_Text m_text;
 
-	private void Awake() {
+	void Awake() {
 		// Get a reference to the TMP text component if one already exists otherwise add one.
 		// This example show the convenience of having both TMP components derive from TMP_Text. 
 		if (ObjectType == 0)
@@ -43,7 +43,7 @@ public class TMP_ExampleScript_01 : MonoBehaviour {
 	}
 
 
-	private void Update() {
+	void Update() {
 		if (!isStatic) {
 			m_text.SetText(k_label, count % 1000);
 			count += 1;

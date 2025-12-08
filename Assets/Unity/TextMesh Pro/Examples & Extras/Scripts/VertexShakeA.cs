@@ -3,29 +3,29 @@ using UnityEngine;
 
 namespace TMPro.Examples {
 public class VertexShakeA : MonoBehaviour {
-	public  float AngleMultiplier    = 1.0f;
-	public  float SpeedMultiplier    = 1.0f;
-	public  float ScaleMultiplier    = 1.0f;
-	public  float RotationMultiplier = 1.0f;
-	private bool  hasTextChanged;
+	public float AngleMultiplier    = 1.0f;
+	public float SpeedMultiplier    = 1.0f;
+	public float ScaleMultiplier    = 1.0f;
+	public float RotationMultiplier = 1.0f;
+	bool         hasTextChanged;
 
-	private TMP_Text m_TextComponent;
-
-
-	private void Awake() { m_TextComponent = GetComponent<TMP_Text>(); }
+	TMP_Text m_TextComponent;
 
 
-	private void Start() { StartCoroutine(AnimateVertexColors()); }
+	void Awake() { m_TextComponent = GetComponent<TMP_Text>(); }
 
-	private void OnEnable() {
+
+	void Start() { StartCoroutine(AnimateVertexColors()); }
+
+	void OnEnable() {
 		// Subscribe to event fired when text object has been regenerated.
 		TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
 	}
 
-	private void OnDisable() { TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(ON_TEXT_CHANGED); }
+	void OnDisable() { TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(ON_TEXT_CHANGED); }
 
 
-	private void ON_TEXT_CHANGED(Object obj) {
+	void ON_TEXT_CHANGED(Object obj) {
 		if (obj = m_TextComponent)
 			hasTextChanged = true;
 	}
@@ -34,7 +34,7 @@ public class VertexShakeA : MonoBehaviour {
 	///     Method to animate vertex colors of a TMP Text object.
 	/// </summary>
 	/// <returns></returns>
-	private IEnumerator AnimateVertexColors() {
+	IEnumerator AnimateVertexColors() {
 		// We force an update of the text object since it would only be updated at the end of the frame. Ie. before this code is executed on the first frame.
 		// Alternatively, we could yield and wait until the end of the frame when the text object will be generated.
 		m_TextComponent.ForceMeshUpdate();

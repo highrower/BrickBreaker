@@ -23,6 +23,6 @@ MonoBehaviour:
     maxDamage: 10
   minSpeed: 5
   maxSpeed: 15
-  speedThreshold: 10
+  speedThreshold: 7
   lookAheadDistance: 0.5
   bustThroughResistance: 0.8

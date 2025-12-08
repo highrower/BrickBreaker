@@ -7,11 +7,11 @@ public class TextMeshSpawner : MonoBehaviour {
 
 	public Font TheFont;
 
-	private TextMeshProFloatingText floatingText_Script;
+	TextMeshProFloatingText floatingText_Script;
 
-	private void Awake() { }
+	void Awake() { }
 
-	private void Start() {
+	void Start() {
 		for (var i = 0; i < NumberOfNPC; i++)
 			if (SpawnType == 0) {
 				// TextMesh Pro Implementation     

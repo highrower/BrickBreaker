@@ -2,11 +2,11 @@
 using UnityEngine;
 
 public class DropdownSample : MonoBehaviour {
-	[SerializeField] private TextMeshProUGUI text;
+	[SerializeField] TextMeshProUGUI text;
 
-	[SerializeField] private TMP_Dropdown dropdownWithoutPlaceholder;
+	[SerializeField] TMP_Dropdown dropdownWithoutPlaceholder;
 
-	[SerializeField] private TMP_Dropdown dropdownWithPlaceholder;
+	[SerializeField] TMP_Dropdown dropdownWithPlaceholder;
 
 	public void OnButtonClick() {
 		text.text = dropdownWithPlaceholder.value > -1 ?

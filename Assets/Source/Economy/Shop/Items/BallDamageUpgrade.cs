@@ -1,10 +1,9 @@
-using JetBrains.Annotations;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Shop/Ball Damage Upgrade")]
 public class BallDamageUpgrade : ShopItem {
-	[SerializeField] private BallSettings ballSettings;
-	[SerializeField] private int          damageIncrease = 1;
+	[SerializeField] BallSettings ballSettings;
+	[SerializeField] int          damageIncrease = 1;
 
 	protected override int CurrentLevel => GameProgress.DamageLevel;
 

@@ -3,16 +3,16 @@ using UnityEngine;
 using UnityEngine.Pool;
 
 public class Drop : MonoBehaviour {
-	[SerializeField] private float             dropSpeed = 5.0f;
-	[SerializeField] private DropSettings      settings;
-	private                  IObjectPool<Drop> _pool;
+	[SerializeField] float        dropSpeed = 5.0f;
+	[SerializeField] DropSettings settings;
+	IObjectPool<Drop>             _pool;
 
 	public int Value => settings.value;
 
-	private void FixedUpdate() =>
+	void FixedUpdate() =>
 		transform.position += Vector3.down * (dropSpeed * Time.fixedDeltaTime);
 
-	private void OnTriggerEnter2D(Collider2D other) {
+	void OnTriggerEnter2D(Collider2D other) {
 		if (other.CompareTag("Respawn"))
 			Deactivate();
 	}
