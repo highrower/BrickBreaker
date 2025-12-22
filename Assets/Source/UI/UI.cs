@@ -39,8 +39,9 @@ public class UI : MonoBehaviour {
 		if (_topMenuBar == null) return;
 
 		var bottomTopMenu = _cam.pixelHeight - UIExtensions.PanelToScreenPixels(_topMenuBar);
-		var bottomLeft    = _cam.ScreenToWorldPoint(new Vector3(0,            0,             Mathf.Abs(_cam.transform.position.z)));
-		var topRight      = _cam.ScreenToWorldPoint(new Vector3(Screen.width, bottomTopMenu, Mathf.Abs(_cam.transform.position.z)));
+		var camZPos       = Mathf.Abs(_cam.transform.localPosition.z);
+		var bottomLeft    = _cam.ScreenToWorldPoint(new Vector3(0,            0,             camZPos));
+		var topRight      = _cam.ScreenToWorldPoint(new Vector3(Screen.width, bottomTopMenu, camZPos));
 
 		var newBounds = new Rect(bottomLeft.x,
 		                         bottomLeft.y,

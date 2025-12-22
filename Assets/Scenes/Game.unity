@@ -791,9 +791,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   brickPrefab: {fileID: 3563394605807932878, guid: a29b0a49edeb1470dad441d1d4cb27eb, type: 3}
-  margin: 0.5
   gridSize: 6
   brickType: {fileID: 11400000, guid: a930a05f5a74e4007965f0726dd37376, type: 2}
+  heightRatio: 0.65
   brickBounds:
     useConstant: 0
     constantValue:

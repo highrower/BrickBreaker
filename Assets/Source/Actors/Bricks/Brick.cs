@@ -67,9 +67,10 @@ public class Brick : MonoBehaviour {
 	bool IsBallInside() {
 		if (!_collider) return false;
 
-		var boxSize = _collider.size;
-		boxSize.x *= transform.localScale.x;
-		boxSize.y *= transform.localScale.y;
+		var boxSize    = _collider.size;
+		var localScale = transform.localScale;
+		boxSize.x *= localScale.x;
+		boxSize.y *= localScale.y;
 
 		return Physics2D.OverlapBox(transform.position,
 		                            boxSize * 0.9f,
@@ -82,5 +83,10 @@ public class Brick : MonoBehaviour {
 		_collider.enabled   = true;
 		_collider.isTrigger = false;
 		_view.Refresh(CurrentHealth, _settings);
+	}
+
+	public void SetScale(Vector3 newScale) {
+		transform.localScale = newScale;
+		if (_view) _view.CorrectTextScale(newScale);
 	}
 }

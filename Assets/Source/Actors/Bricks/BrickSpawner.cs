@@ -3,15 +3,22 @@ using UnityEngine;
 public class BrickSpawner : MonoBehaviour {
 
 	[SerializeField] GameObject    brickPrefab;
-	[SerializeField] float         margin   = 0.5f;
 	[SerializeField] int           gridSize = 6;
 	[SerializeField] BrickSettings brickType;
+
+	[SerializeField, Range(0.1f, 1f)] float heightRatio = 0.5f;
+	[SerializeField, Range(0.8f, 1f)] float padding     = 0.95f;
 
 	[SerializeField] RectReference brickBounds;
 
 	Brick[,] _brickGrid;
 
+	Vector2 _originalSpriteSize;
+
 	void Start() {
+		var tempRenderer = brickPrefab.GetComponent<SpriteRenderer>();
+		_originalSpriteSize = tempRenderer.sprite.bounds.size;
+
 		_brickGrid = new Brick[gridSize, gridSize];
 		SpawnBricks();
 		brickBounds.variable.OnValueChanged += UpdateBrickPositions;
@@ -35,18 +42,26 @@ public class BrickSpawner : MonoBehaviour {
 	}
 
 	void UpdateBrickPositions(Rect bounds) {
-		if (brickBounds.Value.width <= 0 || brickBounds.Value.height <= 0) return;
+		if (bounds.width <= 0 || bounds.height <= 0) return;
+
 		var leftBound  = bounds.xMin;
 		var upperBound = bounds.yMax;
 
-		var spacePerBrick = (bounds.xMax - leftBound) / gridSize;
-		var halfStep      = spacePerBrick             / 2f;
+		var cellWidth  = (bounds.xMax - leftBound) / gridSize;
+		var cellHeight = cellWidth                 * heightRatio;
+
+		var targetScaleX = (cellWidth  * padding) / _originalSpriteSize.x;
+		var targetScaleY = (cellHeight * padding) / _originalSpriteSize.y;
+		var finalScale   = new Vector3(targetScaleX, targetScaleY, 1f);
 
 		foreach (var brick in _brickGrid) {
 			if (brick == null) continue;
-			var brickXPos = leftBound  + brick.GridX * spacePerBrick + halfStep;
-			var brickYPos = upperBound - brick.GridY * spacePerBrick - halfStep;
+
+			var brickXPos = leftBound  + (brick.GridX * cellWidth)  + (cellWidth  / 2f);
+			var brickYPos = upperBound - (brick.GridY * cellHeight) - (cellHeight / 2f);
+
 			brick.transform.position = new Vector2(brickXPos, brickYPos);
+			brick.SetScale(finalScale);
 		}
 	}
 

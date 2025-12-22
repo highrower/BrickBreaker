@@ -1,8 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class Paddle : MonoBehaviour {
 	public Action DragRelease;
@@ -10,11 +8,10 @@ public class Paddle : MonoBehaviour {
 	[SerializeField] RectReference bounds;
 	[SerializeField] Bank          bank;
 
-	Camera       _cam;
-	Rigidbody2D  _rb;
-	IPaddleInput _input;
-	bool         _isTwisting;
-	float        _halfWidth;
+	Camera      _cam;
+	Rigidbody2D _rb;
+	bool        _isTwisting;
+	float       _halfWidth;
 
 
 	void OnEnable() {
@@ -26,11 +23,6 @@ public class Paddle : MonoBehaviour {
 
 	void Awake() {
 		_rb = GetComponent<Rigidbody2D>();
-#if UNITY_EDITOR
-		_input = new EditorPaddleInput();
-#else
-		_input = new MobilePaddleInput();
-#endif
 	}
 
 	void Start() {
@@ -39,12 +31,12 @@ public class Paddle : MonoBehaviour {
 	}
 
 	void Update() {
-		var targetX          = _input.GetTargetX(_cam, bounds.Value, _halfWidth);
+		var targetX          = PaddleInput.GetTargetX(_cam, bounds.Value, _halfWidth);
 		var finalTargetPos   = new Vector2(targetX, transform.position.y);
 		var smoothedPosition = Vector2.Lerp(_rb.position, finalTargetPos, Time.deltaTime * 500);
 		transform.position = smoothedPosition;
 
-		if (_input.IsTwisting(_cam, out float targetAngle)) {
+		if (PaddleInput.IsTwisting(_cam, out var targetAngle)) {
 			_isTwisting = true;
 			_rb.MoveRotation(targetAngle);
 		}

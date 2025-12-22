@@ -6,9 +6,14 @@ public class BrickView : MonoBehaviour {
 	SpriteRenderer _renderer;
 	TMP_Text       _healthLabel;
 
+	[SerializeField] float textPadding = 0.8f;
+
+	Vector3 _initialScale;
+
 	void Awake() {
-		_renderer    = GetComponent<SpriteRenderer>();
-		_healthLabel = GetComponentInChildren<TMP_Text>();
+		_renderer     = GetComponent<SpriteRenderer>();
+		_healthLabel  = GetComponentInChildren<TMP_Text>();
+		_initialScale = _healthLabel.transform.localScale;
 	}
 
 	public void Refresh(int currHealth, BrickSettings settings) {
@@ -25,5 +30,19 @@ public class BrickView : MonoBehaviour {
 	void ToggleVisible(bool isVisible) {
 		_renderer.enabled    = isVisible;
 		_healthLabel.enabled = isVisible;
+	}
+
+	public void CorrectTextScale(Vector3 parentScale) {
+		if (!_healthLabel) return;
+
+		var minDimension    = Mathf.Min(parentScale.x, parentScale.y);
+		var targetWorldSize = minDimension                      * textPadding;
+		var newX            = (targetWorldSize / parentScale.x) * _initialScale.x;
+		var newY            = (targetWorldSize / parentScale.y) * _initialScale.y;
+		_healthLabel.transform.localScale = new Vector3(newX, newY, 1f);
+
+		var visualCenter = _renderer.localBounds.center;
+		visualCenter.z                       = -0.1f;
+		_healthLabel.transform.localPosition = visualCenter;
 	}
 }
