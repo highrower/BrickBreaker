@@ -5,12 +5,12 @@ public class BallDamageUpgrade : ShopItem {
 	[SerializeField] BallSettings ballSettings;
 	[SerializeField] int          damageIncrease = 1;
 
-	protected override int CurrentLevel => GameProgress.DamageLevel;
+	protected override int CurrentLevel => ballSettings.DamageLevel;
 
-	public override void ApplyUpgrade() {
+	protected override void UpgradeLogic() {
 		if (!IsMaxed)
-			GameProgress.DamageLevel++;
+			ballSettings.DamageLevel++;
 	}
 
-	public override int GetCost() => (GameProgress.DamageLevel + 1) * baseCost;
+	public override int GetCost() => (ballSettings.DamageLevel + 1) * baseCost;
 }

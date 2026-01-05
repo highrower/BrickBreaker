@@ -1,3 +1,4 @@
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,10 +14,11 @@ public class CurrencyView : MonoBehaviour {
 
 		_coinLabel = root.Q<Label>(className: CoinLabelClass);
 
-		if (bank != null) {
-			bank.OnCoinsChanged += UpdateDisplay;
-			UpdateDisplay(bank.currentCoins);
-		}
+		if (bank == null)
+			return;
+
+		bank.OnCoinsChanged += UpdateDisplay;
+		UpdateDisplay(bank.currentCoins);
 	}
 
 	void OnDisable() {
@@ -24,8 +26,8 @@ public class CurrencyView : MonoBehaviour {
 			bank.OnCoinsChanged -= UpdateDisplay;
 	}
 
-	void UpdateDisplay(int bankCurrentCoins) {
+	void UpdateDisplay(double bankCurrentCoins) {
 		if (_coinLabel != null)
-			_coinLabel.text = bankCurrentCoins.ToString();
+			_coinLabel.text = bankCurrentCoins.ToString(CultureInfo.InvariantCulture);
 	}
 }

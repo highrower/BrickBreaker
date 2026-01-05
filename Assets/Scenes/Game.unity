@@ -794,6 +794,7 @@ MonoBehaviour:
   gridSize: 6
   brickType: {fileID: 11400000, guid: a930a05f5a74e4007965f0726dd37376, type: 2}
   heightRatio: 0.65
+  padding: 0.879
   brickBounds:
     useConstant: 0
     constantValue:

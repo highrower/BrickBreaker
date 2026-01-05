@@ -14,10 +14,7 @@ public class Paddle : MonoBehaviour {
 	float       _halfWidth;
 
 
-	void OnEnable() {
-		bank.ResetBank();
-		EnhancedTouchSupport.Enable();
-	}
+	void OnEnable() { EnhancedTouchSupport.Enable(); }
 
 	void OnDisable() { EnhancedTouchSupport.Disable(); }
 
