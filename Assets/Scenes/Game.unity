@@ -338,7 +338,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: e108c3d5918e14f1e99697439145fac2, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -746,6 +746,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &671766696
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 671766698}
+  - component: {fileID: 671766697}
+  m_Layer: 0
+  m_Name: SaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &671766697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671766696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee492b1744a5048e6b9d7e6ee46f0f54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  objectsToSave:
+  - {fileID: 11400000, guid: 4704bfb8cd7554731837f18fb25a3071, type: 2}
+  - {fileID: 11400000, guid: d7bb8f353f30c4f6390edd7f5b7590fa, type: 2}
+--- !u!4 &671766698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671766696}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.04155, y: -0.22233, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &729044837
 GameObject:
   m_ObjectHideFlags: 0
@@ -914,10 +961,11 @@ GameObject:
   m_Component:
   - component: {fileID: 959480689}
   - component: {fileID: 959480688}
-  - component: {fileID: 959480691}
   - component: {fileID: 959480690}
-  - component: {fileID: 959480692}
   - component: {fileID: 959480693}
+  - component: {fileID: 959480691}
+  - component: {fileID: 959480692}
+  - component: {fileID: 959480694}
   m_Layer: 0
   m_Name: Paddle
   m_TagString: Player
@@ -994,7 +1042,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -3, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1158,6 +1206,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!114 &959480694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959480687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3f37925a3a24861b2ca7cbd3b32fd66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PaddleView
 --- !u!1 &1456382903
 GameObject:
   m_ObjectHideFlags: 0
@@ -1567,6 +1627,7 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 1694867064}
   - {fileID: 101970446}
+  - {fileID: 671766698}
   - {fileID: 729044838}
   - {fileID: 1781277426}
   - {fileID: 1456382904}
