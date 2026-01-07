@@ -34,7 +34,9 @@ public class Brick : MonoBehaviour {
 
 	public void SetIsTrigger(bool isTrigger) { _collider.isTrigger = isTrigger; }
 
-	public void TakeDamage(int damage = 1) {
+	public void TakeDamage(int damage = 1)
+	{
+		_view.Shake();
 		CurrentHealth -= damage;
 		if (CurrentHealth <= 0 || MathF.Floor(CurrentHealth) <= 0)
 			Die();
