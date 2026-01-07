@@ -28,7 +28,8 @@ public class Shop : MonoBehaviour {
 
 			RefreshEntry(entry);
 
-			buyBtn.clicked += () => TryBuy(item);
+			item.OnStateChanged += OnItemStateChanged;
+			buyBtn.clicked      += () => TryBuy(item);
 			listContainer.Add(entry);
 			_shopItems.Add(entry);
 		}
@@ -36,16 +37,18 @@ public class Shop : MonoBehaviour {
 
 	void OnDisable() {
 		if (bank != null) bank.OnCoinsChanged -= OnCoinsChanged;
+		foreach (var item in availableUpgrades)
+			item.OnStateChanged -= OnItemStateChanged;
 	}
 
-	void OnCoinsChanged(int obj) {
-		foreach (var item in _shopItems)
-			RefreshEntry(item);
-	}
+	void OnItemStateChanged(ShopItem item) => RefreshAll();
+
+	void OnCoinsChanged(double _) => RefreshAll();
+
+	void RefreshAll() => _shopItems.ForEach(RefreshEntry);
 
 	void TryBuy(ShopItem item) {
-		var cost = item.GetCost();
-		if (!item.IsMaxed && bank.TrySpendCoins(cost))
+		if (!item.IsMaxed && bank.TrySpendCoins(item.GetCost()))
 			item.ApplyUpgrade();
 	}
 

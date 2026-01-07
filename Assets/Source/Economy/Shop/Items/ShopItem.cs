@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class ShopItem : ScriptableObject {
@@ -10,7 +11,17 @@ public abstract class ShopItem : ScriptableObject {
 
 	public bool IsMaxed => CurrentLevel >= maxLevel;
 
-	public abstract void ApplyUpgrade();
+	public event Action<ShopItem> OnStateChanged;
+
+	public void ApplyUpgrade() {
+		if (IsMaxed)
+			return;
+
+		UpgradeLogic();
+		OnStateChanged?.Invoke(this);
+	}
+
+	protected abstract void UpgradeLogic();
 
 	public abstract int GetCost();
 }

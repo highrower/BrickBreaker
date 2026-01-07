@@ -2,29 +2,40 @@ using System;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "State/Bank")]
-public class Bank : ScriptableObject {
-	public int currentCoins;
-	public int cumulativeCoins;
+public class Bank : ScriptableObject, ISaveable {
+	[SerializeField] string id = "Player_Bank";
+	public           string ID => id;
 
-	public event Action<int> OnCoinsChanged;
+	public double currentCoins;
+	public double cumulativeCoins;
 
-	public void AddCoins(int amount) {
+	public event Action<double> OnCoinsChanged;
+
+	void OnEnable() {
+		currentCoins    = 0;
+		cumulativeCoins = 0;
+	}
+
+	public void Save(SaveData data) {
+		data.totalCoins = currentCoins;
+	}
+
+	public void Load(SaveData data) {
+		currentCoins = data.totalCoins;
+		OnCoinsChanged?.Invoke(currentCoins);
+	}
+
+	public void AddCoins(double amount) {
 		currentCoins    += amount;
 		cumulativeCoins += amount;
 		OnCoinsChanged?.Invoke(currentCoins);
 	}
 
-	public bool TrySpendCoins(int amount) {
+	public bool TrySpendCoins(double amount) {
 		if (currentCoins < amount)
 			return false;
 		currentCoins -= amount;
 		OnCoinsChanged?.Invoke(currentCoins);
 		return true;
-	}
-
-	public void ResetBank() {
-		currentCoins    = 0;
-		cumulativeCoins = 0;
-		OnCoinsChanged?.Invoke(currentCoins);
 	}
 }

@@ -9,7 +9,7 @@ public class Ball : MonoBehaviour {
 
 	public int CurrentDamage {
 		get {
-			var tierData   = settings.GetTierData(GameProgress.DamageLevel);
+			var tierData   = settings.CurrentDamageTier;
 			var efficiency = Mathf.InverseLerp(settings.minSpeed, settings.maxSpeed, _rb.linearVelocity.magnitude);
 			var damage     = Mathf.Lerp(tierData.minDamage, tierData.maxDamage, efficiency);
 			return Mathf.RoundToInt(damage);
@@ -22,8 +22,6 @@ public class Ball : MonoBehaviour {
 	}
 
 	void Update() {
-		// TODO: make it so the weird interaction with the ball and
-		// the paddle at the edge of the screen doesnt make the ball get stuck on the edge of the wall
 		var targetSpeed = Mathf.Clamp(_rb.linearVelocity.magnitude, settings.minSpeed, settings.maxSpeed);
 		if (!Mathf.Approximately(_rb.linearVelocity.magnitude, targetSpeed) && _rb.linearVelocity.magnitude > .01f)
 			_rb.linearVelocity = _rb.linearVelocity.normalized * targetSpeed;

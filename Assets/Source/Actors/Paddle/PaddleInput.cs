@@ -4,9 +4,9 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public static class PaddleInput {
 
-	public static float GetTargetX(Camera cam, Rect bounds, float halfWidth) {
+	public static float GetTargetX(Camera cam, Rect bounds, float halfWidth, float currPos) {
 		var screenPos = GetTouchPos() ?? GetMousePos();
-		if (screenPos == null) return bounds.center.x;
+		if (screenPos == null) return currPos;
 
 		var worldX = cam.ScreenToWorldPoint((Vector3)screenPos + Vector3.forward * 10).x;
 		return Mathf.Clamp(worldX, bounds.xMin + halfWidth, bounds.xMax - halfWidth);
