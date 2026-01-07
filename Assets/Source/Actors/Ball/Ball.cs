@@ -22,8 +22,6 @@ public class Ball : MonoBehaviour {
 	}
 
 	void Update() {
-		// TODO: make it so the weird interaction with the ball and
-		// the paddle at the edge of the screen doesnt make the ball get stuck on the edge of the wall
 		var targetSpeed = Mathf.Clamp(_rb.linearVelocity.magnitude, settings.minSpeed, settings.maxSpeed);
 		if (!Mathf.Approximately(_rb.linearVelocity.magnitude, targetSpeed) && _rb.linearVelocity.magnitude > .01f)
 			_rb.linearVelocity = _rb.linearVelocity.normalized * targetSpeed;

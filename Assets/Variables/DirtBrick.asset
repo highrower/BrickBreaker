@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ff595c902384512bd1807e1bce75bcd, type: 3}
   m_Name: DirtBrick
   m_EditorClassIdentifier: Assembly-CSharp::BrickSettings
-  maxHealth: 1
+  maxHealth: 5
   spawnChance: 0.8
   drop: {fileID: 3869982315915732659, guid: efe158bee0a464fd29e7d3e6daddabdb, type: 3}
   dropChance: 1
   damageSprites:
-  - {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  - {fileID: 21300000, guid: a74d8e86ec1d24a8ebc7ed81af31df49, type: 3}

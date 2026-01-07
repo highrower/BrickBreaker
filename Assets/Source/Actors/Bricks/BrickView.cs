@@ -32,14 +32,17 @@ public class BrickView : MonoBehaviour {
 		_healthLabel.enabled = isVisible;
 	}
 
-	public void CorrectTextScale(Vector3 parentScale) {
-		if (!_healthLabel) return;
+	public void SetScale(Vector2 newScale) {
+		if (_renderer)
+			_renderer.size = newScale;
+		if (_healthLabel)
+			CorrectTextScale(newScale);
+	}
 
-		var minDimension    = Mathf.Min(parentScale.x, parentScale.y);
-		var targetWorldSize = minDimension                      * textPadding;
-		var newX            = (targetWorldSize / parentScale.x) * _initialScale.x;
-		var newY            = (targetWorldSize / parentScale.y) * _initialScale.y;
-		_healthLabel.transform.localScale = new Vector3(newX, newY, 1f);
+	void CorrectTextScale(Vector2 brickSize) {
+		var minDimension = Mathf.Min(brickSize.x, brickSize.y);
+		var scaleFactor  = minDimension / 2f;
+		_healthLabel.transform.localScale = _initialScale * scaleFactor;
 
 		var visualCenter = _renderer.localBounds.center;
 		visualCenter.z                       = -0.1f;

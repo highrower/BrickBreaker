@@ -85,8 +85,13 @@ public class Brick : MonoBehaviour {
 		_view.Refresh(CurrentHealth, _settings);
 	}
 
-	public void SetScale(Vector3 newScale) {
-		transform.localScale = newScale;
-		if (_view) _view.CorrectTextScale(newScale);
+	public void SetScale(Vector2 newScale) {
+		transform.localScale = Vector3.one;
+
+		if (_view) _view.SetScale(newScale);
+		if (!_collider)
+			return;
+		_collider.size   = newScale;
+		_collider.offset = Vector2.zero;
 	}
 }

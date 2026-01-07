@@ -13,11 +13,9 @@ public class BrickSpawner : MonoBehaviour {
 
 	Brick[,] _brickGrid;
 
-	Vector2 _originalSpriteSize;
 
 	void Start() {
 		var tempRenderer = brickPrefab.GetComponent<SpriteRenderer>();
-		_originalSpriteSize = tempRenderer.sprite.bounds.size;
 
 		_brickGrid = new Brick[gridSize, gridSize];
 		SpawnBricks();
@@ -50,8 +48,8 @@ public class BrickSpawner : MonoBehaviour {
 		var cellWidth  = (bounds.xMax - leftBound) / gridSize;
 		var cellHeight = cellWidth                 * heightRatio;
 
-		var targetScaleX = (cellWidth  * padding) / _originalSpriteSize.x;
-		var targetScaleY = (cellHeight * padding) / _originalSpriteSize.y;
+		var targetScaleX = (cellWidth  * padding);
+		var targetScaleY = (cellHeight * padding);
 		var finalScale   = new Vector3(targetScaleX, targetScaleY, 1f);
 
 		foreach (var brick in _brickGrid) {
