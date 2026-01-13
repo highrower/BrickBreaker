@@ -2,7 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class Drop : MonoBehaviour {
+public class Drop : MonoBehaviour
+{
 	[SerializeField] float        dropSpeed = 5.0f;
 	[SerializeField] DropSettings settings;
 	IObjectPool<Drop>             _pool;
@@ -12,25 +13,28 @@ public class Drop : MonoBehaviour {
 	void FixedUpdate() =>
 		transform.position += Vector3.down * (dropSpeed * Time.fixedDeltaTime);
 
-	void OnTriggerEnter2D(Collider2D other) {
+	void OnTriggerEnter2D(Collider2D other)
+	{
 		if (other.CompareTag("Respawn"))
 			Deactivate();
 	}
 
-	public void SetPool(IObjectPool<Drop> pool) {
+	public void SetPool(IObjectPool<Drop> pool)
+	{
 		_pool = pool;
 	}
 
-	public void Deactivate() {
+	public void Deactivate()
+	{
 		if (_pool != null)
 			_pool.Release(this);
 		else
 			Destroy(gameObject);
 	}
-
 }
 
 [CreateAssetMenu(menuName = "Settings/DropSettings")]
-public class DropSettings : ScriptableObject {
+public class DropSettings : ScriptableObject
+{
 	public int value;
 }

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TMPro.Examples {
-public class VertexZoom : MonoBehaviour {
+namespace TMPro.Examples
+{
+public class VertexZoom : MonoBehaviour
+{
 	public float AngleMultiplier = 1.0f;
 	public float SpeedMultiplier = 1.0f;
 	public float CurveScale      = 1.0f;
@@ -11,24 +13,24 @@ public class VertexZoom : MonoBehaviour {
 
 	TMP_Text m_TextComponent;
 
-
 	void Awake() { m_TextComponent = GetComponent<TMP_Text>(); }
-
 
 	void Start() { StartCoroutine(AnimateVertexColors()); }
 
-	void OnEnable() {
+	void OnEnable()
+	{
 		// Subscribe to event fired when text object has been regenerated.
 		TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
 	}
 
-	void OnDisable() {
+	void OnDisable()
+	{
 		// UnSubscribe to event fired when text object has been regenerated.
 		TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(ON_TEXT_CHANGED);
 	}
 
-
-	void ON_TEXT_CHANGED(Object obj) {
+	void ON_TEXT_CHANGED(Object obj)
+	{
 		if (obj == m_TextComponent)
 			hasTextChanged = true;
 	}
@@ -37,7 +39,8 @@ public class VertexZoom : MonoBehaviour {
 	///     Method to animate vertex colors of a TMP Text object.
 	/// </summary>
 	/// <returns></returns>
-	IEnumerator AnimateVertexColors() {
+	IEnumerator AnimateVertexColors()
+	{
 		// We force an update of the text object since it would only be updated at the end of the frame. Ie. before this code is executed on the first frame.
 		// Alternatively, we could yield and wait until the end of the frame when the text object will be generated.
 		m_TextComponent.ForceMeshUpdate();
@@ -53,9 +56,11 @@ public class VertexZoom : MonoBehaviour {
 
 		hasTextChanged = true;
 
-		while (true) {
+		while (true)
+		{
 			// Allocate new vertices
-			if (hasTextChanged) {
+			if (hasTextChanged)
+			{
 				// Get updated vertex data
 				cachedMeshInfoVertexData = textInfo.CopyMeshInfoVertexData();
 
@@ -65,8 +70,10 @@ public class VertexZoom : MonoBehaviour {
 			var characterCount = textInfo.characterCount;
 
 			// If No Characters then just yield and wait for some text to be added
-			if (characterCount == 0) {
+			if (characterCount == 0)
+			{
 				yield return new WaitForSeconds(0.25f);
+
 				continue;
 			}
 
@@ -74,7 +81,8 @@ public class VertexZoom : MonoBehaviour {
 			modifiedCharScale.Clear();
 			scaleSortingOrder.Clear();
 
-			for (var i = 0; i < characterCount; i++) {
+			for (var i = 0; i < characterCount; i++)
+			{
 				var charInfo = textInfo.characterInfo[i];
 
 				// Skip characters that are not visible and thus have no geometry to manipulate.
@@ -93,7 +101,8 @@ public class VertexZoom : MonoBehaviour {
 				// Determine the center point of each character at the baseline.
 				//Vector2 charMidBasline = new Vector2((sourceVertices[vertexIndex + 0].x + sourceVertices[vertexIndex + 2].x) / 2, charInfo.baseLine);
 				// Determine the center point of each character.
-				Vector2 charMidBasline = (sourceVertices[vertexIndex + 0] + sourceVertices[vertexIndex + 2]) / 2;
+				Vector2 charMidBasline =
+					(sourceVertices[vertexIndex + 0] + sourceVertices[vertexIndex + 2]) / 2;
 
 				// Need to translate all 4 vertices of each quad to aligned with middle of character / baseline.
 				// This is needed so the matrix TRS is applied at the origin for each character.
@@ -117,12 +126,21 @@ public class VertexZoom : MonoBehaviour {
 
 				// Setup the matrix for the scale change.
 				//matrix = Matrix4x4.TRS(jitterOffset, Quaternion.Euler(0, 0, Random.Range(-5f, 5f)), Vector3.one * randomScale);
-				matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, Vector3.one * randomScale);
+				matrix = Matrix4x4.TRS(new Vector3(0, 0, 0),
+									   Quaternion.identity,
+									   Vector3.one * randomScale);
 
-				destinationVertices[vertexIndex + 0] = matrix.MultiplyPoint3x4(destinationVertices[vertexIndex + 0]);
-				destinationVertices[vertexIndex + 1] = matrix.MultiplyPoint3x4(destinationVertices[vertexIndex + 1]);
-				destinationVertices[vertexIndex + 2] = matrix.MultiplyPoint3x4(destinationVertices[vertexIndex + 2]);
-				destinationVertices[vertexIndex + 3] = matrix.MultiplyPoint3x4(destinationVertices[vertexIndex + 3]);
+				destinationVertices[vertexIndex + 0] =
+					matrix.MultiplyPoint3x4(destinationVertices[vertexIndex + 0]);
+
+				destinationVertices[vertexIndex + 1] =
+					matrix.MultiplyPoint3x4(destinationVertices[vertexIndex + 1]);
+
+				destinationVertices[vertexIndex + 2] =
+					matrix.MultiplyPoint3x4(destinationVertices[vertexIndex + 2]);
+
+				destinationVertices[vertexIndex + 3] =
+					matrix.MultiplyPoint3x4(destinationVertices[vertexIndex + 3]);
 
 				destinationVertices[vertexIndex + 0] += offset;
 				destinationVertices[vertexIndex + 1] += offset;
@@ -149,9 +167,11 @@ public class VertexZoom : MonoBehaviour {
 			}
 
 			// Push changes into meshes
-			for (var i = 0; i < textInfo.meshInfo.Length; i++) {
+			for (var i = 0; i < textInfo.meshInfo.Length; i++)
+			{
 				//// Sort Quads based modified scale
-				scaleSortingOrder.Sort((a, b) => modifiedCharScale[a].CompareTo(modifiedCharScale[b]));
+				scaleSortingOrder.Sort((a, b) => modifiedCharScale[a].
+										   CompareTo(modifiedCharScale[b]));
 
 				textInfo.meshInfo[i].SortGeometry(scaleSortingOrder);
 

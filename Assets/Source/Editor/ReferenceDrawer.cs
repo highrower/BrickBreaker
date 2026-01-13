@@ -1,16 +1,20 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace Editor {
+namespace Editor
+{
 [CustomPropertyDrawer(typeof(RectReference))]
-public class ReferenceDrawer : PropertyDrawer {
+public class ReferenceDrawer : PropertyDrawer
+{
 	readonly string[] popupOptions =
 		{ "Use Constant", "Use Variable" };
 
 	GUIStyle _popupStyle;
 
-	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-		_popupStyle ??= new GUIStyle(GUI.skin.GetStyle("PaneOptions")) {
+	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+	{
+		_popupStyle ??= new GUIStyle(GUI.skin.GetStyle("PaneOptions"))
+		{
 			imagePosition = ImagePosition.ImageOnly
 		};
 
@@ -32,13 +36,16 @@ public class ReferenceDrawer : PropertyDrawer {
 		var indent = EditorGUI.indentLevel;
 		EditorGUI.indentLevel = 0;
 
-		var result = EditorGUI.Popup(buttonRect, useConstant.boolValue ? 0 : 1, popupOptions, _popupStyle);
+		var result = EditorGUI.Popup(buttonRect,
+									 useConstant.boolValue ? 0 : 1,
+									 popupOptions,
+									 _popupStyle);
 
 		useConstant.boolValue = result == 0;
 
 		EditorGUI.PropertyField(position,
-		                        useConstant.boolValue ? constantValue : variable,
-		                        GUIContent.none);
+								useConstant.boolValue ? constantValue : variable,
+								GUIContent.none);
 
 		if (EditorGUI.EndChangeCheck())
 			property.serializedObject.ApplyModifiedProperties();
@@ -47,11 +54,14 @@ public class ReferenceDrawer : PropertyDrawer {
 		EditorGUI.EndProperty();
 	}
 
-	public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
+	public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+	{
 		var useConstant   = property.FindPropertyRelative("useConstant");
 		var constantValue = property.FindPropertyRelative("constantValue");
 
-		return useConstant.boolValue ? EditorGUI.GetPropertyHeight(constantValue, label) : EditorGUIUtility.singleLineHeight;
+		return useConstant.boolValue ?
+				   EditorGUI.GetPropertyHeight(constantValue, label) :
+				   EditorGUIUtility.singleLineHeight;
 	}
 }
 }

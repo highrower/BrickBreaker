@@ -2,8 +2,10 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TMPro.Examples {
-public class Benchmark01_UGUI : MonoBehaviour {
+namespace TMPro.Examples
+{
+public class Benchmark01_UGUI : MonoBehaviour
+{
 	public int BenchmarkType;
 
 	public Canvas        canvas;
@@ -27,13 +29,12 @@ public class Benchmark01_UGUI : MonoBehaviour {
 	Material m_material01;
 	Material m_material02;
 
-
-	IEnumerator Start() {
+	IEnumerator Start()
+	{
 		if (BenchmarkType == 0) // TextMesh Pro Component
 		{
 			m_textMeshPro = gameObject.AddComponent<TextMeshProUGUI>();
 			//m_textContainer = GetComponent<TextContainer>();
-
 
 			//m_textMeshPro.anchorDampening = true;
 
@@ -57,8 +58,10 @@ public class Benchmark01_UGUI : MonoBehaviour {
 			//m_textMeshPro.fontColor = new Color32(255, 255, 255, 255);
 
 			m_material01 = m_textMeshPro.font.material;
+
 			m_material02 =
-				Resources.Load<Material>("Fonts & Materials/LiberationSans SDF - BEVEL"); // Make sure the LiberationSans SDF exists before calling this...  
+				Resources.Load<Material>(
+					"Fonts & Materials/LiberationSans SDF - BEVEL"); // Make sure the LiberationSans SDF exists before calling this...  
 		}
 		else if (BenchmarkType == 1) // TextMesh
 		{
@@ -74,40 +77,42 @@ public class Benchmark01_UGUI : MonoBehaviour {
 			//m_textMesh.color = new Color32(255, 255, 0, 255);    
 		}
 
-
-		for (var i = 0; i <= 1000000; i++) {
-			if (BenchmarkType == 0) {
+		for (var i = 0; i <= 1000000; i++)
+		{
+			if (BenchmarkType == 0)
+			{
 				m_textMeshPro.text = label01 + i % 1000;
+
 				if (i % 1000 == 999)
-					m_textMeshPro.fontSharedMaterial = m_textMeshPro.fontSharedMaterial == m_material01 ?
-						m_textMeshPro.fontSharedMaterial = m_material02 :
-						m_textMeshPro.fontSharedMaterial = m_material01;
+					m_textMeshPro.fontSharedMaterial =
+						m_textMeshPro.fontSharedMaterial == m_material01 ?
+							m_textMeshPro.fontSharedMaterial = m_material02 :
+							m_textMeshPro.fontSharedMaterial = m_material01;
 			}
-			else if (BenchmarkType == 1) {
+			else if (BenchmarkType == 1)
+			{
 				m_textMesh.text = label02 + (i % 1000);
 			}
 
 			yield return null;
 		}
 
-
 		yield return null;
 	}
-
 
 	/*
 	void Update()
 	{
-	    if (BenchmarkType == 0)
-	    {
-	        m_textMeshPro.text = (m_frame % 1000).ToString();
-	    }
-	    else if (BenchmarkType == 1)
-	    {
-	        m_textMesh.text = (m_frame % 1000).ToString();
-	    }
+		if (BenchmarkType == 0)
+		{
+			m_textMeshPro.text = (m_frame % 1000).ToString();
+		}
+		else if (BenchmarkType == 1)
+		{
+			m_textMesh.text = (m_frame % 1000).ToString();
+		}
 
-	    m_frame += 1;
+		m_frame += 1;
 	}
 	*/
 }

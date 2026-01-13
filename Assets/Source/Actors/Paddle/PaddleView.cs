@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class PaddleView : MonoBehaviour {
+public class PaddleView : MonoBehaviour
+{
 	SpriteRenderer _spriteRenderer;
 
 	public void Start() { _spriteRenderer = GetComponent<SpriteRenderer>(); }
 
-	public void SetTwistView(bool isTwist) {
+	public void SetTwistView(bool isTwist)
+	{
 		if (!_spriteRenderer) return;
 
 		var tempColor = _spriteRenderer.color;

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-namespace TMPro.Examples {
-public class TMP_UiFrameRateCounter : MonoBehaviour {
+namespace TMPro.Examples
+{
+public class TMP_UiFrameRateCounter : MonoBehaviour
+{
 	public enum FpsCounterAnchorPositions { TopLeft, BottomLeft, TopRight, BottomRight }
 
 	const  string fpsLabel       = "{0:2}</color> <#8080ff>FPS \n<#FF8000>{1:2} <#8080ff>MS";
@@ -18,7 +20,8 @@ public class TMP_UiFrameRateCounter : MonoBehaviour {
 
 	TextMeshProUGUI m_TextMeshPro;
 
-	void Awake() {
+	void Awake()
+	{
 		if (!enabled)
 			return;
 
@@ -29,9 +32,11 @@ public class TMP_UiFrameRateCounter : MonoBehaviour {
 
 		m_frameCounter_transform.SetParent(transform, false);
 
-		m_TextMeshPro                    = frameCounter.AddComponent<TextMeshProUGUI>();
-		m_TextMeshPro.font               = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
-		m_TextMeshPro.fontSharedMaterial = Resources.Load<Material>("Fonts & Materials/LiberationSans SDF - Overlay");
+		m_TextMeshPro      = frameCounter.AddComponent<TextMeshProUGUI>();
+		m_TextMeshPro.font = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
+
+		m_TextMeshPro.fontSharedMaterial =
+			Resources.Load<Material>("Fonts & Materials/LiberationSans SDF - Overlay");
 
 		m_TextMeshPro.textWrappingMode = TextWrappingModes.NoWrap;
 		m_TextMeshPro.fontSize         = 36;
@@ -42,14 +47,14 @@ public class TMP_UiFrameRateCounter : MonoBehaviour {
 		last_AnchorPosition = AnchorPosition;
 	}
 
-
-	void Start() {
+	void Start()
+	{
 		m_LastInterval = Time.realtimeSinceStartup;
 		m_Frames       = 0;
 	}
 
-
-	void Update() {
+	void Update()
+	{
 		if (AnchorPosition != last_AnchorPosition)
 			Set_FrameCounter_Position(AnchorPosition);
 
@@ -58,7 +63,8 @@ public class TMP_UiFrameRateCounter : MonoBehaviour {
 		m_Frames += 1;
 		var timeNow = Time.realtimeSinceStartup;
 
-		if (timeNow > m_LastInterval + UpdateInterval) {
+		if (timeNow > m_LastInterval + UpdateInterval)
+		{
 			// display two fractional digits (f2 format)
 			var fps = m_Frames / (timeNow - m_LastInterval);
 			var ms  = 1000.0f  / Mathf.Max(fps, 0.00001f);
@@ -77,15 +83,17 @@ public class TMP_UiFrameRateCounter : MonoBehaviour {
 		}
 	}
 
-
-	void Set_FrameCounter_Position(FpsCounterAnchorPositions anchor_position) {
-		switch (anchor_position) {
+	void Set_FrameCounter_Position(FpsCounterAnchorPositions anchor_position)
+	{
+		switch (anchor_position)
+		{
 			case FpsCounterAnchorPositions.TopLeft:
 				m_TextMeshPro.alignment                   = TextAlignmentOptions.TopLeft;
 				m_frameCounter_transform.pivot            = new Vector2(0,     1);
 				m_frameCounter_transform.anchorMin        = new Vector2(0.01f, 0.99f);
 				m_frameCounter_transform.anchorMax        = new Vector2(0.01f, 0.99f);
 				m_frameCounter_transform.anchoredPosition = new Vector2(0,     1);
+
 				break;
 			case FpsCounterAnchorPositions.BottomLeft:
 				m_TextMeshPro.alignment                   = TextAlignmentOptions.BottomLeft;
@@ -93,6 +101,7 @@ public class TMP_UiFrameRateCounter : MonoBehaviour {
 				m_frameCounter_transform.anchorMin        = new Vector2(0.01f, 0.01f);
 				m_frameCounter_transform.anchorMax        = new Vector2(0.01f, 0.01f);
 				m_frameCounter_transform.anchoredPosition = new Vector2(0,     0);
+
 				break;
 			case FpsCounterAnchorPositions.TopRight:
 				m_TextMeshPro.alignment                   = TextAlignmentOptions.TopRight;
@@ -100,6 +109,7 @@ public class TMP_UiFrameRateCounter : MonoBehaviour {
 				m_frameCounter_transform.anchorMin        = new Vector2(0.99f, 0.99f);
 				m_frameCounter_transform.anchorMax        = new Vector2(0.99f, 0.99f);
 				m_frameCounter_transform.anchoredPosition = new Vector2(1,     1);
+
 				break;
 			case FpsCounterAnchorPositions.BottomRight:
 				m_TextMeshPro.alignment                   = TextAlignmentOptions.BottomRight;
@@ -107,6 +117,7 @@ public class TMP_UiFrameRateCounter : MonoBehaviour {
 				m_frameCounter_transform.anchorMin        = new Vector2(0.99f, 0.01f);
 				m_frameCounter_transform.anchorMax        = new Vector2(0.99f, 0.01f);
 				m_frameCounter_transform.anchoredPosition = new Vector2(1,     0);
+
 				break;
 		}
 	}

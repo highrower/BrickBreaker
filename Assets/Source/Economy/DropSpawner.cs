@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class DropSpawner : MonoBehaviour {
+public class DropSpawner : MonoBehaviour
+{
 	public static DropSpawner Instance { get; private set; }
 
 	[SerializeField] Drop dropPrefab;
@@ -10,25 +11,31 @@ public class DropSpawner : MonoBehaviour {
 
 	IObjectPool<Drop> _pool;
 
-	void Awake() {
-		if (Instance != null && Instance != this) {
+	void Awake()
+	{
+		if (Instance != null && Instance != this)
+		{
 			Destroy(this);
+
 			return;
 		}
 
 		Instance = this;
+
 		_pool = new ObjectPool<Drop>(createFunc: CreateDrop,
-		                             actionOnGet: OnTakeFromPool,
-		                             actionOnRelease: OnReturnToPool,
-		                             actionOnDestroy: OnDestroyDrop,
-		                             collectionCheck: true,
-		                             defaultCapacity: defaultCapacity,
-		                             maxSize: maxCapacity);
+									 actionOnGet: OnTakeFromPool,
+									 actionOnRelease: OnReturnToPool,
+									 actionOnDestroy: OnDestroyDrop,
+									 collectionCheck: true,
+									 defaultCapacity: defaultCapacity,
+									 maxSize: maxCapacity);
 	}
 
-	Drop CreateDrop() {
+	Drop CreateDrop()
+	{
 		var drop = Instantiate(dropPrefab, transform, true);
 		drop.SetPool(_pool);
+
 		return drop;
 	}
 
@@ -38,7 +45,8 @@ public class DropSpawner : MonoBehaviour {
 
 	static void OnDestroyDrop(Drop drop) => Destroy(drop.gameObject);
 
-	public void SpawnDrop(Vector3 position) {
+	public void SpawnDrop(Vector3 position)
+	{
 		var drop = _pool.Get();
 		drop.transform.position = position;
 		drop.transform.rotation = Quaternion.identity;

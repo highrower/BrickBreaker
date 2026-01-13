@@ -1,12 +1,13 @@
 using UnityEngine;
 
-namespace TMPro.Examples {
-public class CameraController : MonoBehaviour {
+namespace TMPro.Examples
+{
+public class CameraController : MonoBehaviour
+{
 	public enum CameraModes { Follow, Isometric, Free }
 
 	// Controls for Touches on Mobile devices
 	//private float prev_ZoomDelta;
-
 
 	const string event_SmoothingValue = "Slider - Smoothing Value";
 	const string event_FollowDistance = "Slider - Camera Zoom";
@@ -44,24 +45,26 @@ public class CameraController : MonoBehaviour {
 	Vector3   moveVector;
 	bool      previousSmoothing;
 
-
-	void Awake() {
+	void Awake()
+	{
 		if (QualitySettings.vSyncCount > 0)
 			Application.targetFrameRate = 60;
 		else
 			Application.targetFrameRate = -1;
 
-		if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android)
+		if (Application.platform == RuntimePlatform.IPhonePlayer ||
+			Application.platform == RuntimePlatform.Android)
 			Input.simulateMouseWithTouches = false;
 
 		cameraTransform   = transform;
 		previousSmoothing = MovementSmoothing;
 	}
 
-
 	// Use this for initialization
-	void Start() {
-		if (CameraTarget == null) {
+	void Start()
+	{
+		if (CameraTarget == null)
+		{
 			// If we don't have a target (assigned by the player, create a dummy in the center of the scene).
 			dummyTarget  = new GameObject("Camera Target").transform;
 			CameraTarget = dummyTarget;
@@ -69,28 +72,31 @@ public class CameraController : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void LateUpdate() {
+	void LateUpdate()
+	{
 		GetPlayerInput();
 
-
 		// Check if we still have a valid target
-		if (CameraTarget != null) {
+		if (CameraTarget != null)
+		{
 			if (CameraMode == CameraModes.Isometric)
 				desiredPosition = CameraTarget.position +
-				                  Quaternion.Euler(ElevationAngle, OrbitalAngle, 0f) *
-				                  new Vector3(0, 0, -FollowDistance);
+								  Quaternion.Euler(ElevationAngle, OrbitalAngle, 0f) *
+								  new Vector3(0, 0, -FollowDistance);
 			else if (CameraMode == CameraModes.Follow)
 				desiredPosition = CameraTarget.position +
-				                  CameraTarget.TransformDirection(Quaternion.Euler(ElevationAngle, OrbitalAngle, 0f) *
-				                                                  new Vector3(0, 0, -FollowDistance));
+								  CameraTarget.TransformDirection(
+									  Quaternion.Euler(ElevationAngle, OrbitalAngle, 0f) *
+									  new Vector3(0, 0, -FollowDistance));
 
 			// Free Camera implementation
 			if (MovementSmoothing)
 				// Using Smoothing
 				cameraTransform.position = Vector3.SmoothDamp(cameraTransform.position,
-				                                              desiredPosition,
-				                                              ref currentVelocity,
-				                                              MovementSmoothingValue * Time.fixedDeltaTime);
+															  desiredPosition,
+															  ref currentVelocity,
+															  MovementSmoothingValue *
+															  Time.fixedDeltaTime);
 			//cameraTransform.position = Vector3.Lerp(cameraTransform.position, desiredPosition, Time.deltaTime * 5.0f);
 			else
 				// Not using Smoothing
@@ -98,15 +104,17 @@ public class CameraController : MonoBehaviour {
 
 			if (RotationSmoothing)
 				cameraTransform.rotation = Quaternion.Lerp(cameraTransform.rotation,
-				                                           Quaternion.LookRotation(CameraTarget.position - cameraTransform.position),
-				                                           RotationSmoothingValue * Time.deltaTime);
+														   Quaternion.LookRotation(
+															   CameraTarget.position -
+															   cameraTransform.position),
+														   RotationSmoothingValue * Time.deltaTime);
 			else
 				cameraTransform.LookAt(CameraTarget);
 		}
 	}
 
-
-	void GetPlayerInput() {
+	void GetPlayerInput()
+	{
 		moveVector = Vector3.zero;
 
 		// Check Mouse Wheel Input prior to Shift Key so we can apply multiplier on Shift for Scrolling
@@ -114,7 +122,8 @@ public class CameraController : MonoBehaviour {
 
 		float touchCount = Input.touchCount;
 
-		if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || touchCount > 0) {
+		if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || touchCount > 0)
+		{
 			mouseWheel *= 10;
 
 			if (Input.GetKeyDown(KeyCode.I))
@@ -126,60 +135,79 @@ public class CameraController : MonoBehaviour {
 			if (Input.GetKeyDown(KeyCode.S))
 				MovementSmoothing = !MovementSmoothing;
 
-
 			// Check for right mouse button to change camera follow and elevation angle
-			if (Input.GetMouseButton(1)) {
+			if (Input.GetMouseButton(1))
+			{
 				mouseY = Input.GetAxis("Mouse Y");
 				mouseX = Input.GetAxis("Mouse X");
 
-				if (mouseY > 0.01f || mouseY < -0.01f) {
+				if (mouseY > 0.01f || mouseY < -0.01f)
+				{
 					ElevationAngle -= mouseY * MoveSensitivity;
+
 					// Limit Elevation angle between min & max values.
-					ElevationAngle = Mathf.Clamp(ElevationAngle, MinElevationAngle, MaxElevationAngle);
+					ElevationAngle =
+						Mathf.Clamp(ElevationAngle, MinElevationAngle, MaxElevationAngle);
 				}
 
-				if (mouseX > 0.01f || mouseX < -0.01f) {
+				if (mouseX > 0.01f || mouseX < -0.01f)
+				{
 					OrbitalAngle += mouseX * MoveSensitivity;
+
 					if (OrbitalAngle > 360)
 						OrbitalAngle -= 360;
+
 					if (OrbitalAngle < 0)
 						OrbitalAngle += 360;
 				}
 			}
 
 			// Get Input from Mobile Device
-			if (touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved) {
+			if (touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved)
+			{
 				var deltaPosition = Input.GetTouch(0).deltaPosition;
 
 				// Handle elevation changes
-				if (deltaPosition.y > 0.01f || deltaPosition.y < -0.01f) {
+				if (deltaPosition.y > 0.01f || deltaPosition.y < -0.01f)
+				{
 					ElevationAngle -= deltaPosition.y * 0.1f;
+
 					// Limit Elevation angle between min & max values.
-					ElevationAngle = Mathf.Clamp(ElevationAngle, MinElevationAngle, MaxElevationAngle);
+					ElevationAngle =
+						Mathf.Clamp(ElevationAngle, MinElevationAngle, MaxElevationAngle);
 				}
 
-
 				// Handle left & right 
-				if (deltaPosition.x > 0.01f || deltaPosition.x < -0.01f) {
+				if (deltaPosition.x > 0.01f || deltaPosition.x < -0.01f)
+				{
 					OrbitalAngle += deltaPosition.x * 0.1f;
+
 					if (OrbitalAngle > 360)
 						OrbitalAngle -= 360;
+
 					if (OrbitalAngle < 0)
 						OrbitalAngle += 360;
 				}
 			}
 
 			// Check for left mouse button to select a new CameraTarget or to reset Follow position
-			if (Input.GetMouseButton(0)) {
+			if (Input.GetMouseButton(0))
+			{
 				var        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				RaycastHit hit;
 
-				if (Physics.Raycast(ray, out hit, 300, (1 << 10) | (1 << 11) | (1 << 12) | (1 << 14))) {
-					if (hit.transform == CameraTarget) {
+				if (Physics.Raycast(ray,
+									out hit,
+									300,
+									(1 << 10) | (1 << 11) | (1 << 12) | (1 << 14)))
+				{
+					if (hit.transform == CameraTarget)
+					{
 						// Reset Follow Position
 						OrbitalAngle = 0;
 					}
-					else {
+					else
+					{
 						CameraTarget      = hit.transform;
 						OrbitalAngle      = 0;
 						MovementSmoothing = previousSmoothing;
@@ -187,9 +215,10 @@ public class CameraController : MonoBehaviour {
 				}
 			}
 
-
-			if (Input.GetMouseButton(2)) {
-				if (dummyTarget == null) {
+			if (Input.GetMouseButton(2))
+			{
+				if (dummyTarget == null)
+				{
 					// We need a Dummy Target to anchor the Camera
 					dummyTarget          = new GameObject("Camera Target").transform;
 					dummyTarget.position = CameraTarget.position;
@@ -198,7 +227,8 @@ public class CameraController : MonoBehaviour {
 					previousSmoothing    = MovementSmoothing;
 					MovementSmoothing    = false;
 				}
-				else if (dummyTarget != CameraTarget) {
+				else if (dummyTarget != CameraTarget)
+				{
 					// Move DummyTarget to CameraTarget
 					dummyTarget.position = CameraTarget.position;
 					dummyTarget.rotation = CameraTarget.rotation;
@@ -206,7 +236,6 @@ public class CameraController : MonoBehaviour {
 					previousSmoothing    = MovementSmoothing;
 					MovementSmoothing    = false;
 				}
-
 
 				mouseY = Input.GetAxis("Mouse Y");
 				mouseX = Input.GetAxis("Mouse X");
@@ -218,7 +247,8 @@ public class CameraController : MonoBehaviour {
 		}
 
 		// Check Pinching to Zoom in - out on Mobile device
-		if (touchCount == 2) {
+		if (touchCount == 2)
+		{
 			var touch0 = Input.GetTouch(0);
 			var touch1 = Input.GetTouch(1);
 
@@ -230,7 +260,8 @@ public class CameraController : MonoBehaviour {
 
 			var zoomDelta = prevTouchDelta - touchDelta;
 
-			if (zoomDelta > 0.01f || zoomDelta < -0.01f) {
+			if (zoomDelta > 0.01f || zoomDelta < -0.01f)
+			{
 				FollowDistance += zoomDelta * 0.25f;
 				// Limit FollowDistance between min & max values.
 				FollowDistance = Mathf.Clamp(FollowDistance, MinFollowDistance, MaxFollowDistance);
@@ -238,7 +269,8 @@ public class CameraController : MonoBehaviour {
 		}
 
 		// Check MouseWheel to Zoom in-out
-		if (mouseWheel < -0.01f || mouseWheel > 0.01f) {
+		if (mouseWheel < -0.01f || mouseWheel > 0.01f)
+		{
 			FollowDistance -= mouseWheel * 5.0f;
 			// Limit FollowDistance between min & max values.
 			FollowDistance = Mathf.Clamp(FollowDistance, MinFollowDistance, MaxFollowDistance);

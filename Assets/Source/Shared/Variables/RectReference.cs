@@ -2,7 +2,8 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class RectReference {
+public class RectReference
+{
 	public bool         useConstant = true;
 	public Rect         constantValue;
 	public RectVariable variable;
@@ -11,7 +12,8 @@ public class RectReference {
 
 	public RectReference() { }
 
-	public RectReference(Rect value) {
+	public RectReference(Rect value)
+	{
 		useConstant   = true;
 		constantValue = value;
 	}

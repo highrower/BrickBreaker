@@ -1,69 +1,73 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Shop : MonoBehaviour {
-	[SerializeField] VisualTreeAsset shopEntryTemplate;
-	[SerializeField] Bank            bank;
-	[SerializeField] List<ShopItem>  availableUpgrades;
+public class Shop : MonoBehaviour
+{
+	[SerializeField] VisualTreeAsset   nodeTemplate;
+	[SerializeField] Bank              bank;
+	[SerializeField] List<ShopUpgrade> upgrades;
 
-	readonly List<VisualElement> _shopItems = new();
+	UpgradeGraph _graph;
 
-	void OnEnable() {
-		var root          = GetComponent<UIDocument>().rootVisualElement;
-		var listContainer = root.Q<VisualElement>("ShopListContainer");
-
-		listContainer.Clear();
-		_shopItems.Clear();
-
+	void OnEnable()
+	{
+		var root = GetComponent<UIDocument>().rootVisualElement;
+		_graph = root.Q<UpgradeGraph>();
+		_graph?.Initialize(upgrades, nodeTemplate, SetupNode);
 		if (bank != null) bank.OnCoinsChanged += OnCoinsChanged;
-
-		foreach (var item in availableUpgrades) {
-			var entry = shopEntryTemplate.Instantiate();
-
-			entry.Q<Label>(className: "shop-item__name").text = item.title;
-			var buyBtn = entry.Q<Button>(className: "shop-item__buy");
-
-			entry.userData = item;
-
-			RefreshEntry(entry);
-
-			item.OnStateChanged += OnItemStateChanged;
-			buyBtn.clicked      += () => TryBuy(item);
-			listContainer.Add(entry);
-			_shopItems.Add(entry);
-		}
 	}
 
-	void OnDisable() {
-		if (bank != null) bank.OnCoinsChanged -= OnCoinsChanged;
-		foreach (var item in availableUpgrades)
-			item.OnStateChanged -= OnItemStateChanged;
+	void SetupNode(VisualElement entry, ShopUpgrade upgrade)
+	{
+		entry.Q<Label>(className: "shop-upgrade-graph-item__name").text = upgrade.title;
+		var buyBtn = entry.Q<Button>(className: "shop-upgrade-graph-item__buy");
+
+		upgrade.OnStateChanged += OnItemStateChanged;
+		buyBtn.clicked         += () => TryBuy(upgrade);
+
+		RefreshEntry(entry);
 	}
 
-	void OnItemStateChanged(ShopItem item) => RefreshAll();
-
-	void OnCoinsChanged(double _) => RefreshAll();
-
-	void RefreshAll() => _shopItems.ForEach(RefreshEntry);
-
-	void TryBuy(ShopItem item) {
-		if (!item.IsMaxed && bank.TrySpendCoins(item.GetCost()))
-			item.ApplyUpgrade();
+	void OnDisable()
+	{
+		if (bank != null) bank.OnCoinsChanged        -= OnCoinsChanged;
+		foreach (var x in upgrades) x.OnStateChanged -= OnItemStateChanged;
 	}
 
-	void RefreshEntry(VisualElement item) {
-		var shopItem  = (ShopItem)item.userData;
-		var buyBtn    = item.Q<Button>(className: "shop-item__buy");
-		var costLabel = item.Q<Label>(className: "shop-item__cost");
+	void OnItemStateChanged(ShopUpgrade item) => RefreshAll();
+	void OnCoinsChanged(double          _)    => RefreshAll();
 
-		if (shopItem.IsMaxed) {
-			costLabel.text = "MAX";
-			buyBtn.SetEnabled(false);
-		}
-		else {
-			costLabel.text = shopItem.GetCost().ToString();
-			buyBtn.SetEnabled(bank.currentCoins >= shopItem.GetCost());
-		}
+	void RefreshAll()
+	{
+		if (_graph == null) return;
+
+		foreach (var child in _graph.Children())
+			RefreshEntry(child);
+	}
+
+	void TryBuy(ShopUpgrade upg)
+	{
+		if (!upg.IsMaxed && IsUnlocked(upg) && bank.TrySpend(upg.GetCost()))
+			upg.ApplyUpgrade();
+	}
+
+	static bool IsUnlocked(ShopUpgrade item) => item.prereqs.All(x => x.CurrLvl > 0);
+
+	void RefreshEntry(VisualElement item)
+	{
+		var shopItem = (ShopUpgrade)item.userData;
+
+		if (shopItem == null) return;
+
+		var buyBtn = item.Q<Button>(className: "shop-upgrade-graph-item__buy");
+
+		buyBtn.text = shopItem.IsMaxed ? "MAX" :
+					  !IsUnlocked(shopItem) ? "LOCKED" :
+					  shopItem.GetCost().ToString();
+
+		var canAfford = bank.currentCoins >= shopItem.GetCost();
+		buyBtn.SetEnabled(!shopItem.IsMaxed && IsUnlocked(shopItem) && canAfford);
 	}
 }

@@ -1,7 +1,9 @@
 using UnityEngine;
 
-namespace TMPro.Examples {
-public class Benchmark04 : MonoBehaviour {
+namespace TMPro.Examples
+{
+public class Benchmark04 : MonoBehaviour
+{
 	public int SpawnType;
 
 	public int MinPointSize = 12;
@@ -12,23 +14,27 @@ public class Benchmark04 : MonoBehaviour {
 	//private TextMeshProFloatingText floatingText_Script;
 	//public Material material;
 
-
-	void Start() {
+	void Start()
+	{
 		m_Transform = transform;
 
 		float lineHeight = 0;
 		float orthoSize  = Camera.main.orthographicSize = Screen.height / 2;
 		float ratio      = (float)Screen.width / Screen.height;
 
-		for (int i = MinPointSize; i <= MaxPointSize; i += Steps) {
-			if (SpawnType == 0) {
+		for (int i = MinPointSize; i <= MaxPointSize; i += Steps)
+		{
+			if (SpawnType == 0)
+			{
 				// TextMesh Pro Implementation
 				GameObject go = new GameObject("Text - " + i + " Pts");
 
 				if (lineHeight > orthoSize * 2) return;
 
 				go.transform.position = m_Transform.position +
-				                        new Vector3(ratio * -orthoSize * 0.975f, orthoSize * 0.975f - lineHeight, 0);
+										new Vector3(ratio * -orthoSize * 0.975f,
+													orthoSize * 0.975f - lineHeight,
+													0);
 
 				TextMeshPro textMeshPro = go.AddComponent<TextMeshPro>();
 
@@ -47,7 +53,8 @@ public class Benchmark04 : MonoBehaviour {
 
 				lineHeight += i;
 			}
-			else {
+			else
+			{
 				// TextMesh Implementation
 				// Causes crashes since atlas needed exceeds 4096 X 4096
 				/*

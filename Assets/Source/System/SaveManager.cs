@@ -2,7 +2,8 @@ using UnityEngine;
 using System.IO;
 using System.Collections.Generic;
 
-public class SaveManager : MonoBehaviour {
+public class SaveManager : MonoBehaviour
+{
 	const string SaveFileName = "gamedata.json";
 
 	[SerializeField] List<ScriptableObject> objectsToSave;
@@ -11,14 +12,16 @@ public class SaveManager : MonoBehaviour {
 
 	void Awake() { LoadGame(); }
 
-	void OnApplicationPause(bool pauseStatus) {
+	void OnApplicationPause(bool pauseStatus)
+	{
 		if (pauseStatus) SaveGame();
 	}
 
 	void OnApplicationQuit() { SaveGame(); }
 
 	[ContextMenu("Force Save")]
-	public void SaveGame() {
+	public void SaveGame()
+	{
 		var data = new SaveData();
 		objectsToSave.ForEach(obj => (obj as ISaveable)?.Save(data));
 
@@ -27,9 +30,12 @@ public class SaveManager : MonoBehaviour {
 	}
 
 	[ContextMenu("Force Load")]
-	public void LoadGame() {
-		if (!File.Exists(SavePath)) {
+	public void LoadGame()
+	{
+		if (!File.Exists(SavePath))
+		{
 			Debug.Log("No save file found. Starting New Game.");
+
 			return;
 		}
 

@@ -1,13 +1,15 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Shop/Ball Damage Upgrade")]
-public class BallDamageUpgrade : ShopItem {
+public class BallDamageUpgrade : ShopUpgrade
+{
 	[SerializeField] BallSettings ballSettings;
 	[SerializeField] int          damageIncrease = 1;
 
-	protected override int CurrentLevel => ballSettings.DamageLevel;
+	public override int CurrLvl => ballSettings.DamageLevel;
 
-	protected override void UpgradeLogic() {
+	protected override void UpgradeLogic()
+	{
 		if (!IsMaxed)
 			ballSettings.DamageLevel++;
 	}
