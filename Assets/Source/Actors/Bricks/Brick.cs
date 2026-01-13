@@ -39,6 +39,7 @@ public class Brick : MonoBehaviour
 
 	public void TakeDamage(int damage = 1)
 	{
+		_view.Shake();
 		CurrentHealth -= damage;
 
 		if (CurrentHealth <= 0 || MathF.Floor(CurrentHealth) <= 0)
