@@ -58,8 +58,8 @@ partial class UpgradeGraph : VisualElement
 		if (!nodeMap.TryGetValue(start, out var source)) return;
 
 		painter.BeginPath();
-		painter.MoveTo(source.layout.center + new Vector2(source.layout.x, source.layout.y));
-		painter.LineTo(end.layout.center    + new Vector2(end.layout.x,    end.layout.y));
+		painter.MoveTo(source.layout.center);
+		painter.LineTo(end.layout.center);
 		painter.Stroke();
 	}
 }

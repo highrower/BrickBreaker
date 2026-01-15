@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b5b7ad3892e348889f04d3ec8617b1d3, type: 3}
-  m_Name: BallDamage
+  m_Name: BallDamage 3
   m_EditorClassIdentifier: Assembly-CSharp::BallDamageUpgrade
   title: Ball Damage
   description: This increases both the minimum damage and maximum damage that the
@@ -19,7 +19,8 @@ MonoBehaviour:
   maxLevel: 5
   id: 
   icon: {fileID: 0}
-  gridPosition: {x: 1, y: 1}
-  prereqs: []
+  gridPosition: {x: 2, y: 4}
+  prereqs:
+  - {fileID: 11400000, guid: 9b603bee9e4b049b699e84f356cc0708, type: 2}
   ballSettings: {fileID: 11400000, guid: 4704bfb8cd7554731837f18fb25a3071, type: 2}
   damageIncrease: 1

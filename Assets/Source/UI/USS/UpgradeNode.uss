@@ -1,0 +1,6 @@
+VisualElement {
+}
+
+.shop-upgrade-graph-item__name {
+    color: white;
+}
