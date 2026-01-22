@@ -56,6 +56,15 @@ I utilized Unity’s UI Toolkit (UXML/USS) to separate the layout (View) from th
 
     Web Standards: My experience with CSS-like styling (USS) and hierarchy (UXML) allows for responsive, reusable UI components.
 
+### E. Persistence & Serialization Interface-Driven Save
+
+    System: Implemented an ISaveable interface.
+    This allows any ScriptableObject or Component to register itself for persistence. 
+    
+    JSON Serialization: Uses Unity's JsonUtility to save game state (upgrades, bank balance, etc.) to the local file system.
+    This ensures progress is maintained across sessions.
+
+
 ### 3. Code Standards & Philosophy
 
 As a Data Engineer, I use common programming principles in my code:
