@@ -12,6 +12,7 @@ public class BallSettings : ScriptableObject, ISaveable
 	public float        speedThreshold        = 5f;
 	public float        lookAheadDistance     = .5f;
 	public float        bustThroughResistance = 0.8f;
+	public float        respawnTime           = 5f;
 
 	[System.NonSerialized] public int DamageLevel;
 

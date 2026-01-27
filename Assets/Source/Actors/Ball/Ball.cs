@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -41,9 +42,24 @@ public class Ball : MonoBehaviour
 			_rb.linearVelocity = _rb.linearVelocity.normalized * targetSpeed;
 	}
 
+	IEnumerator RespawnRoutine()
+	{
+		_rb.linearVelocity = Vector2.zero; 
+		transform.localPosition = startPosition;
+        
+		// TODO: disable the SpriteRenderer or Collider here
+		// to make the ball to be invisible while it waits.
+		// HINT, make func in ballView + make ballview
+
+		yield return new WaitForSeconds(settings.respawnTime);
+
+		Launch();
+	}
+
 	void Launch()
 	{
-		transform.localPosition = startPosition;
+		// TODO: Re-enable SpriteRenderer/Collider here 
+        
 		var randomAngle = Random.Range(-30f, 30f);
 		var rotation    = Quaternion.Euler(0, 0, randomAngle);
 		var direction   = rotation * Vector2.down;
@@ -53,7 +69,7 @@ public class Ball : MonoBehaviour
 	void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.gameObject.CompareTag("Respawn"))
-			Launch();
+			StartCoroutine(RespawnRoutine());
 	}
 
 	void OnCollisionEnter2D(Collision2D collision)
