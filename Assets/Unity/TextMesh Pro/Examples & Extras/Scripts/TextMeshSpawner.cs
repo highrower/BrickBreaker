@@ -1,7 +1,9 @@
 using UnityEngine;
 
-namespace TMPro.Examples {
-public class TextMeshSpawner : MonoBehaviour {
+namespace TMPro.Examples
+{
+public class TextMeshSpawner : MonoBehaviour
+{
 	public int SpawnType;
 	public int NumberOfNPC = 12;
 
@@ -11,13 +13,17 @@ public class TextMeshSpawner : MonoBehaviour {
 
 	void Awake() { }
 
-	void Start() {
+	void Start()
+	{
 		for (var i = 0; i < NumberOfNPC; i++)
-			if (SpawnType == 0) {
+			if (SpawnType == 0)
+			{
 				// TextMesh Pro Implementation     
 				//go.transform.localScale = new Vector3(2, 2, 2);
 				var go = new GameObject(); //"NPC " + i);
-				go.transform.position = new Vector3(Random.Range(-95f, 95f), 0.5f, Random.Range(-95f, 95f));
+
+				go.transform.position =
+					new Vector3(Random.Range(-95f, 95f), 0.5f, Random.Range(-95f, 95f));
 
 				//go.transform.position = new Vector3(0, 1.01f, 0);
 				//go.renderer.castShadows = false;
@@ -31,16 +37,18 @@ public class TextMeshSpawner : MonoBehaviour {
 				textMeshPro.text  = "!";
 				textMeshPro.color = new Color32(255, 255, 0, 255);
 
-
 				//textMeshPro.Text = "!";
 				// Spawn Floating Text
 				floatingText_Script           = go.AddComponent<TextMeshProFloatingText>();
 				floatingText_Script.SpawnType = 0;
 			}
-			else {
+			else
+			{
 				// TextMesh Implementation
 				var go = new GameObject(); //"NPC " + i);
-				go.transform.position = new Vector3(Random.Range(-95f, 95f), 0.5f, Random.Range(-95f, 95f));
+
+				go.transform.position =
+					new Vector3(Random.Range(-95f, 95f), 0.5f, Random.Range(-95f, 95f));
 
 				//go.transform.position = new Vector3(0, 1.01f, 0);
 				var textMesh = go.AddComponent<TextMesh>();

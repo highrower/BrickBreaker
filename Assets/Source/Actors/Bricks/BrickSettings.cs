@@ -1,7 +1,8 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Settings/Brick Settings")]
-public class BrickSettings : ScriptableObject {
+public class BrickSettings : ScriptableObject
+{
 	public int        maxHealth;
 	public float      spawnChance;
 	public GameObject drop;

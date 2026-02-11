@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b7ad3892e348889f04d3ec8617b1d3, type: 3}
+  m_Name: BallDamage 1
+  m_EditorClassIdentifier: Assembly-CSharp::BallDamageUpgrade
+  title: Ball Damage
+  description: This increases both the minimum damage and maximum damage that the
+    ball can do
+  baseCost: 5
+  maxLevel: 5
+  id: 
+  icon: {fileID: 0}
+  gridPosition: {x: 2, y: 2}
+  prereqs:
+  - {fileID: 11400000, guid: b35ffdc8ac581487a85d28473f9aa110, type: 2}
+  ballSettings: {fileID: 11400000, guid: 4704bfb8cd7554731837f18fb25a3071, type: 2}
+  damageIncrease: 1

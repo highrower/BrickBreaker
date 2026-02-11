@@ -1,7 +1,7 @@
 using UnityEngine;
 
-public class BrickSpawner : MonoBehaviour {
-
+public class BrickSpawner : MonoBehaviour
+{
 	[SerializeField] GameObject    brickPrefab;
 	[SerializeField] int           gridSize = 6;
 	[SerializeField] BrickSettings brickType;
@@ -13,8 +13,8 @@ public class BrickSpawner : MonoBehaviour {
 
 	Brick[,] _brickGrid;
 
-
-	void Start() {
+	void Start()
+	{
 		var tempRenderer = brickPrefab.GetComponent<SpriteRenderer>();
 
 		_brickGrid = new Brick[gridSize, gridSize];
@@ -25,9 +25,12 @@ public class BrickSpawner : MonoBehaviour {
 
 	void OnDestroy() { brickBounds.variable.OnValueChanged -= UpdateBrickPositions; }
 
-	void SpawnBricks() {
-		for (var y = 0; y < gridSize; y++) {
-			for (var x = 0; x < gridSize; x++) {
+	void SpawnBricks()
+	{
+		for (var y = 0; y < gridSize; y++)
+		{
+			for (var x = 0; x < gridSize; x++)
+			{
 				if (_brickGrid[x, y]) continue;
 
 				var newBrick = Instantiate(brickPrefab, Vector3.zero, Quaternion.identity);
@@ -39,7 +42,8 @@ public class BrickSpawner : MonoBehaviour {
 		}
 	}
 
-	void UpdateBrickPositions(Rect bounds) {
+	void UpdateBrickPositions(Rect bounds)
+	{
 		if (bounds.width <= 0 || bounds.height <= 0) return;
 
 		var leftBound  = bounds.xMin;
@@ -52,7 +56,8 @@ public class BrickSpawner : MonoBehaviour {
 		var targetScaleY = (cellHeight * padding);
 		var finalScale   = new Vector3(targetScaleX, targetScaleY, 1f);
 
-		foreach (var brick in _brickGrid) {
+		foreach (var brick in _brickGrid)
+		{
 			if (brick == null) continue;
 
 			var brickXPos = leftBound  + (brick.GridX * cellWidth)  + (cellWidth  / 2f);
@@ -62,5 +67,4 @@ public class BrickSpawner : MonoBehaviour {
 			brick.SetScale(finalScale);
 		}
 	}
-
 }

@@ -3,9 +3,14 @@ using UnityEngine.EventSystems;
 
 #pragma warning disable 0618 // Disabled warning due to SetVertices being deprecated until new release with SetMesh() is available.
 
-namespace TMPro.Examples {
-public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler,
-                                  IPointerUpHandler {
+namespace TMPro.Examples
+{
+public class TMP_TextSelector_B : MonoBehaviour,
+								  IPointerEnterHandler,
+								  IPointerExitHandler,
+								  IPointerClickHandler,
+								  IPointerUpHandler
+{
 	const  string        k_LinkText = "You have selected link <#ffff00>";
 	const  string        k_WordText = "Word Index: <#ffff00>";
 	public RectTransform TextPopup_Prefab_01;
@@ -22,15 +27,14 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 	int       m_selectedLink = -1;
 	int       m_selectedWord = -1;
 
-
 	TextMeshProUGUI m_TextMeshPro;
 
 	RectTransform   m_TextPopup_RectTransform;
 	TextMeshProUGUI m_TextPopup_TMPComponent;
 
-	void Awake() {
+	void Awake()
+	{
 		m_TextMeshPro = gameObject.GetComponent<TextMeshProUGUI>();
-
 
 		m_Canvas = gameObject.GetComponentInParent<Canvas>();
 
@@ -43,32 +47,43 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 		// Create pop-up text object which is used to show the link information.
 		m_TextPopup_RectTransform = Instantiate(TextPopup_Prefab_01);
 		m_TextPopup_RectTransform.SetParent(m_Canvas.transform, false);
-		m_TextPopup_TMPComponent = m_TextPopup_RectTransform.GetComponentInChildren<TextMeshProUGUI>();
+
+		m_TextPopup_TMPComponent =
+			m_TextPopup_RectTransform.GetComponentInChildren<TextMeshProUGUI>();
+
 		m_TextPopup_RectTransform.gameObject.SetActive(false);
 	}
 
-
-	void LateUpdate() {
-		if (isHoveringObject) {
+	void LateUpdate()
+	{
+		if (isHoveringObject)
+		{
 			// Check if Mouse Intersects any of the characters. If so, assign a random color.
 
 			#region Handle Character Selection
 
-			var charIndex = TMP_TextUtilities.FindIntersectingCharacter(m_TextMeshPro, Input.mousePosition, m_Camera, true);
+			var charIndex =
+				TMP_TextUtilities.FindIntersectingCharacter(m_TextMeshPro,
+															Input.mousePosition,
+															m_Camera,
+															true);
 
 			// Undo Swap and Vertex Attribute changes.
-			if (charIndex == -1 || charIndex != m_lastIndex) {
+			if (charIndex == -1 || charIndex != m_lastIndex)
+			{
 				RestoreCachedVertexAttributes(m_lastIndex);
 				m_lastIndex = -1;
 			}
 
 			if (charIndex != -1          &&
-			    charIndex != m_lastIndex &&
-			    (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))) {
+				charIndex != m_lastIndex &&
+				(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+			{
 				m_lastIndex = charIndex;
 
 				// Get the index of the material / sub text object used by this character.
-				var materialIndex = m_TextMeshPro.textInfo.characterInfo[charIndex].materialReferenceIndex;
+				var materialIndex = m_TextMeshPro.textInfo.characterInfo[charIndex].
+												  materialReferenceIndex;
 
 				// Get the index of the first vertex of the selected character.
 				var vertexIndex = m_TextMeshPro.textInfo.characterInfo[charIndex].vertexIndex;
@@ -77,7 +92,8 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 				var vertices = m_TextMeshPro.textInfo.meshInfo[materialIndex].vertices;
 
 				// Determine the center point of the character.
-				Vector2 charMidBasline = (vertices[vertexIndex + 0] + vertices[vertexIndex + 2]) / 2;
+				Vector2 charMidBasline =
+					(vertices[vertexIndex + 0] + vertices[vertexIndex + 2]) / 2;
 
 				// Need to translate all 4 vertices of the character to aligned with middle of character / baseline.
 				// This is needed so the matrix TRS is applied at the origin for each character.
@@ -92,7 +108,9 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 				var zoomFactor = 1.5f;
 
 				// Setup the Matrix for the scale change.
-				m_matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, Vector3.one * zoomFactor);
+				m_matrix = Matrix4x4.TRS(Vector3.zero,
+										 Quaternion.identity,
+										 Vector3.one * zoomFactor);
 
 				// Apply Matrix operation on the given character.
 				vertices[vertexIndex + 0] = m_matrix.MultiplyPoint3x4(vertices[vertexIndex + 0]);
@@ -117,7 +135,6 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 				vertexColors[vertexIndex + 2] = c;
 				vertexColors[vertexIndex + 3] = c;
 
-
 				// Get a reference to the meshInfo of the selected character.
 				var meshInfo = m_TextMeshPro.textInfo.meshInfo[materialIndex];
 
@@ -134,27 +151,33 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 
 			#endregion
 
-
 			#region Word Selection Handling
 
 			//Check if Mouse intersects any words and if so assign a random color to that word.
-			var wordIndex = TMP_TextUtilities.FindIntersectingWord(m_TextMeshPro, Input.mousePosition, m_Camera);
+			var wordIndex =
+				TMP_TextUtilities.FindIntersectingWord(m_TextMeshPro,
+													   Input.mousePosition,
+													   m_Camera);
 
 			// Clear previous word selection.
 			if (m_TextPopup_RectTransform != null &&
-			    m_selectedWord            != -1   &&
-			    (wordIndex == -1 || wordIndex != m_selectedWord)) {
+				m_selectedWord            != -1   &&
+				(wordIndex == -1 || wordIndex != m_selectedWord))
+			{
 				var wInfo = m_TextMeshPro.textInfo.wordInfo[m_selectedWord];
 
 				// Iterate through each of the characters of the word.
-				for (var i = 0; i < wInfo.characterCount; i++) {
+				for (var i = 0; i < wInfo.characterCount; i++)
+				{
 					var characterIndex = wInfo.firstCharacterIndex + i;
 
 					// Get the index of the material / sub text object used by this character.
-					var meshIndex = m_TextMeshPro.textInfo.characterInfo[characterIndex].materialReferenceIndex;
+					var meshIndex = m_TextMeshPro.textInfo.characterInfo[characterIndex].
+												  materialReferenceIndex;
 
 					// Get the index of the first vertex of this character.
-					var vertexIndex = m_TextMeshPro.textInfo.characterInfo[characterIndex].vertexIndex;
+					var vertexIndex = m_TextMeshPro.textInfo.characterInfo[characterIndex].
+													vertexIndex;
 
 					// Get a reference to the vertex color
 					var vertexColors = m_TextMeshPro.textInfo.meshInfo[meshIndex].colors32;
@@ -173,23 +196,26 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 				m_selectedWord = -1;
 			}
 
-
 			// Word Selection Handling
 			if (wordIndex != -1             &&
-			    wordIndex != m_selectedWord &&
-			    !(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))) {
+				wordIndex != m_selectedWord &&
+				!(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+			{
 				m_selectedWord = wordIndex;
 
 				var wInfo = m_TextMeshPro.textInfo.wordInfo[wordIndex];
 
 				// Iterate through each of the characters of the word.
-				for (var i = 0; i < wInfo.characterCount; i++) {
+				for (var i = 0; i < wInfo.characterCount; i++)
+				{
 					var characterIndex = wInfo.firstCharacterIndex + i;
 
 					// Get the index of the material / sub text object used by this character.
-					var meshIndex = m_TextMeshPro.textInfo.characterInfo[characterIndex].materialReferenceIndex;
+					var meshIndex = m_TextMeshPro.textInfo.characterInfo[characterIndex].
+												  materialReferenceIndex;
 
-					var vertexIndex = m_TextMeshPro.textInfo.characterInfo[characterIndex].vertexIndex;
+					var vertexIndex = m_TextMeshPro.textInfo.characterInfo[characterIndex].
+													vertexIndex;
 
 					// Get a reference to the vertex color
 					var vertexColors = m_TextMeshPro.textInfo.meshInfo[meshIndex].colors32;
@@ -208,20 +234,24 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 
 			#endregion
 
-
 			#region Example of Link Handling
 
 			// Check if mouse intersects with any links.
-			var linkIndex = TMP_TextUtilities.FindIntersectingLink(m_TextMeshPro, Input.mousePosition, m_Camera);
+			var linkIndex =
+				TMP_TextUtilities.FindIntersectingLink(m_TextMeshPro,
+													   Input.mousePosition,
+													   m_Camera);
 
 			// Clear previous link selection if one existed.
-			if ((linkIndex == -1 && m_selectedLink != -1) || linkIndex != m_selectedLink) {
+			if ((linkIndex == -1 && m_selectedLink != -1) || linkIndex != m_selectedLink)
+			{
 				m_TextPopup_RectTransform.gameObject.SetActive(false);
 				m_selectedLink = -1;
 			}
 
 			// Handle new Link selection.
-			if (linkIndex != -1 && linkIndex != m_selectedLink) {
+			if (linkIndex != -1 && linkIndex != m_selectedLink)
+			{
 				m_selectedLink = linkIndex;
 
 				var linkInfo = m_TextMeshPro.textInfo.linkInfo[linkIndex];
@@ -229,46 +259,56 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 				// Debug.Log("Link ID: \"" + linkInfo.GetLinkID() + "\"   Link Text: \"" + linkInfo.GetLinkText() + "\""); // Example of how to retrieve the Link ID and Link Text.
 
 				Vector3 worldPointInRectangle;
-				RectTransformUtility.ScreenPointToWorldPointInRectangle(m_TextMeshPro.rectTransform, Input.mousePosition, m_Camera, out worldPointInRectangle);
 
-				switch (linkInfo.GetLinkID()) {
+				RectTransformUtility.ScreenPointToWorldPointInRectangle(m_TextMeshPro.rectTransform,
+					Input.mousePosition,
+					m_Camera,
+					out worldPointInRectangle);
+
+				switch (linkInfo.GetLinkID())
+				{
 					case "id_01": // 100041637: // id_01
 						m_TextPopup_RectTransform.position = worldPointInRectangle;
 						m_TextPopup_RectTransform.gameObject.SetActive(true);
 						m_TextPopup_TMPComponent.text = k_LinkText + " ID 01";
+
 						break;
 					case "id_02": // 100041638: // id_02
 						m_TextPopup_RectTransform.position = worldPointInRectangle;
 						m_TextPopup_RectTransform.gameObject.SetActive(true);
 						m_TextPopup_TMPComponent.text = k_LinkText + " ID 02";
+
 						break;
 				}
 			}
 
 			#endregion
 		}
-		else {
+		else
+		{
 			// Restore any character that may have been modified
-			if (m_lastIndex != -1) {
+			if (m_lastIndex != -1)
+			{
 				RestoreCachedVertexAttributes(m_lastIndex);
 				m_lastIndex = -1;
 			}
 		}
 	}
 
-
-	void OnEnable() {
+	void OnEnable()
+	{
 		// Subscribe to event fired when text object has been regenerated.
 		TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
 	}
 
-	void OnDisable() {
+	void OnDisable()
+	{
 		// UnSubscribe to event fired when text object has been regenerated.
 		TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(ON_TEXT_CHANGED);
 	}
 
-
-	public void OnPointerClick(PointerEventData eventData) {
+	public void OnPointerClick(PointerEventData eventData)
+	{
 		//Debug.Log("Click at POS: " + eventData.position + "  World POS: " + eventData.worldPosition);
 
 		// Check if Mouse Intersects any of the characters. If so, assign a random color.
@@ -279,25 +319,24 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 		int charIndex = TMP_TextUtilities.FindIntersectingCharacter(m_TextMeshPro, Input.mousePosition, m_Camera, true);
 		if (charIndex != -1 && charIndex != m_lastIndex)
 		{
-		    //Debug.Log("Character [" + m_TextMeshPro.textInfo.characterInfo[index].character + "] was selected at POS: " + eventData.position);
-		    m_lastIndex = charIndex;
+			//Debug.Log("Character [" + m_TextMeshPro.textInfo.characterInfo[index].character + "] was selected at POS: " + eventData.position);
+			m_lastIndex = charIndex;
 
-		    Color32 c = new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), 255);
-		    int vertexIndex = m_TextMeshPro.textInfo.characterInfo[charIndex].vertexIndex;
+			Color32 c = new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), 255);
+			int vertexIndex = m_TextMeshPro.textInfo.characterInfo[charIndex].vertexIndex;
 
-		    UIVertex[] uiVertices = m_TextMeshPro.textInfo.meshInfo.uiVertices;
+			UIVertex[] uiVertices = m_TextMeshPro.textInfo.meshInfo.uiVertices;
 
-		    uiVertices[vertexIndex + 0].color = c;
-		    uiVertices[vertexIndex + 1].color = c;
-		    uiVertices[vertexIndex + 2].color = c;
-		    uiVertices[vertexIndex + 3].color = c;
+			uiVertices[vertexIndex + 0].color = c;
+			uiVertices[vertexIndex + 1].color = c;
+			uiVertices[vertexIndex + 2].color = c;
+			uiVertices[vertexIndex + 3].color = c;
 
-		    m_TextMeshPro.canvasRenderer.SetVertices(uiVertices, uiVertices.Length);
+			m_TextMeshPro.canvasRenderer.SetVertices(uiVertices, uiVertices.Length);
 		}
 		*/
 
 		#endregion
-
 
 		#region Word Selection Handling
 
@@ -308,58 +347,57 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 		// Clear previous word selection.
 		if (m_TextPopup_RectTransform != null && m_selectedWord != -1 && (wordIndex == -1 || wordIndex != m_selectedWord))
 		{
-		    TMP_WordInfo wInfo = m_TextMeshPro.textInfo.wordInfo[m_selectedWord];
+			TMP_WordInfo wInfo = m_TextMeshPro.textInfo.wordInfo[m_selectedWord];
 
-		    // Get a reference to the uiVertices array.
-		    UIVertex[] uiVertices = m_TextMeshPro.textInfo.meshInfo.uiVertices;
+			// Get a reference to the uiVertices array.
+			UIVertex[] uiVertices = m_TextMeshPro.textInfo.meshInfo.uiVertices;
 
-		    // Iterate through each of the characters of the word.
-		    for (int i = 0; i < wInfo.characterCount; i++)
-		    {
-		        int vertexIndex = m_TextMeshPro.textInfo.characterInfo[wInfo.firstCharacterIndex + i].vertexIndex;
+			// Iterate through each of the characters of the word.
+			for (int i = 0; i < wInfo.characterCount; i++)
+			{
+				int vertexIndex = m_TextMeshPro.textInfo.characterInfo[wInfo.firstCharacterIndex + i].vertexIndex;
 
-		        Color32 c = uiVertices[vertexIndex + 0].color.Tint(1.33333f);
+				Color32 c = uiVertices[vertexIndex + 0].color.Tint(1.33333f);
 
-		        uiVertices[vertexIndex + 0].color = c;
-		        uiVertices[vertexIndex + 1].color = c;
-		        uiVertices[vertexIndex + 2].color = c;
-		        uiVertices[vertexIndex + 3].color = c;
-		    }
+				uiVertices[vertexIndex + 0].color = c;
+				uiVertices[vertexIndex + 1].color = c;
+				uiVertices[vertexIndex + 2].color = c;
+				uiVertices[vertexIndex + 3].color = c;
+			}
 
-		    m_TextMeshPro.canvasRenderer.SetVertices(uiVertices, uiVertices.Length);
+			m_TextMeshPro.canvasRenderer.SetVertices(uiVertices, uiVertices.Length);
 
-		    m_selectedWord = -1;
+			m_selectedWord = -1;
 		}
 
 		// Handle word selection
 		if (wordIndex != -1 && wordIndex != m_selectedWord)
 		{
-		    m_selectedWord = wordIndex;
+			m_selectedWord = wordIndex;
 
-		    TMP_WordInfo wInfo = m_TextMeshPro.textInfo.wordInfo[wordIndex];
+			TMP_WordInfo wInfo = m_TextMeshPro.textInfo.wordInfo[wordIndex];
 
-		    // Get a reference to the uiVertices array.
-		    UIVertex[] uiVertices = m_TextMeshPro.textInfo.meshInfo.uiVertices;
+			// Get a reference to the uiVertices array.
+			UIVertex[] uiVertices = m_TextMeshPro.textInfo.meshInfo.uiVertices;
 
-		    // Iterate through each of the characters of the word.
-		    for (int i = 0; i < wInfo.characterCount; i++)
-		    {
-		        int vertexIndex = m_TextMeshPro.textInfo.characterInfo[wInfo.firstCharacterIndex + i].vertexIndex;
+			// Iterate through each of the characters of the word.
+			for (int i = 0; i < wInfo.characterCount; i++)
+			{
+				int vertexIndex = m_TextMeshPro.textInfo.characterInfo[wInfo.firstCharacterIndex + i].vertexIndex;
 
-		        Color32 c = uiVertices[vertexIndex + 0].color.Tint(0.75f);
+				Color32 c = uiVertices[vertexIndex + 0].color.Tint(0.75f);
 
-		        uiVertices[vertexIndex + 0].color = c;
-		        uiVertices[vertexIndex + 1].color = c;
-		        uiVertices[vertexIndex + 2].color = c;
-		        uiVertices[vertexIndex + 3].color = c;
-		    }
+				uiVertices[vertexIndex + 0].color = c;
+				uiVertices[vertexIndex + 1].color = c;
+				uiVertices[vertexIndex + 2].color = c;
+				uiVertices[vertexIndex + 3].color = c;
+			}
 
-		    m_TextMeshPro.canvasRenderer.SetVertices(uiVertices, uiVertices.Length);
+			m_TextMeshPro.canvasRenderer.SetVertices(uiVertices, uiVertices.Length);
 		}
 		*/
 
 		#endregion
-
 
 		#region Link Selection Handling
 
@@ -368,80 +406,80 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 		int linkIndex = TMP_TextUtilities.FindIntersectingLink(m_TextMeshPro, Input.mousePosition, m_Camera);
 		if (linkIndex != -1)
 		{
-		    TMP_LinkInfo linkInfo = m_TextMeshPro.textInfo.linkInfo[linkIndex];
-		    int linkHashCode = linkInfo.hashCode;
+			TMP_LinkInfo linkInfo = m_TextMeshPro.textInfo.linkInfo[linkIndex];
+			int linkHashCode = linkInfo.hashCode;
 
-		    //Debug.Log(TMP_TextUtilities.GetSimpleHashCode("id_02"));
+			//Debug.Log(TMP_TextUtilities.GetSimpleHashCode("id_02"));
 
-		    switch (linkHashCode)
-		    {
-		        case 291445: // id_01
-		            if (m_LinkObject01 == null)
-		                m_LinkObject01 = Instantiate(Link_01_Prefab);
-		            else
-		            {
-		                m_LinkObject01.gameObject.SetActive(true);
-		            }
+			switch (linkHashCode)
+			{
+				case 291445: // id_01
+					if (m_LinkObject01 == null)
+						m_LinkObject01 = Instantiate(Link_01_Prefab);
+					else
+					{
+						m_LinkObject01.gameObject.SetActive(true);
+					}
 
-		            break;
-		        case 291446: // id_02
-		            break;
+					break;
+				case 291446: // id_02
+					break;
 
-		    }
+			}
 
-		    // Example of how to modify vertex attributes like colors
-		    #region Vertex Attribute Modification Example
-		    UIVertex[] uiVertices = m_TextMeshPro.textInfo.meshInfo.uiVertices;
+			// Example of how to modify vertex attributes like colors
+			#region Vertex Attribute Modification Example
+			UIVertex[] uiVertices = m_TextMeshPro.textInfo.meshInfo.uiVertices;
 
-		    Color32 c = new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), 255);
-		    for (int i = 0; i < linkInfo.characterCount; i++)
-		    {
-		        TMP_CharacterInfo cInfo = m_TextMeshPro.textInfo.characterInfo[linkInfo.firstCharacterIndex + i];
+			Color32 c = new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), 255);
+			for (int i = 0; i < linkInfo.characterCount; i++)
+			{
+				TMP_CharacterInfo cInfo = m_TextMeshPro.textInfo.characterInfo[linkInfo.firstCharacterIndex + i];
 
-		        if (!cInfo.isVisible) continue; // Skip invisible characters.
+				if (!cInfo.isVisible) continue; // Skip invisible characters.
 
-		        int vertexIndex = cInfo.vertexIndex;
+				int vertexIndex = cInfo.vertexIndex;
 
-		        uiVertices[vertexIndex + 0].color = c;
-		        uiVertices[vertexIndex + 1].color = c;
-		        uiVertices[vertexIndex + 2].color = c;
-		        uiVertices[vertexIndex + 3].color = c;
-		    }
+				uiVertices[vertexIndex + 0].color = c;
+				uiVertices[vertexIndex + 1].color = c;
+				uiVertices[vertexIndex + 2].color = c;
+				uiVertices[vertexIndex + 3].color = c;
+			}
 
-		    m_TextMeshPro.canvasRenderer.SetVertices(uiVertices, uiVertices.Length);
-		    #endregion
+			m_TextMeshPro.canvasRenderer.SetVertices(uiVertices, uiVertices.Length);
+			#endregion
 		}
 		*/
 
 		#endregion
 	}
 
-
-	public void OnPointerEnter(PointerEventData eventData) {
+	public void OnPointerEnter(PointerEventData eventData)
+	{
 		//Debug.Log("OnPointerEnter()");
 		isHoveringObject = true;
 	}
 
-
-	public void OnPointerExit(PointerEventData eventData) {
+	public void OnPointerExit(PointerEventData eventData)
+	{
 		//Debug.Log("OnPointerExit()");
 		isHoveringObject = false;
 	}
 
-
-	public void OnPointerUp(PointerEventData eventData) {
+	public void OnPointerUp(PointerEventData eventData)
+	{
 		//Debug.Log("OnPointerUp()");
 	}
 
-
-	void ON_TEXT_CHANGED(Object obj) {
+	void ON_TEXT_CHANGED(Object obj)
+	{
 		if (obj == m_TextMeshPro)
 			// Update cached vertex data.
 			m_cachedMeshInfoVertexData = m_TextMeshPro.textInfo.CopyMeshInfoVertexData();
 	}
 
-
-	void RestoreCachedVertexAttributes(int index) {
+	void RestoreCachedVertexAttributes(int index)
+	{
 		if (index == -1 || index > m_TextMeshPro.textInfo.characterCount - 1) return;
 
 		// Get the index of the material / sub text object used by this character.
@@ -492,7 +530,6 @@ public class TMP_TextSelector_B : MonoBehaviour, IPointerEnterHandler, IPointerE
 		dst_uv2s[vertexIndex + 1] = src_uv2s[vertexIndex + 1];
 		dst_uv2s[vertexIndex + 2] = src_uv2s[vertexIndex + 2];
 		dst_uv2s[vertexIndex + 3] = src_uv2s[vertexIndex + 3];
-
 
 		// Restore last vertex attribute as we swapped it as well
 		var lastIndex = (src_vertices.Length / 4 - 1) * 4;

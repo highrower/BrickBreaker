@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 
-namespace TMPro.Examples {
-public class TMP_ExampleScript_01 : MonoBehaviour {
+namespace TMPro.Examples
+{
+public class TMP_ExampleScript_01 : MonoBehaviour
+{
 	public enum objectType { TextMeshPro = 0, TextMeshProUGUI = 1 }
 
 	//private TMP_InputField m_inputfield;
-
 
 	const string k_label = "The count is <#0080ff>{0}</color>";
 
@@ -15,7 +16,8 @@ public class TMP_ExampleScript_01 : MonoBehaviour {
 
 	TMP_Text m_text;
 
-	void Awake() {
+	void Awake()
+	{
 		// Get a reference to the TMP text component if one already exists otherwise add one.
 		// This example show the convenience of having both TMP components derive from TMP_Text. 
 		if (ObjectType == 0)
@@ -27,7 +29,8 @@ public class TMP_ExampleScript_01 : MonoBehaviour {
 		m_text.font = Resources.Load<TMP_FontAsset>("Fonts & Materials/Anton SDF");
 
 		// Load a new material preset which was created with the context menu duplicate.
-		m_text.fontSharedMaterial = Resources.Load<Material>("Fonts & Materials/Anton SDF - Drop Shadow");
+		m_text.fontSharedMaterial =
+			Resources.Load<Material>("Fonts & Materials/Anton SDF - Drop Shadow");
 
 		// Set the size of the font.
 		m_text.fontSize = 120;
@@ -42,9 +45,10 @@ public class TMP_ExampleScript_01 : MonoBehaviour {
 		m_text.rectTransform.sizeDelta = new Vector2(size.x, size.y);
 	}
 
-
-	void Update() {
-		if (!isStatic) {
+	void Update()
+	{
+		if (!isStatic)
+		{
 			m_text.SetText(k_label, count % 1000);
 			count += 1;
 		}

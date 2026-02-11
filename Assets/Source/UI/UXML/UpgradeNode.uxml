@@ -1,0 +1,7 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements"
+         xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd"
+         editor-extension-mode="False">
+    <Style src="project://database/Assets/Source/UI/USS/UpgradeNode.uss?fileID=7433441132597879392&amp;guid=8ddc559fbc9fa4817a625849ccf7c697&amp;type=3#UpgradeNode"/>
+    <ui:Label text="Label" name="" class="shop-upgrade-graph-item__name"/>
+    <ui:Button text="Button" class="shop-upgrade-graph-item__buy"/>
+</ui:UXML>

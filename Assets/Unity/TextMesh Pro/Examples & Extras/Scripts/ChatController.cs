@@ -3,7 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ChatController : MonoBehaviour {
+public class ChatController : MonoBehaviour
+{
 	public TMP_InputField ChatInputField;
 
 	public TMP_Text ChatDisplayOutput;
@@ -14,23 +15,24 @@ public class ChatController : MonoBehaviour {
 
 	void OnDisable() { ChatInputField.onSubmit.RemoveListener(AddToChatOutput); }
 
-
-	void AddToChatOutput(string newText) {
+	void AddToChatOutput(string newText)
+	{
 		// Clear Input Field
 		ChatInputField.text = string.Empty;
 
 		var timeNow = DateTime.Now;
 
 		var formattedInput = "[<#FFFF80>"                  +
-		                     timeNow.Hour.ToString("d2")   +
-		                     ":"                           +
-		                     timeNow.Minute.ToString("d2") +
-		                     ":"                           +
-		                     timeNow.Second.ToString("d2") +
-		                     "</color>] "                  +
-		                     newText;
+							 timeNow.Hour.ToString("d2")   +
+							 ":"                           +
+							 timeNow.Minute.ToString("d2") +
+							 ":"                           +
+							 timeNow.Second.ToString("d2") +
+							 "</color>] "                  +
+							 newText;
 
-		if (ChatDisplayOutput != null) {
+		if (ChatDisplayOutput != null)
+		{
 			// No special formatting for first entry
 			// Add line feed before each subsequent entries
 			if (ChatDisplayOutput.text == string.Empty)

@@ -2,8 +2,10 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace TMPro.Examples {
-public class TMP_TextInfoDebugTool : MonoBehaviour {
+namespace TMPro.Examples
+{
+public class TMP_TextInfoDebugTool : MonoBehaviour
+{
 	// Since this script is used for debugging, we exclude it from builds.
 	// TODO: Rework this script to make it into an editor utility.
 #if UNITY_EDITOR
@@ -24,9 +26,10 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 	float m_ScaleMultiplier;
 	float m_HandleSize;
 
-
-	void OnDrawGizmos() {
-		if (m_TextComponent == null) {
+	void OnDrawGizmos()
+	{
+		if (m_TextComponent == null)
+		{
 			m_TextComponent = GetComponent<TMP_Text>();
 
 			if (m_TextComponent == null)
@@ -40,19 +43,19 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 
 		// Update Text Statistics
 		ObjectStats = "Characters: "            +
-		              m_TextInfo.characterCount +
-		              "   Words: "              +
-		              m_TextInfo.wordCount      +
-		              "   Spaces: "             +
-		              m_TextInfo.spaceCount     +
-		              "   Sprites: "            +
-		              m_TextInfo.spriteCount    +
-		              "   Links: "              +
-		              m_TextInfo.linkCount      +
-		              "\nLines: "               +
-		              m_TextInfo.lineCount      +
-		              "   Pages: "              +
-		              m_TextInfo.pageCount;
+					  m_TextInfo.characterCount +
+					  "   Words: "              +
+					  m_TextInfo.wordCount      +
+					  "   Spaces: "             +
+					  m_TextInfo.spaceCount     +
+					  "   Sprites: "            +
+					  m_TextInfo.spriteCount    +
+					  "   Links: "              +
+					  m_TextInfo.linkCount      +
+					  "\nLines: "               +
+					  m_TextInfo.lineCount      +
+					  "   Pages: "              +
+					  m_TextInfo.pageCount;
 
 		// Get the handle size for drawing the various
 		m_ScaleMultiplier = m_TextComponent.GetType() == typeof(TextMeshPro) ? 1 : 0.1f;
@@ -113,25 +116,27 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 		#endregion
 	}
 
-
 	/// <summary>
 	///     Method to draw a rectangle around each character.
 	/// </summary>
 	/// <param name="text"></param>
-	void DrawCharactersBounds() {
+	void DrawCharactersBounds()
+	{
 		var characterCount = m_TextInfo.characterCount;
 
-		for (var i = 0; i < characterCount; i++) {
+		for (var i = 0; i < characterCount; i++)
+		{
 			// Draw visible as well as invisible characters
 			var characterInfo = m_TextInfo.characterInfo[i];
 
-			var isCharacterVisible = i                        < m_TextComponent.maxVisibleCharacters &&
-			                         characterInfo.lineNumber < m_TextComponent.maxVisibleLines      &&
-			                         i                        >= m_TextComponent.firstVisibleCharacter;
+			var isCharacterVisible = i < m_TextComponent.maxVisibleCharacters &&
+									 characterInfo.lineNumber < m_TextComponent.maxVisibleLines &&
+									 i >= m_TextComponent.firstVisibleCharacter;
 
 			if (m_TextComponent.overflowMode == TextOverflowModes.Page)
 				isCharacterVisible =
-					isCharacterVisible && characterInfo.pageNumber + 1 == m_TextComponent.pageToDisplay;
+					isCharacterVisible &&
+					characterInfo.pageNumber + 1 == m_TextComponent.pageToDisplay;
 
 			if (!isCharacterVisible)
 				continue;
@@ -139,26 +144,41 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 			float dottedLineSize = 6;
 
 			// Get Bottom Left and Top Right position of the current character
-			var bottomLeft  = m_Transform.TransformPoint(characterInfo.bottomLeft);
-			var topLeft     = m_Transform.TransformPoint(new Vector3(characterInfo.topLeft.x, characterInfo.topLeft.y, 0));
-			var topRight    = m_Transform.TransformPoint(characterInfo.topRight);
-			var bottomRight = m_Transform.TransformPoint(new Vector3(characterInfo.bottomRight.x, characterInfo.bottomRight.y, 0));
+			var bottomLeft = m_Transform.TransformPoint(characterInfo.bottomLeft);
+
+			var topLeft =
+				m_Transform.TransformPoint(
+					new Vector3(characterInfo.topLeft.x, characterInfo.topLeft.y, 0));
+
+			var topRight = m_Transform.TransformPoint(characterInfo.topRight);
+
+			var bottomRight =
+				m_Transform.TransformPoint(
+					new Vector3(characterInfo.bottomRight.x, characterInfo.bottomRight.y, 0));
 
 			// Draw character bounds
-			if (characterInfo.isVisible) {
+			if (characterInfo.isVisible)
+			{
 				var color = Color.green;
 				DrawDottedRectangle(bottomLeft, topRight, color);
 			}
-			else {
+			else
+			{
 				var color = Color.grey;
 
-				var whiteSpaceAdvance = Math.Abs(characterInfo.origin - characterInfo.xAdvance) > 0.01f ?
-					characterInfo.xAdvance :
-					characterInfo.origin + (characterInfo.ascender - characterInfo.descender) * 0.03f;
-				DrawDottedRectangle(m_Transform.TransformPoint(new Vector3(characterInfo.origin, characterInfo.descender, 0)),
-				                    m_Transform.TransformPoint(new Vector3(whiteSpaceAdvance,    characterInfo.ascender,  0)),
-				                    color,
-				                    4);
+				var whiteSpaceAdvance =
+					Math.Abs(characterInfo.origin - characterInfo.xAdvance) > 0.01f ?
+						characterInfo.xAdvance :
+						characterInfo.origin +
+						(characterInfo.ascender - characterInfo.descender) * 0.03f;
+
+				DrawDottedRectangle(
+					m_Transform.TransformPoint(
+						new Vector3(characterInfo.origin, characterInfo.descender, 0)),
+					m_Transform.TransformPoint(
+						new Vector3(whiteSpaceAdvance, characterInfo.ascender, 0)),
+					color,
+					4);
 			}
 
 			var origin      = characterInfo.origin;
@@ -176,18 +196,35 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 
 			// Draw Cap Height & Mean line
 			var capline = characterInfo.fontAsset == null ?
-				0 :
-				baseline + characterInfo.fontAsset.faceInfo.capLine * characterInfo.scale;
-			var capHeightStart = new Vector3(topLeft.x,  m_Transform.TransformPoint(new Vector3(0, capline, 0)).y, 0);
-			var capHeightEnd   = new Vector3(topRight.x, m_Transform.TransformPoint(new Vector3(0, capline, 0)).y, 0);
+							  0 :
+							  baseline +
+							  characterInfo.fontAsset.faceInfo.capLine * characterInfo.scale;
+
+			var capHeightStart = new Vector3(topLeft.x,
+											 m_Transform.TransformPoint(new Vector3(0, capline, 0)).
+														 y,
+											 0);
+
+			var capHeightEnd = new Vector3(topRight.x,
+										   m_Transform.TransformPoint(new Vector3(0, capline, 0)).y,
+										   0);
 
 			var meanline = characterInfo.fontAsset == null ?
-				0 :
-				baseline + characterInfo.fontAsset.faceInfo.meanLine * characterInfo.scale;
-			var meanlineStart = new Vector3(topLeft.x,  m_Transform.TransformPoint(new Vector3(0, meanline, 0)).y, 0);
-			var meanlineEnd   = new Vector3(topRight.x, m_Transform.TransformPoint(new Vector3(0, meanline, 0)).y, 0);
+							   0 :
+							   baseline +
+							   characterInfo.fontAsset.faceInfo.meanLine * characterInfo.scale;
 
-			if (characterInfo.isVisible) {
+			var meanlineStart = new Vector3(topLeft.x,
+											m_Transform.TransformPoint(new Vector3(0, meanline, 0)).
+														y,
+											0);
+
+			var meanlineEnd = new Vector3(topRight.x,
+										  m_Transform.TransformPoint(new Vector3(0, meanline, 0)).y,
+										  0);
+
+			if (characterInfo.isVisible)
+			{
 				// Cap line
 				Handles.color = Color.cyan;
 				Handles.DrawDottedLine(capHeightStart, capHeightEnd, dottedLineSize);
@@ -221,7 +258,8 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 			DrawCrosshair(advancePosition, 0.0125f / m_ScaleMultiplier, Color.yellow);
 
 			// Draw text labels for metrics
-			if (m_HandleSize < 0.5f) {
+			if (m_HandleSize < 0.5f)
+			{
 				var style = new GUIStyle(GUI.skin.GetStyle("Label"));
 				style.normal.textColor = new Color(0.6f, 0.6f, 0.6f, 1.0f);
 				style.fontSize         = 12;
@@ -253,7 +291,8 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 				Handles.Label(labelPosition, "Descent Line", style);
 				//Handles.Label(labelPosition, "Descent Line (" + descentlineMetrics.ToString("f3") + ")" , style);
 
-				if (characterInfo.isVisible) {
+				if (characterInfo.isVisible)
+				{
 					// Cap Line
 					labelPosition   = m_Transform.TransformPoint(new Vector3(center, capline, 0));
 					style.alignment = TextAnchor.UpperCenter;
@@ -280,13 +319,14 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 		}
 	}
 
-
 	/// <summary>
 	///     Method to draw rectangles around each word of the text.
 	/// </summary>
 	/// <param name="text"></param>
-	void DrawWordBounds() {
-		for (var i = 0; i < m_TextInfo.wordCount; i++) {
+	void DrawWordBounds()
+	{
+		for (var i = 0; i < m_TextInfo.wordCount; i++)
+		{
 			var wInfo = m_TextInfo.wordInfo[i];
 
 			var isBeginRegion = false;
@@ -302,39 +342,57 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 			var wordColor = Color.green;
 
 			// Iterate through each character of the word
-			for (var j = 0; j < wInfo.characterCount; j++) {
+			for (var j = 0; j < wInfo.characterCount; j++)
+			{
 				var characterIndex  = wInfo.firstCharacterIndex + j;
 				var currentCharInfo = m_TextInfo.characterInfo[characterIndex];
 				var currentLine     = currentCharInfo.lineNumber;
 
-				var isCharacterVisible = characterIndex             > m_TextComponent.maxVisibleCharacters ||
-				                         currentCharInfo.lineNumber > m_TextComponent.maxVisibleLines      ||
-				                         (m_TextComponent.overflowMode   == TextOverflowModes.Page &&
-				                          currentCharInfo.pageNumber + 1 != m_TextComponent.pageToDisplay) ?
-					false :
-					true;
+				var isCharacterVisible = characterIndex > m_TextComponent.maxVisibleCharacters ||
+										 currentCharInfo.lineNumber >
+										 m_TextComponent.maxVisibleLines ||
+										 (m_TextComponent.overflowMode == TextOverflowModes.Page &&
+										  currentCharInfo.pageNumber + 1 !=
+										  m_TextComponent.pageToDisplay) ?
+											 false :
+											 true;
 
 				// Track Max Ascender and Min Descender
 				maxAscender  = Mathf.Max(maxAscender, currentCharInfo.ascender);
 				minDescender = Mathf.Min(minDescender, currentCharInfo.descender);
 
-				if (!isBeginRegion && isCharacterVisible) {
+				if (!isBeginRegion && isCharacterVisible)
+				{
 					isBeginRegion = true;
 
-					bottomLeft = new Vector3(currentCharInfo.bottomLeft.x, currentCharInfo.descender, 0);
-					topLeft    = new Vector3(currentCharInfo.bottomLeft.x, currentCharInfo.ascender,  0);
+					bottomLeft = new Vector3(currentCharInfo.bottomLeft.x,
+											 currentCharInfo.descender,
+											 0);
+
+					topLeft = new Vector3(currentCharInfo.bottomLeft.x,
+										  currentCharInfo.ascender,
+										  0);
 
 					//Debug.Log("Start Word Region at [" + currentCharInfo.character + "]");
 
 					// If Word is one character
-					if (wInfo.characterCount == 1) {
+					if (wInfo.characterCount == 1)
+					{
 						isBeginRegion = false;
 
-						topLeft    = m_Transform.TransformPoint(new Vector3(topLeft.x,    maxAscender,  0));
-						bottomLeft = m_Transform.TransformPoint(new Vector3(bottomLeft.x, minDescender, 0));
+						topLeft = m_Transform.TransformPoint(
+							new Vector3(topLeft.x, maxAscender, 0));
+
+						bottomLeft =
+							m_Transform.TransformPoint(new Vector3(bottomLeft.x, minDescender, 0));
+
 						bottomRight =
-							m_Transform.TransformPoint(new Vector3(currentCharInfo.topRight.x, minDescender, 0));
-						topRight = m_Transform.TransformPoint(new Vector3(currentCharInfo.topRight.x, maxAscender, 0));
+							m_Transform.TransformPoint(
+								new Vector3(currentCharInfo.topRight.x, minDescender, 0));
+
+						topRight =
+							m_Transform.TransformPoint(
+								new Vector3(currentCharInfo.topRight.x, maxAscender, 0));
 
 						// Draw Region
 						DrawRectangle(bottomLeft, topLeft, topRight, bottomRight, wordColor);
@@ -344,13 +402,22 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 				}
 
 				// Last Character of Word
-				if (isBeginRegion && j == wInfo.characterCount - 1) {
+				if (isBeginRegion && j == wInfo.characterCount - 1)
+				{
 					isBeginRegion = false;
 
-					topLeft     = m_Transform.TransformPoint(new Vector3(topLeft.x,                  maxAscender,  0));
-					bottomLeft  = m_Transform.TransformPoint(new Vector3(bottomLeft.x,               minDescender, 0));
-					bottomRight = m_Transform.TransformPoint(new Vector3(currentCharInfo.topRight.x, minDescender, 0));
-					topRight    = m_Transform.TransformPoint(new Vector3(currentCharInfo.topRight.x, maxAscender,  0));
+					topLeft = m_Transform.TransformPoint(new Vector3(topLeft.x, maxAscender, 0));
+
+					bottomLeft =
+						m_Transform.TransformPoint(new Vector3(bottomLeft.x, minDescender, 0));
+
+					bottomRight =
+						m_Transform.TransformPoint(
+							new Vector3(currentCharInfo.topRight.x, minDescender, 0));
+
+					topRight =
+						m_Transform.TransformPoint(
+							new Vector3(currentCharInfo.topRight.x, maxAscender, 0));
 
 					// Draw Region
 					DrawRectangle(bottomLeft, topLeft, topRight, bottomRight, wordColor);
@@ -358,13 +425,23 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 					//Debug.Log("End Word Region at [" + currentCharInfo.character + "]");
 				}
 				// If Word is split on more than one line.
-				else if (isBeginRegion && currentLine != m_TextInfo.characterInfo[characterIndex + 1].lineNumber) {
+				else if (isBeginRegion &&
+						 currentLine != m_TextInfo.characterInfo[characterIndex + 1].lineNumber)
+				{
 					isBeginRegion = false;
 
-					topLeft     = m_Transform.TransformPoint(new Vector3(topLeft.x,                  maxAscender,  0));
-					bottomLeft  = m_Transform.TransformPoint(new Vector3(bottomLeft.x,               minDescender, 0));
-					bottomRight = m_Transform.TransformPoint(new Vector3(currentCharInfo.topRight.x, minDescender, 0));
-					topRight    = m_Transform.TransformPoint(new Vector3(currentCharInfo.topRight.x, maxAscender,  0));
+					topLeft = m_Transform.TransformPoint(new Vector3(topLeft.x, maxAscender, 0));
+
+					bottomLeft =
+						m_Transform.TransformPoint(new Vector3(bottomLeft.x, minDescender, 0));
+
+					bottomRight =
+						m_Transform.TransformPoint(
+							new Vector3(currentCharInfo.topRight.x, minDescender, 0));
+
+					topRight =
+						m_Transform.TransformPoint(
+							new Vector3(currentCharInfo.topRight.x, maxAscender, 0));
 
 					// Draw Region
 					DrawRectangle(bottomLeft, topLeft, topRight, bottomRight, wordColor);
@@ -378,15 +455,16 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 		}
 	}
 
-
 	/// <summary>
 	///     Draw rectangle around each of the links contained in the text.
 	/// </summary>
 	/// <param name="text"></param>
-	void DrawLinkBounds() {
+	void DrawLinkBounds()
+	{
 		var textInfo = m_TextComponent.textInfo;
 
-		for (var i = 0; i < textInfo.linkCount; i++) {
+		for (var i = 0; i < textInfo.linkCount; i++)
+		{
 			var linkInfo = textInfo.linkInfo[i];
 
 			var isBeginRegion = false;
@@ -402,39 +480,57 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 			Color32 linkColor = Color.cyan;
 
 			// Iterate through each character of the link text
-			for (var j = 0; j < linkInfo.linkTextLength; j++) {
+			for (var j = 0; j < linkInfo.linkTextLength; j++)
+			{
 				var characterIndex  = linkInfo.linkTextfirstCharacterIndex + j;
 				var currentCharInfo = textInfo.characterInfo[characterIndex];
 				var currentLine     = currentCharInfo.lineNumber;
 
-				var isCharacterVisible = characterIndex             > m_TextComponent.maxVisibleCharacters ||
-				                         currentCharInfo.lineNumber > m_TextComponent.maxVisibleLines      ||
-				                         (m_TextComponent.overflowMode   == TextOverflowModes.Page &&
-				                          currentCharInfo.pageNumber + 1 != m_TextComponent.pageToDisplay) ?
-					false :
-					true;
+				var isCharacterVisible = characterIndex > m_TextComponent.maxVisibleCharacters ||
+										 currentCharInfo.lineNumber >
+										 m_TextComponent.maxVisibleLines ||
+										 (m_TextComponent.overflowMode == TextOverflowModes.Page &&
+										  currentCharInfo.pageNumber + 1 !=
+										  m_TextComponent.pageToDisplay) ?
+											 false :
+											 true;
 
 				// Track Max Ascender and Min Descender
 				maxAscender  = Mathf.Max(maxAscender, currentCharInfo.ascender);
 				minDescender = Mathf.Min(minDescender, currentCharInfo.descender);
 
-				if (!isBeginRegion && isCharacterVisible) {
+				if (!isBeginRegion && isCharacterVisible)
+				{
 					isBeginRegion = true;
 
-					bottomLeft = new Vector3(currentCharInfo.bottomLeft.x, currentCharInfo.descender, 0);
-					topLeft    = new Vector3(currentCharInfo.bottomLeft.x, currentCharInfo.ascender,  0);
+					bottomLeft = new Vector3(currentCharInfo.bottomLeft.x,
+											 currentCharInfo.descender,
+											 0);
+
+					topLeft = new Vector3(currentCharInfo.bottomLeft.x,
+										  currentCharInfo.ascender,
+										  0);
 
 					//Debug.Log("Start Word Region at [" + currentCharInfo.character + "]");
 
 					// If Link is one character
-					if (linkInfo.linkTextLength == 1) {
+					if (linkInfo.linkTextLength == 1)
+					{
 						isBeginRegion = false;
 
-						topLeft    = m_Transform.TransformPoint(new Vector3(topLeft.x,    maxAscender,  0));
-						bottomLeft = m_Transform.TransformPoint(new Vector3(bottomLeft.x, minDescender, 0));
+						topLeft = m_Transform.TransformPoint(
+							new Vector3(topLeft.x, maxAscender, 0));
+
+						bottomLeft =
+							m_Transform.TransformPoint(new Vector3(bottomLeft.x, minDescender, 0));
+
 						bottomRight =
-							m_Transform.TransformPoint(new Vector3(currentCharInfo.topRight.x, minDescender, 0));
-						topRight = m_Transform.TransformPoint(new Vector3(currentCharInfo.topRight.x, maxAscender, 0));
+							m_Transform.TransformPoint(
+								new Vector3(currentCharInfo.topRight.x, minDescender, 0));
+
+						topRight =
+							m_Transform.TransformPoint(
+								new Vector3(currentCharInfo.topRight.x, maxAscender, 0));
 
 						// Draw Region
 						DrawRectangle(bottomLeft, topLeft, topRight, bottomRight, linkColor);
@@ -444,13 +540,22 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 				}
 
 				// Last Character of Link
-				if (isBeginRegion && j == linkInfo.linkTextLength - 1) {
+				if (isBeginRegion && j == linkInfo.linkTextLength - 1)
+				{
 					isBeginRegion = false;
 
-					topLeft     = m_Transform.TransformPoint(new Vector3(topLeft.x,                  maxAscender,  0));
-					bottomLeft  = m_Transform.TransformPoint(new Vector3(bottomLeft.x,               minDescender, 0));
-					bottomRight = m_Transform.TransformPoint(new Vector3(currentCharInfo.topRight.x, minDescender, 0));
-					topRight    = m_Transform.TransformPoint(new Vector3(currentCharInfo.topRight.x, maxAscender,  0));
+					topLeft = m_Transform.TransformPoint(new Vector3(topLeft.x, maxAscender, 0));
+
+					bottomLeft =
+						m_Transform.TransformPoint(new Vector3(bottomLeft.x, minDescender, 0));
+
+					bottomRight =
+						m_Transform.TransformPoint(
+							new Vector3(currentCharInfo.topRight.x, minDescender, 0));
+
+					topRight =
+						m_Transform.TransformPoint(
+							new Vector3(currentCharInfo.topRight.x, maxAscender, 0));
 
 					// Draw Region
 					DrawRectangle(bottomLeft, topLeft, topRight, bottomRight, linkColor);
@@ -458,13 +563,23 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 					//Debug.Log("End Word Region at [" + currentCharInfo.character + "]");
 				}
 				// If Link is split on more than one line.
-				else if (isBeginRegion && currentLine != textInfo.characterInfo[characterIndex + 1].lineNumber) {
+				else if (isBeginRegion &&
+						 currentLine != textInfo.characterInfo[characterIndex + 1].lineNumber)
+				{
 					isBeginRegion = false;
 
-					topLeft     = m_Transform.TransformPoint(new Vector3(topLeft.x,                  maxAscender,  0));
-					bottomLeft  = m_Transform.TransformPoint(new Vector3(bottomLeft.x,               minDescender, 0));
-					bottomRight = m_Transform.TransformPoint(new Vector3(currentCharInfo.topRight.x, minDescender, 0));
-					topRight    = m_Transform.TransformPoint(new Vector3(currentCharInfo.topRight.x, maxAscender,  0));
+					topLeft = m_Transform.TransformPoint(new Vector3(topLeft.x, maxAscender, 0));
+
+					bottomLeft =
+						m_Transform.TransformPoint(new Vector3(bottomLeft.x, minDescender, 0));
+
+					bottomRight =
+						m_Transform.TransformPoint(
+							new Vector3(currentCharInfo.topRight.x, minDescender, 0));
+
+					topRight =
+						m_Transform.TransformPoint(
+							new Vector3(currentCharInfo.topRight.x, maxAscender, 0));
 
 					// Draw Region
 					DrawRectangle(bottomLeft, topLeft, topRight, bottomRight, linkColor);
@@ -479,29 +594,31 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 		}
 	}
 
-
 	/// <summary>
 	///     Draw Rectangles around each lines of the text.
 	/// </summary>
 	/// <param name="text"></param>
-	void DrawLineBounds() {
+	void DrawLineBounds()
+	{
 		var lineCount = m_TextInfo.lineCount;
 
-		for (var i = 0; i < lineCount; i++) {
+		for (var i = 0; i < lineCount; i++)
+		{
 			var lineInfo           = m_TextInfo.lineInfo[i];
 			var firstCharacterInfo = m_TextInfo.characterInfo[lineInfo.firstCharacterIndex];
 			var lastCharacterInfo  = m_TextInfo.characterInfo[lineInfo.lastCharacterIndex];
 
 			var isLineVisible = (lineInfo.characterCount == 1 &&
-			                     (firstCharacterInfo.character == 10     ||
-			                      firstCharacterInfo.character == 11     ||
-			                      firstCharacterInfo.character == 0x2028 ||
-			                      firstCharacterInfo.character == 0x2029)) ||
-			                    i > m_TextComponent.maxVisibleLines        ||
-			                    (m_TextComponent.overflowMode      == TextOverflowModes.Page &&
-			                     firstCharacterInfo.pageNumber + 1 != m_TextComponent.pageToDisplay) ?
-				false :
-				true;
+								 (firstCharacterInfo.character == 10     ||
+								  firstCharacterInfo.character == 11     ||
+								  firstCharacterInfo.character == 0x2028 ||
+								  firstCharacterInfo.character == 0x2029)) ||
+								i > m_TextComponent.maxVisibleLines        ||
+								(m_TextComponent.overflowMode == TextOverflowModes.Page &&
+								 firstCharacterInfo.pageNumber + 1 !=
+								 m_TextComponent.pageToDisplay) ?
+									false :
+									true;
 
 			if (!isLineVisible) continue;
 
@@ -516,33 +633,42 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 
 			// Draw line extents
 			DrawDottedRectangle(m_Transform.TransformPoint(lineInfo.lineExtents.min),
-			                    m_Transform.TransformPoint(lineInfo.lineExtents.max),
-			                    Color.green,
-			                    4);
+								m_Transform.TransformPoint(lineInfo.lineExtents.max),
+								Color.green,
+								4);
 
 			// Draw Ascent line
-			var ascentlineStart = m_Transform.TransformPoint(new Vector3(lineBottomLeft, ascentline, 0));
-			var ascentlineEnd   = m_Transform.TransformPoint(new Vector3(lineTopRight,   ascentline, 0));
+			var ascentlineStart =
+				m_Transform.TransformPoint(new Vector3(lineBottomLeft, ascentline, 0));
+
+			var ascentlineEnd =
+				m_Transform.TransformPoint(new Vector3(lineTopRight, ascentline, 0));
 
 			Handles.color = Color.yellow;
 			Handles.DrawDottedLine(ascentlineStart, ascentlineEnd, dottedLineSize);
 
 			// Draw Base line
-			var baseLineStart = m_Transform.TransformPoint(new Vector3(lineBottomLeft, baseline, 0));
-			var baseLineEnd   = m_Transform.TransformPoint(new Vector3(lineTopRight,   baseline, 0));
+			var baseLineStart =
+				m_Transform.TransformPoint(new Vector3(lineBottomLeft, baseline, 0));
+
+			var baseLineEnd = m_Transform.TransformPoint(new Vector3(lineTopRight, baseline, 0));
 
 			Handles.color = Color.yellow;
 			Handles.DrawDottedLine(baseLineStart, baseLineEnd, dottedLineSize);
 
 			// Draw Descent line
-			var descentLineStart = m_Transform.TransformPoint(new Vector3(lineBottomLeft, descentline, 0));
-			var descentLineEnd   = m_Transform.TransformPoint(new Vector3(lineTopRight,   descentline, 0));
+			var descentLineStart =
+				m_Transform.TransformPoint(new Vector3(lineBottomLeft, descentline, 0));
+
+			var descentLineEnd =
+				m_Transform.TransformPoint(new Vector3(lineTopRight, descentline, 0));
 
 			Handles.color = Color.yellow;
 			Handles.DrawDottedLine(descentLineStart, descentLineEnd, dottedLineSize);
 
 			// Draw text labels for metrics
-			if (m_HandleSize < 1.0f) {
+			if (m_HandleSize < 1.0f)
+			{
 				var style = new GUIStyle();
 				style.normal.textColor = new Color(0.8f, 0.8f, 0.8f, 1.0f);
 				style.fontSize         = 12;
@@ -551,27 +677,33 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 				Vector3 labelPosition;
 
 				// Ascent Line
-				labelPosition   = m_Transform.TransformPoint(new Vector3(lineBottomLeft, ascentline, 0));
+				labelPosition =
+					m_Transform.TransformPoint(new Vector3(lineBottomLeft, ascentline, 0));
+
 				style.padding   = new RectOffset(0, 10, 0, 5);
 				style.alignment = TextAnchor.MiddleRight;
 				Handles.Label(labelPosition, "Ascent Line", style);
 
 				// Base Line
-				labelPosition = m_Transform.TransformPoint(new Vector3(lineBottomLeft, baseline, 0));
+				labelPosition =
+					m_Transform.TransformPoint(new Vector3(lineBottomLeft, baseline, 0));
+
 				Handles.Label(labelPosition, "Base Line", style);
 
 				// Descent line
-				labelPosition = m_Transform.TransformPoint(new Vector3(lineBottomLeft, descentline, 0));
+				labelPosition =
+					m_Transform.TransformPoint(new Vector3(lineBottomLeft, descentline, 0));
+
 				Handles.Label(labelPosition, "Descent Line", style);
 			}
 		}
 	}
 
-
 	/// <summary>
 	///     Draw Rectangle around the bounds of the text object.
 	/// </summary>
-	void DrawBounds() {
+	void DrawBounds()
+	{
 		var meshBounds = m_TextComponent.bounds;
 
 		// Get Bottom Left and Top Right position of each word
@@ -581,19 +713,22 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 		DrawRectangle(bottomLeft, topRight, new Color(1, 0.5f, 0));
 	}
 
-
-	void DrawTextBounds() {
+	void DrawTextBounds()
+	{
 		var textBounds = m_TextComponent.textBounds;
 
-		var bottomLeft = m_TextComponent.transform.position + (textBounds.center - textBounds.extents);
-		var topRight   = m_TextComponent.transform.position + (textBounds.center + textBounds.extents);
+		var bottomLeft = m_TextComponent.transform.position +
+						 (textBounds.center - textBounds.extents);
+
+		var topRight = m_TextComponent.transform.position +
+					   (textBounds.center + textBounds.extents);
 
 		DrawRectangle(bottomLeft, topRight, new Color(0f, 0.5f, 0.5f));
 	}
 
-
 	// Draw Rectangles
-	void DrawRectangle(Vector3 BL, Vector3 TR, Color color) {
+	void DrawRectangle(Vector3 BL, Vector3 TR, Color color)
+	{
 		Gizmos.color = color;
 
 		Gizmos.DrawLine(new Vector3(BL.x, BL.y, 0), new Vector3(BL.x, TR.y, 0));
@@ -602,21 +737,31 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 		Gizmos.DrawLine(new Vector3(TR.x, BL.y, 0), new Vector3(BL.x, BL.y, 0));
 	}
 
-	void DrawDottedRectangle(Vector3 bottomLeft, Vector3 topRight, Color color, float size = 5.0f) {
+	void DrawDottedRectangle(Vector3 bottomLeft, Vector3 topRight, Color color, float size = 5.0f)
+	{
 		Handles.color = color;
-		Handles.DrawDottedLine(bottomLeft, new Vector3(bottomLeft.x, topRight.y, bottomLeft.z), size);
-		Handles.DrawDottedLine(new Vector3(bottomLeft.x,             topRight.y, bottomLeft.z), topRight,                                            size);
-		Handles.DrawDottedLine(topRight,                                                        new Vector3(topRight.x, bottomLeft.y, bottomLeft.z), size);
-		Handles.DrawDottedLine(new Vector3(topRight.x,                                                                  bottomLeft.y, bottomLeft.z), bottomLeft, size);
+
+		Handles.DrawDottedLine(bottomLeft,
+							   new Vector3(bottomLeft.x, topRight.y, bottomLeft.z),
+							   size);
+
+		Handles.DrawDottedLine(new Vector3(bottomLeft.x, topRight.y, bottomLeft.z), topRight, size);
+		Handles.DrawDottedLine(topRight, new Vector3(topRight.x, bottomLeft.y, bottomLeft.z), size);
+
+		Handles.DrawDottedLine(new Vector3(topRight.x, bottomLeft.y, bottomLeft.z),
+							   bottomLeft,
+							   size);
 	}
 
-	void DrawSolidRectangle(Vector3 bottomLeft, Vector3 topRight, Color color, float size = 5.0f) {
+	void DrawSolidRectangle(Vector3 bottomLeft, Vector3 topRight, Color color, float size = 5.0f)
+	{
 		Handles.color = color;
 		var rect = new Rect(bottomLeft, topRight - bottomLeft);
 		Handles.DrawSolidRectangleWithOutline(rect, color, Color.black);
 	}
 
-	void DrawSquare(Vector3 position, float size, Color color) {
+	void DrawSquare(Vector3 position, float size, Color color)
+	{
 		Handles.color = color;
 		var bottomLeft  = new Vector3(position.x - size, position.y - size, position.z);
 		var topLeft     = new Vector3(position.x - size, position.y + size, position.z);
@@ -629,18 +774,20 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 		Handles.DrawLine(bottomRight, bottomLeft);
 	}
 
-	void DrawCrosshair(Vector3 position, float size, Color color) {
+	void DrawCrosshair(Vector3 position, float size, Color color)
+	{
 		Handles.color = color;
 
 		Handles.DrawLine(new Vector3(position.x - size, position.y, position.z),
-		                 new Vector3(position.x + size, position.y, position.z));
+						 new Vector3(position.x + size, position.y, position.z));
+
 		Handles.DrawLine(new Vector3(position.x, position.y - size, position.z),
-		                 new Vector3(position.x, position.y + size, position.z));
+						 new Vector3(position.x, position.y + size, position.z));
 	}
 
-
 	// Draw Rectangles
-	void DrawRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color) {
+	void DrawRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color)
+	{
 		Gizmos.color = color;
 
 		Gizmos.DrawLine(bl, tl);
@@ -649,9 +796,9 @@ public class TMP_TextInfoDebugTool : MonoBehaviour {
 		Gizmos.DrawLine(br, bl);
 	}
 
-
 	// Draw Rectangles
-	void DrawDottedRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color) {
+	void DrawDottedRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color)
+	{
 		var cam        = Camera.current;
 		var dotSpacing = (cam.WorldToScreenPoint(br).x - cam.WorldToScreenPoint(bl).x) / 75f;
 		Handles.color = color;

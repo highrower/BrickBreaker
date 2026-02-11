@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace TMPro.Examples {
-public class SkewTextExample : MonoBehaviour {
+namespace TMPro.Examples
+{
+public class SkewTextExample : MonoBehaviour
+{
 	public AnimationCurve VertexCurve = new(new Keyframe(0,     0),
-	                                        new Keyframe(0.25f, 2.0f),
-	                                        new Keyframe(0.5f,  0),
-	                                        new Keyframe(0.75f, 2.0f),
-	                                        new Keyframe(1,     0f));
+											new Keyframe(0.25f, 2.0f),
+											new Keyframe(0.5f,  0),
+											new Keyframe(0.75f, 2.0f),
+											new Keyframe(1,     0f));
 
 	//public float AngleMultiplier = 1.0f;
 	//public float SpeedMultiplier = 1.0f;
@@ -18,11 +20,10 @@ public class SkewTextExample : MonoBehaviour {
 
 	void Awake() { m_TextComponent = gameObject.GetComponent<TMP_Text>(); }
 
-
 	void Start() { StartCoroutine(WarpText()); }
 
-
-	AnimationCurve CopyAnimationCurve(AnimationCurve curve) {
+	AnimationCurve CopyAnimationCurve(AnimationCurve curve)
+	{
 		var newCurve = new AnimationCurve();
 
 		newCurve.keys = curve.keys;
@@ -30,13 +31,13 @@ public class SkewTextExample : MonoBehaviour {
 		return newCurve;
 	}
 
-
 	/// <summary>
 	///     Method to curve text along a Unity animation curve.
 	/// </summary>
 	/// <param name="textComponent"></param>
 	/// <returns></returns>
-	IEnumerator WarpText() {
+	IEnumerator WarpText()
+	{
 		VertexCurve.preWrapMode  = WrapMode.Clamp;
 		VertexCurve.postWrapMode = WrapMode.Clamp;
 
@@ -45,18 +46,23 @@ public class SkewTextExample : MonoBehaviour {
 		Vector3[] vertices;
 		Matrix4x4 matrix;
 
-		m_TextComponent.havePropertiesChanged =  true; // Need to force the TextMeshPro Object to be updated.
-		CurveScale                            *= 10;
+		m_TextComponent.havePropertiesChanged =
+			true; // Need to force the TextMeshPro Object to be updated.
+
+		CurveScale *= 10;
 		var old_CurveScale = CurveScale;
 		var old_ShearValue = ShearAmount;
 		var old_curve      = CopyAnimationCurve(VertexCurve);
 
-		while (true) {
+		while (true)
+		{
 			if (!m_TextComponent.havePropertiesChanged               &&
-			    old_CurveScale          == CurveScale                &&
-			    old_curve.keys[1].value == VertexCurve.keys[1].value &&
-			    old_ShearValue          == ShearAmount) {
+				old_CurveScale          == CurveScale                &&
+				old_curve.keys[1].value == VertexCurve.keys[1].value &&
+				old_ShearValue          == ShearAmount)
+			{
 				yield return null;
+
 				continue;
 			}
 
@@ -70,7 +76,6 @@ public class SkewTextExample : MonoBehaviour {
 			var textInfo       = m_TextComponent.textInfo;
 			var characterCount = textInfo.characterCount;
 
-
 			if (characterCount == 0) continue;
 
 			//vertices = textInfo.meshInfo[0].vertices;
@@ -79,8 +84,8 @@ public class SkewTextExample : MonoBehaviour {
 			var boundsMinX = m_TextComponent.bounds.min.x; //textInfo.meshInfo[0].mesh.bounds.min.x;
 			var boundsMaxX = m_TextComponent.bounds.max.x; //textInfo.meshInfo[0].mesh.bounds.max.x;
 
-
-			for (var i = 0; i < characterCount; i++) {
+			for (var i = 0; i < characterCount; i++)
+			{
 				if (!textInfo.characterInfo[i].isVisible)
 					continue;
 
@@ -92,7 +97,9 @@ public class SkewTextExample : MonoBehaviour {
 				vertices = textInfo.meshInfo[materialIndex].vertices;
 
 				// Compute the baseline mid point for each character
-				Vector3 offsetToMidBaseline = new Vector2((vertices[vertexIndex + 0].x + vertices[vertexIndex + 2].x) / 2, textInfo.characterInfo[i].baseLine);
+				Vector3 offsetToMidBaseline =
+					new Vector2((vertices[vertexIndex + 0].x + vertices[vertexIndex + 2].x) / 2,
+								textInfo.characterInfo[i].baseLine);
 				//float offsetY = VertexCurve.Evaluate((float)i / characterCount + loopCount / 50f); // Random.Range(-0.25f, 0.25f);
 
 				// Apply offset to adjust our pivot point.
@@ -103,32 +110,48 @@ public class SkewTextExample : MonoBehaviour {
 
 				// Apply the Shearing FX
 				var shear_value = ShearAmount * 0.01f;
-				var topShear    = new Vector3(shear_value * (textInfo.characterInfo[i].topRight.y - textInfo.characterInfo[i].baseLine),      0, 0);
-				var bottomShear = new Vector3(shear_value * (textInfo.characterInfo[i].baseLine   - textInfo.characterInfo[i].bottomRight.y), 0, 0);
+
+				var topShear =
+					new Vector3(shear_value *
+								(textInfo.characterInfo[i].topRight.y -
+								 textInfo.characterInfo[i].baseLine),
+								0,
+								0);
+
+				var bottomShear =
+					new Vector3(shear_value *
+								(textInfo.characterInfo[i].baseLine -
+								 textInfo.characterInfo[i].bottomRight.y),
+								0,
+								0);
 
 				vertices[vertexIndex + 0] += -bottomShear;
 				vertices[vertexIndex + 1] += topShear;
 				vertices[vertexIndex + 2] += topShear;
 				vertices[vertexIndex + 3] += -bottomShear;
 
-
 				// Compute the angle of rotation for each character based on the animation curve
 				var x0 = (offsetToMidBaseline.x - boundsMinX) /
-				         (boundsMaxX            - boundsMinX); // Character's position relative to the bounds of the mesh.
+						 (boundsMaxX -
+						  boundsMinX); // Character's position relative to the bounds of the mesh.
+
 				var x1 = x0 + 0.0001f;
 				var y0 = VertexCurve.Evaluate(x0) * CurveScale;
 				var y1 = VertexCurve.Evaluate(x1) * CurveScale;
 
 				var horizontal = new Vector3(1, 0, 0);
+
 				//Vector3 normal = new Vector3(-(y1 - y0), (x1 * (boundsMaxX - boundsMinX) + boundsMinX) - offsetToMidBaseline.x, 0);
 				var tangent = new Vector3(x1 * (boundsMaxX - boundsMinX) + boundsMinX, y1) -
-				              new Vector3(offsetToMidBaseline.x,                       y0);
+							  new Vector3(offsetToMidBaseline.x,                       y0);
 
 				var dot   = Mathf.Acos(Vector3.Dot(horizontal, tangent.normalized)) * 57.2957795f;
 				var cross = Vector3.Cross(horizontal, tangent);
 				var angle = cross.z > 0 ? dot : 360 - dot;
 
-				matrix = Matrix4x4.TRS(new Vector3(0, y0, 0), Quaternion.Euler(0, 0, angle), Vector3.one);
+				matrix = Matrix4x4.TRS(new Vector3(0, y0, 0),
+									   Quaternion.Euler(0, 0, angle),
+									   Vector3.one);
 
 				vertices[vertexIndex + 0] = matrix.MultiplyPoint3x4(vertices[vertexIndex + 0]);
 				vertices[vertexIndex + 1] = matrix.MultiplyPoint3x4(vertices[vertexIndex + 1]);
@@ -140,7 +163,6 @@ public class SkewTextExample : MonoBehaviour {
 				vertices[vertexIndex + 2] += offsetToMidBaseline;
 				vertices[vertexIndex + 3] += offsetToMidBaseline;
 			}
-
 
 			// Upload the mesh with the revised information
 			m_TextComponent.UpdateVertexData();

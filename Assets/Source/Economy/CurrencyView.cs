@@ -2,14 +2,16 @@ using System.Globalization;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class CurrencyView : MonoBehaviour {
+public class CurrencyView : MonoBehaviour
+{
 	[SerializeField] Bank bank;
 
 	Label _coinLabel;
 
 	const string CoinLabelClass = "current-coins-label";
 
-	void OnEnable() {
+	void OnEnable()
+	{
 		var root = GetComponent<UIDocument>().rootVisualElement;
 
 		_coinLabel = root.Q<Label>(className: CoinLabelClass);
@@ -21,12 +23,14 @@ public class CurrencyView : MonoBehaviour {
 		UpdateDisplay(bank.currentCoins);
 	}
 
-	void OnDisable() {
+	void OnDisable()
+	{
 		if (bank != null)
 			bank.OnCoinsChanged -= UpdateDisplay;
 	}
 
-	void UpdateDisplay(double bankCurrentCoins) {
+	void UpdateDisplay(double bankCurrentCoins)
+	{
 		if (_coinLabel != null)
 			_coinLabel.text = bankCurrentCoins.ToString(CultureInfo.InvariantCulture);
 	}

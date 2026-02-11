@@ -1,13 +1,16 @@
 using System.Collections;
 using UnityEngine;
 
-namespace TMPro.Examples {
-public class TextMeshProFloatingText : MonoBehaviour {
+namespace TMPro.Examples
+{
+public class TextMeshProFloatingText : MonoBehaviour
+{
 	//private int m_frame = 0;
 
 	static readonly WaitForEndOfFrame k_WaitForEndOfFrame = new();
 
-	static readonly WaitForSeconds[] k_WaitForSecondsRandom = {
+	static readonly WaitForSeconds[] k_WaitForSecondsRandom =
+	{
 		new(0.05f), new(0.1f), new(0.15f), new(0.2f), new(0.25f),
 		new(0.3f), new(0.35f), new(0.4f), new(0.45f), new(0.5f),
 		new(0.55f), new(0.6f), new(0.65f), new(0.7f), new(0.75f),
@@ -30,7 +33,8 @@ public class TextMeshProFloatingText : MonoBehaviour {
 
 	Transform m_transform;
 
-	void Awake() {
+	void Awake()
+	{
 		m_transform    = transform;
 		m_floatingText = new GameObject(name + " floating text");
 
@@ -41,8 +45,10 @@ public class TextMeshProFloatingText : MonoBehaviour {
 		m_cameraTransform = Camera.main.transform;
 	}
 
-	void Start() {
-		if (SpawnType == 0) {
+	void Start()
+	{
+		if (SpawnType == 0)
+		{
 			// TextMesh Pro Implementation
 			m_textMeshPro                         = m_floatingText.AddComponent<TextMeshPro>();
 			m_textMeshPro.rectTransform.sizeDelta = new Vector2(3, 3);
@@ -54,8 +60,13 @@ public class TextMeshProFloatingText : MonoBehaviour {
 			//m_textMeshPro.fontSharedMaterial = Resources.Load("Fonts & Materials/LiberationSans SDF", typeof(Material)) as Material;
 
 			m_textMeshPro.alignment = TextAlignmentOptions.Center;
-			m_textMeshPro.color     = new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), 255);
-			m_textMeshPro.fontSize  = 24;
+
+			m_textMeshPro.color = new Color32((byte)Random.Range(0, 255),
+											  (byte)Random.Range(0, 255),
+											  (byte)Random.Range(0, 255),
+											  255);
+
+			m_textMeshPro.fontSize = 24;
 			//m_textMeshPro.enableExtraPadding = true;
 			//m_textMeshPro.enableShadows = false;
 			m_textMeshPro.fontFeatures.Clear();
@@ -64,24 +75,29 @@ public class TextMeshProFloatingText : MonoBehaviour {
 
 			StartCoroutine(DisplayTextMeshProFloatingText());
 		}
-		else if (SpawnType == 1) {
+		else if (SpawnType == 1)
+		{
 			//Debug.Log("Spawning TextMesh Objects.");
 
 			m_floatingText_Transform          = m_floatingText.transform;
 			m_floatingText_Transform.position = m_transform.position + new Vector3(0, 15f, 0);
 
-			m_textMesh                                         = m_floatingText.AddComponent<TextMesh>();
-			m_textMesh.font                                    = Resources.Load<Font>("Fonts/ARIAL");
+			m_textMesh = m_floatingText.AddComponent<TextMesh>();
+			m_textMesh.font = Resources.Load<Font>("Fonts/ARIAL");
 			m_textMesh.GetComponent<Renderer>().sharedMaterial = m_textMesh.font.material;
-			m_textMesh.color                                   = new Color32((byte)Random.Range(0, 255), (byte)Random.Range(0, 255), (byte)Random.Range(0, 255), 255);
-			m_textMesh.anchor                                  = TextAnchor.LowerCenter;
-			m_textMesh.fontSize                                = 24;
+
+			m_textMesh.color = new Color32((byte)Random.Range(0, 255),
+										   (byte)Random.Range(0, 255),
+										   (byte)Random.Range(0, 255),
+										   255);
+
+			m_textMesh.anchor   = TextAnchor.LowerCenter;
+			m_textMesh.fontSize = 24;
 
 			StartCoroutine(DisplayTextMeshFloatingText());
 		}
 		else if (SpawnType == 2) { }
 	}
-
 
 	//void Update()
 	//{
@@ -97,8 +113,8 @@ public class TextMeshProFloatingText : MonoBehaviour {
 
 	//}
 
-
-	public IEnumerator DisplayTextMeshProFloatingText() {
+	public IEnumerator DisplayTextMeshProFloatingText()
+	{
 		var CountDuration  = 2.0f;                  // How long is the countdown alive.
 		var starting_Count = Random.Range(5f, 20f); // At what number is the counter starting at.
 		var current_Count  = starting_Count;
@@ -108,10 +124,10 @@ public class TextMeshProFloatingText : MonoBehaviour {
 		float   alpha       = 255;
 		var     int_counter = 0;
 
-
 		var fadeDuration = 3 / starting_Count * CountDuration;
 
-		while (current_Count > 0) {
+		while (current_Count > 0)
+		{
 			current_Count -= Time.deltaTime / CountDuration * starting_Count;
 
 			if (current_Count <= 3)
@@ -122,14 +138,16 @@ public class TextMeshProFloatingText : MonoBehaviour {
 			m_textMeshPro.text = int_counter.ToString();
 			//m_textMeshPro.SetText("{0}", (int)current_Count);
 
-			m_textMeshPro.color = new Color32(start_color.r, start_color.g, start_color.b, (byte)alpha);
+			m_textMeshPro.color =
+				new Color32(start_color.r, start_color.g, start_color.b, (byte)alpha);
 
 			// Move the floating text upward each update
 			m_floatingText_Transform.position += new Vector3(0, starting_Count * Time.deltaTime, 0);
 
 			// Align floating text perpendicular to Camera.
 			if (!lastPOS.Compare(m_cameraTransform.position, 1000) ||
-			    !lastRotation.Compare(m_cameraTransform.rotation, 1000)) {
+				!lastRotation.Compare(m_cameraTransform.rotation, 1000))
+			{
 				lastPOS                           = m_cameraTransform.position;
 				lastRotation                      = m_cameraTransform.rotation;
 				m_floatingText_Transform.rotation = lastRotation;
@@ -149,8 +167,8 @@ public class TextMeshProFloatingText : MonoBehaviour {
 		StartCoroutine(DisplayTextMeshProFloatingText());
 	}
 
-
-	public IEnumerator DisplayTextMeshFloatingText() {
+	public IEnumerator DisplayTextMeshFloatingText()
+	{
 		var CountDuration  = 2.0f;                  // How long is the countdown alive.
 		var starting_Count = Random.Range(5f, 20f); // At what number is the counter starting at.
 		var current_Count  = starting_Count;
@@ -162,7 +180,8 @@ public class TextMeshProFloatingText : MonoBehaviour {
 
 		var fadeDuration = 3 / starting_Count * CountDuration;
 
-		while (current_Count > 0) {
+		while (current_Count > 0)
+		{
 			current_Count -= Time.deltaTime / CountDuration * starting_Count;
 
 			if (current_Count <= 3)
@@ -173,14 +192,16 @@ public class TextMeshProFloatingText : MonoBehaviour {
 			m_textMesh.text = int_counter.ToString();
 			//Debug.Log("Current Count:" + current_Count.ToString("f2"));
 
-			m_textMesh.color = new Color32(start_color.r, start_color.g, start_color.b, (byte)alpha);
+			m_textMesh.color =
+				new Color32(start_color.r, start_color.g, start_color.b, (byte)alpha);
 
 			// Move the floating text upward each update
 			m_floatingText_Transform.position += new Vector3(0, starting_Count * Time.deltaTime, 0);
 
 			// Align floating text perpendicular to Camera.
 			if (!lastPOS.Compare(m_cameraTransform.position, 1000) ||
-			    !lastRotation.Compare(m_cameraTransform.rotation, 1000)) {
+				!lastRotation.Compare(m_cameraTransform.rotation, 1000))
+			{
 				lastPOS                           = m_cameraTransform.position;
 				lastRotation                      = m_cameraTransform.rotation;
 				m_floatingText_Transform.rotation = lastRotation;

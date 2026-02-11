@@ -1,4 +1,5 @@
-public interface ISaveable {
+public interface ISaveable
+{
 	string ID { get; }
 
 	void Save(SaveData data);

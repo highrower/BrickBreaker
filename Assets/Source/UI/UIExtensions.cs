@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class UIExtensions {
+public class UIExtensions
+{
 	static readonly Vector2 ScreenSample = new Vector2(0, 100f);
 
-	public static float PanelToScreenPixels(VisualElement element) {
+	public static float PanelToScreenPixels(VisualElement element)
+	{
 		var panel      = element.panel;
 		var panelUnits = element.resolvedStyle.height;
 
@@ -18,6 +20,7 @@ public class UIExtensions {
 		if (Mathf.Approximately(panelDistance, 0)) return 0;
 
 		var pixelsPerUnit = ScreenSample.y / panelDistance;
+
 		return panelUnits * pixelsPerUnit;
 	}
 }
