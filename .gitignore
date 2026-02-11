@@ -110,3 +110,7 @@ InitTestScene*.unity*
 *.slnx
 
 Assets/TextMesh Pro/
+
+# JetBrains Rider / IntelliJ
+.idea/
+*.iml
