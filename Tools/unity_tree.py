@@ -9,7 +9,7 @@ DEFAULT_EXCLUDE_DIRS = {
     ".git", ".idea", ".vs",
     "Library", "Temp", "Obj", "Logs",
     "Build", "Builds",
-    "UserSettings",
+    "UserSettings", "Unity"
 }
 
 DEFAULT_EXCLUDE_EXTS = {".meta"}
