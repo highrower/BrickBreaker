@@ -3,7 +3,7 @@ using UnityEngine;
 public class BallBustThrough : MonoBehaviour
 {
 	[SerializeField] LayerMask    brickLayer;
-	[SerializeField] BallSettings settings;
+	[SerializeField] BallModel model;
 
 	Rigidbody2D      _rb;
 	CircleCollider2D _collider;
@@ -28,7 +28,7 @@ public class BallBustThrough : MonoBehaviour
 		{
 			var distance = Vector2.Distance(transform.position, _brick.transform.position);
 
-			if (!(distance > settings.lookAheadDistance * 2.0f))
+			if (!(distance > model.lookAheadDistance * 2.0f))
 				return;
 
 			_brick.SetIsTrigger(false);
@@ -37,12 +37,12 @@ public class BallBustThrough : MonoBehaviour
 			return;
 		}
 
-		if (_rb.linearVelocity.magnitude < settings.speedThreshold) return;
+		if (_rb.linearVelocity.magnitude < model.speedThreshold) return;
 
 		var hit = Physics2D.CircleCast(transform.position,
 									   _collider.radius * transform.lossyScale.x,
 									   _rb.linearVelocity.normalized,
-									   settings.lookAheadDistance,
+									   model.lookAheadDistance,
 									   brickLayer);
 
 		if (!hit.collider)
@@ -65,7 +65,7 @@ public class BallBustThrough : MonoBehaviour
 	void BreakThrough()
 	{
 		Debug.Log($"Breaking through: {_brick.name}"); // Proof it wasn't null
-		_rb.linearVelocity *= settings.bustThroughResistance / _brick.CurrentHealth;
+		_rb.linearVelocity *= model.bustThroughResistance / _brick.CurrentHealth;
 		_brick.Die();
 		_brick = null;
 	}
@@ -77,7 +77,7 @@ public class BallBustThrough : MonoBehaviour
 
 		Gizmos.color = Color.red;
 		var direction = _rb.linearVelocity.normalized;
-		var distance  = settings.lookAheadDistance;
+		var distance  = model.lookAheadDistance;
 
 		Gizmos.DrawRay(transform.position, direction * distance);
 
