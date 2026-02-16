@@ -5,7 +5,8 @@ using Random = UnityEngine.Random;
 public class Ball : MonoBehaviour
 {
 	[SerializeField] Vector3      startPosition;
-	[SerializeField] BallSettings settings;
+	[SerializeField] BallModel model;
+	[SerializeField] BallProgress progress;
 
 	Rigidbody2D _rb;
 
@@ -13,10 +14,10 @@ public class Ball : MonoBehaviour
 	{
 		get
 		{
-			var tierData = settings.CurrentDamageTier;
+			var tierData = model.GetDamageTier(progress.DamageLevel);
 
-			var efficiency = Mathf.InverseLerp(settings.minSpeed,
-											   settings.maxSpeed,
+			var efficiency = Mathf.InverseLerp(model.minSpeed,
+											   model.maxSpeed,
 											   _rb.linearVelocity.magnitude);
 
 			var damage = Mathf.Lerp(tierData.minDamage, tierData.maxDamage, efficiency);
@@ -34,8 +35,8 @@ public class Ball : MonoBehaviour
 	void Update()
 	{
 		var targetSpeed = Mathf.Clamp(_rb.linearVelocity.magnitude,
-									  settings.minSpeed,
-									  settings.maxSpeed);
+									  model.minSpeed,
+									  model.maxSpeed);
 
 		if (!Mathf.Approximately(_rb.linearVelocity.magnitude, targetSpeed) &&
 			_rb.linearVelocity.magnitude > .01f)
@@ -51,7 +52,7 @@ public class Ball : MonoBehaviour
 		// to make the ball to be invisible while it waits.
 		// HINT, make func in ballView + make ballview
 
-		yield return new WaitForSeconds(settings.respawnTime);
+		yield return new WaitForSeconds(model.respawnTime);
 
 		Launch();
 	}
@@ -63,7 +64,7 @@ public class Ball : MonoBehaviour
 		var randomAngle = Random.Range(-30f, 30f);
 		var rotation    = Quaternion.Euler(0, 0, randomAngle);
 		var direction   = rotation * Vector2.down;
-		_rb.linearVelocity = direction * settings.minSpeed;
+		_rb.linearVelocity = direction * model.minSpeed;
 	}
 
 	void OnTriggerEnter2D(Collider2D collision)

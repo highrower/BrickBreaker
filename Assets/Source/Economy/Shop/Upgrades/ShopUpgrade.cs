@@ -15,13 +15,13 @@ public abstract class ShopUpgrade : ScriptableObject
 
 	public abstract int CurrLvl { get; }
 
-	public bool IsMaxed => CurrLvl >= maxLevel;
+	public bool IsMaxed() => CurrLvl >= maxLevel;
 
 	public event Action<ShopUpgrade> OnStateChanged;
 
 	public void ApplyUpgrade()
 	{
-		if (IsMaxed) return;
+		if (IsMaxed()) return;
 
 		UpgradeLogic();
 		OnStateChanged?.Invoke(this);
