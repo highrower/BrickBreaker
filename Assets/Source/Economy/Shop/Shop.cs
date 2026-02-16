@@ -49,7 +49,7 @@ public class Shop : MonoBehaviour
 
 	void TryBuy(ShopUpgrade upg)
 	{
-		if (!upg.IsMaxed && IsUnlocked(upg) && bank.TrySpend(upg.GetCost()))
+		if (!upg.IsMaxed() && IsUnlocked(upg) && bank.TrySpend(upg.GetCost()))
 			upg.ApplyUpgrade();
 	}
 
@@ -63,11 +63,11 @@ public class Shop : MonoBehaviour
 
 		var buyBtn = item.Q<Button>(className: "shop-upgrade-graph-item__buy");
 
-		buyBtn.text = shopItem.IsMaxed ? "MAX" :
+		buyBtn.text = shopItem.IsMaxed() ? "MAX" :
 					  !IsUnlocked(shopItem) ? "LOCKED" :
 					  shopItem.GetCost().ToString();
 
 		var canAfford = bank.currentCoins >= shopItem.GetCost();
-		buyBtn.SetEnabled(!shopItem.IsMaxed && IsUnlocked(shopItem) && canAfford);
+		buyBtn.SetEnabled(!shopItem.IsMaxed() && IsUnlocked(shopItem) && canAfford);
 	}
 }
