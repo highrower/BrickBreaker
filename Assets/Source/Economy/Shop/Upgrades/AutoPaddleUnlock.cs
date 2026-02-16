@@ -3,15 +3,14 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Shop/Auto-Paddle Unlock")]
 public class AutoPaddleUnlock : ShopUpgrade
 {
-	[SerializeField] AutoPaddleSettings paddleSettings;
+	[SerializeField] AutoPaddleProgress paddleProgress;
 
-	public override int CurrLvl => (int)paddleSettings.Unlocked;
+	public override int CurrLvl => paddleProgress.Unlocked ? 1 : 0;
 
 	protected override void UpgradeLogic()
 	{
-		if (!IsMaxed)
-			paddleSettings.Unlocked = true;
+		paddleProgress.Unlocked = true;
 	}
 
-	public override int GetCost() => (paddleSettings.DamageLevel + 1) * baseCost;
+	public override int GetCost() => baseCost;
 }
