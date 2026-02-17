@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // This is where immutable ball data lives. so things not affected by any sort of upgrades
-[CreateAssetMenu(menuName = "Settings/Ball Settings")]
+[CreateAssetMenu(menuName = "Model/Ball Model")]
 public class BallModel : ScriptableObject
 {
 	public float        minSpeed              = 5f;

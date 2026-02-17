@@ -6,7 +6,7 @@ public class Ball : MonoBehaviour
 {
 	[SerializeField] Vector3      startPosition;
 	[SerializeField] BallModel model;
-	BallProgress progress;
+	[SerializeField] BallProgress progress;
 
 	Rigidbody2D _rb;
 
@@ -14,7 +14,7 @@ public class Ball : MonoBehaviour
 	{
 		get
 		{
-			var tierData = model.GetDamageTier(progress.DamageLevel);
+			var tierData = model.GetDamageTier(progress.damageLevel);
 
 			var efficiency = Mathf.InverseLerp(model.minSpeed,
 											   model.maxSpeed,

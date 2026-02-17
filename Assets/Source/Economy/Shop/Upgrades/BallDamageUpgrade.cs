@@ -4,16 +4,16 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(menuName = "Shop/Ball Damage Upgrade")]
 public class BallDamageUpgrade : ShopUpgrade
 {
-	BallProgress progress;
+	[SerializeField] BallProgress progress;
 
-	public override int CurrLvl => progress.DamageLevel;
+	public override int CurrLvl => progress.damageLevel;
 
 	protected override void UpgradeLogic()
 	{
 		if (!IsMaxed())
-			progress.DamageLevel++;
+			progress.damageLevel++;
 	}
 
-	public override int GetCost() => (progress.DamageLevel + 1) * baseCost;
+	public override int GetCost() => (progress.damageLevel + 1) * baseCost;
 }
 
