@@ -1133,10 +1133,6 @@ MonoBehaviour:
   bank: {fileID: 11400000, guid: d7bb8f353f30c4f6390edd7f5b7590fa, type: 2}
   upgrades:
   - {fileID: 11400000, guid: b35ffdc8ac581487a85d28473f9aa110, type: 2}
-  - {fileID: 11400000, guid: 9b603bee9e4b049b699e84f356cc0708, type: 2}
-  - {fileID: 11400000, guid: be872c5014a2f4d78b1f325f41aeb1af, type: 2}
-  - {fileID: 11400000, guid: 49abb047869e249808b55468be481d11, type: 2}
-  - {fileID: 11400000, guid: 34506b57c89e144fbb4e507e6791fc80, type: 2}
 --- !u!1 &959480687
 GameObject:
   m_ObjectHideFlags: 0
@@ -1871,3 +1867,4 @@ SceneRoots:
   - {fileID: 959480689}
   - {fileID: 324800418}
   - {fileID: 77130263}
+  - {fileID: 624786862}
