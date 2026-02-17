@@ -4,8 +4,7 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(menuName = "Shop/Ball Damage Upgrade")]
 public class BallDamageUpgrade : ShopUpgrade
 {
-	[SerializeField] BallProgress progress;
-	[SerializeField] int          damageIncrease = 1;
+	BallProgress progress;
 
 	public override int CurrLvl => progress.DamageLevel;
 

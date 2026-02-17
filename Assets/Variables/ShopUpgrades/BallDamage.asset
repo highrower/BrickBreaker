@@ -17,9 +17,8 @@ MonoBehaviour:
     ball can do
   baseCost: 5
   maxLevel: 5
-  id: 
+  id: Ball Damage Upgrade
   icon: {fileID: 0}
   gridPosition: {x: 1, y: 1}
   prereqs: []
-  ballSettings: {fileID: 11400000, guid: 4704bfb8cd7554731837f18fb25a3071, type: 2}
   damageIncrease: 1
