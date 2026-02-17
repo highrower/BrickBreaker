@@ -6,7 +6,7 @@ public class Ball : MonoBehaviour
 {
 	[SerializeField] Vector3      startPosition;
 	[SerializeField] BallModel model;
-	[SerializeField] BallProgress progress;
+	BallProgress progress;
 
 	Rigidbody2D _rb;
 

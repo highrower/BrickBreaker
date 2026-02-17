@@ -472,7 +472,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   startPosition: {x: 0, y: -1, z: 0}
-  settings: {fileID: 11400000, guid: 4704bfb8cd7554731837f18fb25a3071, type: 2}
+  model: {fileID: 11400000, guid: 4704bfb8cd7554731837f18fb25a3071, type: 2}
 --- !u!114 &324800420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,7 +488,7 @@ MonoBehaviour:
   brickLayer:
     serializedVersion: 2
     m_Bits: 64
-  settings: {fileID: 11400000, guid: 4704bfb8cd7554731837f18fb25a3071, type: 2}
+  model: {fileID: 11400000, guid: 4704bfb8cd7554731837f18fb25a3071, type: 2}
 --- !u!4 &332389606 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3121359155128293300, guid: 7e87ccca829ee44aeb9329b96da9f0e6, type: 3}
