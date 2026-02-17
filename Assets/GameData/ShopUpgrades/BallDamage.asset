@@ -21,4 +21,4 @@ MonoBehaviour:
   icon: {fileID: 0}
   gridPosition: {x: 1, y: 1}
   prereqs: []
-  damageIncrease: 1
+  progress: {fileID: 11400000, guid: 15c1a41e6d526fb4d954734e9a291038, type: 2}
