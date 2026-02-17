@@ -1,26 +1,37 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class UIExtensions
+public static class UIExtensions
 {
-	static readonly Vector2 ScreenSample = new Vector2(0, 100f);
+    static readonly Vector2 ScreenSample = new(0f, 100f);
+    const float Epsilon = 0.0001f;
 
-	public static float PanelToScreenPixels(VisualElement element)
-	{
-		var panel      = element.panel;
-		var panelUnits = element.resolvedStyle.height;
+    static bool IsFinitePositive(float v) => v > 0f && !float.IsNaN(v) && !float.IsInfinity(v);
 
-		if (panel == null) return panelUnits;
+    public static bool TryPanelToScreenPixels(VisualElement element, out float screenPixels)
+    {
+        screenPixels = 0f;
 
-		var panelZero   = RuntimePanelUtils.ScreenToPanel(panel, Vector2.zero);
-		var panelSample = RuntimePanelUtils.ScreenToPanel(panel, ScreenSample);
+        var panel = element?.panel;
+        if (panel == null) return false;
 
-		var panelDistance = Mathf.Abs(panelSample.y - panelZero.y);
+        var panelUnits = element.resolvedStyle.height;
+        if (!IsFinitePositive(panelUnits)) return false;
 
-		if (Mathf.Approximately(panelDistance, 0)) return 0;
+        var p0 = RuntimePanelUtils.ScreenToPanel(panel, Vector2.zero);
+        var p1 = RuntimePanelUtils.ScreenToPanel(panel, ScreenSample);
 
-		var pixelsPerUnit = ScreenSample.y / panelDistance;
+        var panelDistance = Mathf.Abs(p1.y - p0.y);
 
-		return panelUnits * pixelsPerUnit;
-	}
+        if (float.IsNaN(panelDistance) || float.IsInfinity(panelDistance) || panelDistance <= Epsilon)
+            return false;
+
+        var pixelsPerUnit = ScreenSample.y / panelDistance;
+        var result = panelUnits * pixelsPerUnit;
+        
+        if (!IsFinitePositive(pixelsPerUnit) || !IsFinitePositive(result)) return false;
+
+        screenPixels = result;
+        return true;
+    }
 }

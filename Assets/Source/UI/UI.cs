@@ -28,6 +28,7 @@ public class UI : MonoBehaviour
 		_cam           = Camera.main;
 
 		_topMenuBar?.RegisterCallback<GeometryChangedEvent>(RecalculateBounds);
+		_topMenuBar?.schedule.Execute(() => RecalculateBounds(null));
 
 		if (_menuButton != null)
 			_menuButton.clicked += ToggleShop;
@@ -43,20 +44,25 @@ public class UI : MonoBehaviour
 
 	void RecalculateBounds(GeometryChangedEvent evt)
 	{
-		if (_topMenuBar == null) return;
+		if (_topMenuBar == null || _cam == null) return;
 
-		var bottomTopMenu = _cam.pixelHeight - UIExtensions.PanelToScreenPixels(_topMenuBar);
+		if (!UIExtensions.TryPanelToScreenPixels(_topMenuBar, out var topMenuPx))
+			return;
+
+		var bottomTopMenu = _cam.pixelHeight - topMenuPx;
 		var camZPos = Mathf.Abs(_cam.transform.localPosition.z);
-		var bottomLeft = _cam.ScreenToWorldPoint(new Vector3(0, 0, camZPos));
-		var topRight = _cam.ScreenToWorldPoint(new Vector3(Screen.width, bottomTopMenu, camZPos));
 
-		var newBounds = new Rect(bottomLeft.x,
-								 bottomLeft.y,
-								 topRight.x - bottomLeft.x,
-								 topRight.y - bottomLeft.y);
+		var bottomLeft = _cam.ScreenToWorldPoint(new Vector3(0f, 0f, camZPos));
+		var topRight   = _cam.ScreenToWorldPoint(new Vector3(_cam.pixelWidth, bottomTopMenu, camZPos));
 
-		if (playArea != null)
-			playArea.SetValue(newBounds);
+		var newBounds = new Rect(
+			bottomLeft.x,
+			bottomLeft.y,
+			topRight.x - bottomLeft.x,
+			topRight.y - bottomLeft.y
+		);
+
+		playArea?.SetValue(newBounds);
 	}
 
 	void ToggleShop() => _shopContainer.ToggleInClassList(Ids.ShopOpen);

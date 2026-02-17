@@ -15,5 +15,4 @@ public class RectVariable : ScriptableObject
 		OnValueChanged?.Invoke(value);
 	}
 
-	void OnEnable() => value = Rect.zero;
 }
