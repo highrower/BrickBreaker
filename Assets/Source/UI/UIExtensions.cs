@@ -6,7 +6,8 @@ public static class UIExtensions
     static readonly Vector2 ScreenSample = new(0f, 100f);
     const float Epsilon = 0.0001f;
 
-    static bool IsFinitePositive(float v) => v > 0f && !float.IsNaN(v) && !float.IsInfinity(v);
+    static bool IsFinite(float v) => !float.IsNaN(v) && !float.IsInfinity(v);
+    static bool IsFiniteGt(float v, float min) => IsFinite(v) && v > min;
 
     public static bool TryPanelToScreenPixels(VisualElement element, out float screenPixels)
     {
@@ -16,22 +17,15 @@ public static class UIExtensions
         if (panel == null) return false;
 
         var panelUnits = element.resolvedStyle.height;
-        if (!IsFinitePositive(panelUnits)) return false;
+        if (!IsFiniteGt(panelUnits, 0f)) return false;
 
         var p0 = RuntimePanelUtils.ScreenToPanel(panel, Vector2.zero);
         var p1 = RuntimePanelUtils.ScreenToPanel(panel, ScreenSample);
 
         var panelDistance = Mathf.Abs(p1.y - p0.y);
+        if (!IsFiniteGt(panelDistance, Epsilon)) return false;
 
-        if (float.IsNaN(panelDistance) || float.IsInfinity(panelDistance) || panelDistance <= Epsilon)
-            return false;
-
-        var pixelsPerUnit = ScreenSample.y / panelDistance;
-        var result = panelUnits * pixelsPerUnit;
-        
-        if (!IsFinitePositive(pixelsPerUnit) || !IsFinitePositive(result)) return false;
-
-        screenPixels = result;
-        return true;
+        screenPixels = panelUnits * (ScreenSample.y / panelDistance);
+        return IsFiniteGt(screenPixels, 0f);
     }
 }
