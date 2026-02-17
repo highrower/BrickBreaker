@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 [CreateAssetMenu(menuName = "Progress/Auto Paddle Progress")]
 
@@ -8,20 +11,16 @@ public class AutoPaddleProgress : ScriptableObject, ISaveable
     public bool Unlocked;
     public int SizeLevel { get; }
     public int SpeedLevel;
+    public event Action OnUnlocked;
     
-    public void Save(SaveData data)
+    public void Unlock()
     {
-        // implement when your SaveData shape is ready
-        // data.SetInt($"{ID}.unlocked", Unlocked ? 1 : 0);
-        // data.SetInt($"{ID}.size", SizeLevel);
-        // data.SetInt($"{ID}.speed", SpeedLevel);
+        if (Unlocked) return;
+        Unlocked = true;
+
+        OnUnlocked?.Invoke();
     }
 
-    public void Load(SaveData data)
-    {
-        // implement when your SaveData shape is ready
-        // Unlocked = data.GetInt($"{ID}.unlocked") == 1;
-        // SizeLevel = data.GetInt($"{ID}.size");
-        // SpeedLevel = data.GetInt($"{ID}.speed");
-    }
+    public void Save(SaveData data) { /* later */ }
+    public void Load(SaveData data) { /* later */ }
 }

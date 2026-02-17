@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem.EnhancedTouch;
 
 public class AutoPaddle : MonoBehaviour
 {
@@ -14,39 +13,45 @@ public class AutoPaddle : MonoBehaviour
 	CapsuleCollider2D _collider;
 	bool        _isTwisting;
 	float       _halfWidth;
+	
+	Action _onUnlockedHandler;
 
-	void OnEnable() { EnhancedTouchSupport.Enable(); }
 
-	void OnDisable() { EnhancedTouchSupport.Disable(); }
 
 	void Awake()
 	{
+		_onUnlockedHandler = () => ToggleAutoPaddle(progress.Unlocked);
 		_rb = GetComponent<Rigidbody2D>();
 		_renderer = GetComponent<SpriteRenderer>();
 		_collider = GetComponent<CapsuleCollider2D>();
 	}
+	
+	void OnEnable()
+	{
+		if (progress)
+			progress.OnUnlocked +=  _onUnlockedHandler;
+	}
+
+	void OnDisable()
+	{
+		if (progress)
+			progress.OnUnlocked -=  _onUnlockedHandler;
+	}
 
 	void Start()
 	{
-		_halfWidth  = GetComponent<SpriteRenderer>().bounds.extents.x;
+		_halfWidth  = _renderer.bounds.extents.x;
+		ToggleAutoPaddle(progress && progress.Unlocked);
 	}
 
 	void Update()
 	{
-		if (progress.Unlocked)
-		{
-			_renderer.enabled = true;
-			_collider.enabled = true;
-			var targetX = GetTargetX(bounds.Value, _halfWidth);
-			var finalTargetPos = new Vector2(targetX, transform.position.y);
-			var smoothedPosition = Vector2.Lerp(_rb.position, finalTargetPos, Time.deltaTime * 500);
-			transform.position = smoothedPosition;
-		}
-		else
-		{
-			_renderer.enabled = false;
-			_collider.enabled = false;
-		}
+		if (!progress.Unlocked) return;
+		
+		var targetX = GetTargetX(bounds.Value, _halfWidth);
+		var finalTargetPos = new Vector2(targetX, transform.position.y);
+		var smoothedPosition = Vector2.Lerp(_rb.position, finalTargetPos, Time.deltaTime * 500);
+		transform.position = smoothedPosition;
 	}
 
 	void OnTriggerEnter2D(Collider2D other)
@@ -54,6 +59,8 @@ public class AutoPaddle : MonoBehaviour
 		if (other.CompareTag("Drop"))
 			CollectDrop(other);
 	}
+	
+	void ToggleAutoPaddle(bool enable) { _renderer.enabled=enable; _collider.enabled=enable; enabled=enable; }
 
 	float GetTargetX(Rect bound, float xOffset)
 	{

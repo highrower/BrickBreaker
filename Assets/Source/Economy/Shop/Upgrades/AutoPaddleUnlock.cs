@@ -7,10 +7,6 @@ public class AutoPaddleUnlock : ShopUpgrade
 
 	public override int CurrLvl => paddleProgress.Unlocked ? 1 : 0;
 
-	protected override void UpgradeLogic()
-	{
-		paddleProgress.Unlocked = true;
-	}
-
+	protected override void UpgradeLogic() => paddleProgress.Unlock(); 
 	public override int GetCost() => baseCost;
 }
