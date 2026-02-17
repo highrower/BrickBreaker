@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+[CreateAssetMenu(menuName = "Progress/Auto Paddle Progress")]
+
 public class AutoPaddleProgress : ScriptableObject, ISaveable
 {
     public string ID => "auto_paddle";

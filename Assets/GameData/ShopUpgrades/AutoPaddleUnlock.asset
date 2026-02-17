@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a8a0a9c809d4cee8062733a5f6e329b, type: 3}
+  m_Name: AutoPaddleUnlock
+  m_EditorClassIdentifier: Assembly-CSharp::AutoPaddleUnlock
+  title: Auto Paddle
+  description: Unlocks auto paddle? No need to play yourself???
+  baseCost: 5
+  maxLevel: 1
+  id: 
+  icon: {fileID: 0}
+  gridPosition: {x: 2, y: 2}
+  prereqs: []
+  paddleProgress: {fileID: 11400000, guid: a86524a70d4f44342b4251520abba447, type: 2}

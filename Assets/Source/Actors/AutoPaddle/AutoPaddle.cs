@@ -7,8 +7,11 @@ public class AutoPaddle : MonoBehaviour
 	[SerializeField] RectReference bounds;
 	[SerializeField] Bank          bank;
 	[SerializeField] float speed;
+	[SerializeField] AutoPaddleProgress progress;
 
 	Rigidbody2D _rb;
+	SpriteRenderer _renderer;
+	CapsuleCollider2D _collider;
 	bool        _isTwisting;
 	float       _halfWidth;
 
@@ -19,6 +22,8 @@ public class AutoPaddle : MonoBehaviour
 	void Awake()
 	{
 		_rb = GetComponent<Rigidbody2D>();
+		_renderer = GetComponent<SpriteRenderer>();
+		_collider = GetComponent<CapsuleCollider2D>();
 	}
 
 	void Start()
@@ -28,10 +33,20 @@ public class AutoPaddle : MonoBehaviour
 
 	void Update()
 	{
-		var targetX = GetTargetX(bounds.Value, _halfWidth);
-		var finalTargetPos = new Vector2(targetX, transform.position.y);
-		var smoothedPosition = Vector2.Lerp(_rb.position, finalTargetPos, Time.deltaTime * 500);
-		transform.position = smoothedPosition;
+		if (progress.Unlocked)
+		{
+			_renderer.enabled = true;
+			_collider.enabled = true;
+			var targetX = GetTargetX(bounds.Value, _halfWidth);
+			var finalTargetPos = new Vector2(targetX, transform.position.y);
+			var smoothedPosition = Vector2.Lerp(_rb.position, finalTargetPos, Time.deltaTime * 500);
+			transform.position = smoothedPosition;
+		}
+		else
+		{
+			_renderer.enabled = false;
+			_collider.enabled = false;
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other)
@@ -46,8 +61,8 @@ public class AutoPaddle : MonoBehaviour
 		var xMax = bound.max.x - xOffset;
 
 		var phase = Time.time * speed * (Mathf.PI * 2f);
-		var s = Mathf.Sin(phase);          // [-1, 1]
-		var t = (s + 1f) * 0.5f;           // [0, 1]
+		var s = Mathf.Sin(phase);
+		var t = (s + 1f) * 0.5f;
 
 		return Mathf.Lerp(xMin, xMax, t);
 	}
