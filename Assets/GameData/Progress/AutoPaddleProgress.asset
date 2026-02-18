@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83eb5aa1cac04af5b39218e452780a87, type: 3}
   m_Name: AutoPaddleProgress
   m_EditorClassIdentifier: Assembly-CSharp::AutoPaddleProgress
-  Unlocked: 0
-  SpeedLevel: 0
+  unlocked: 0
+  sizeLevel: 0
+  speedLevel: 0

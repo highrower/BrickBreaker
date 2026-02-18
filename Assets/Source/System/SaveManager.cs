@@ -16,6 +16,12 @@ public class SaveManager : MonoBehaviour
 	{
 		if (pauseStatus) SaveGame();
 	}
+	
+	void OnApplicationFocus(bool hasFocus)
+	{
+		if (!hasFocus)
+			SaveGame();
+	}
 
 	void OnApplicationQuit() { SaveGame(); }
 

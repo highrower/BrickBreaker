@@ -1,5 +1,3 @@
-using System;
-using NUnit.Framework;
 using UnityEngine;
 
 public class Walls : MonoBehaviour
@@ -16,7 +14,7 @@ public class Walls : MonoBehaviour
 		if (transform.Find("RightWall")) _rightWall = transform.Find("RightWall").gameObject;
 		if (transform.Find("UpperWall")) _topWall   = transform.Find("UpperWall").gameObject;
 
-		Assert.True(_leftWall != null && _rightWall != null && _topWall != null,
+		Debug.Assert(_leftWall != null && _rightWall != null && _topWall != null,
 					"Walls: One or more wall GameObjects not found as children.");
 	}
 

@@ -32,9 +32,3 @@ public class Drop : MonoBehaviour
 			Destroy(gameObject);
 	}
 }
-
-[CreateAssetMenu(menuName = "Settings/DropSettings")]
-public class DropSettings : ScriptableObject
-{
-	public int value;
-}
