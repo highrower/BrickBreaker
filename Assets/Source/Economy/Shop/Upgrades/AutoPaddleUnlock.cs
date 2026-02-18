@@ -5,7 +5,7 @@ public class AutoPaddleUnlock : ShopUpgrade
 {
 	[SerializeField] AutoPaddleProgress paddleProgress;
 
-	public override int CurrLvl => paddleProgress.Unlocked ? 1 : 0;
+	public override int CurrLvl => paddleProgress.unlocked ? 1 : 0;
 
 	protected override void UpgradeLogic() => paddleProgress.Unlock(); 
 	public override int GetCost() => baseCost;

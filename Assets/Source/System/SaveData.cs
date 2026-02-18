@@ -9,7 +9,7 @@ public class SaveData : ISerializationCallbackReceiver
 	[NonSerialized]
 	public Dictionary<string, int> UpgradeIdToLevel = new();
 
-	public double totalCoins = 0;
+	public double totalCoins;
 
 	[SerializeField]
 	List<UpgradeRecord> upgradeList = new();

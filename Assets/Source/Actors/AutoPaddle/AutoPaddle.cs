@@ -20,7 +20,7 @@ public class AutoPaddle : MonoBehaviour
 
 	void Awake()
 	{
-		_onUnlockedHandler = () => ToggleAutoPaddle(progress.Unlocked);
+		_onUnlockedHandler = () => ToggleAutoPaddle(progress.unlocked);
 		_rb = GetComponent<Rigidbody2D>();
 		_renderer = GetComponent<SpriteRenderer>();
 		_collider = GetComponent<CapsuleCollider2D>();
@@ -41,12 +41,12 @@ public class AutoPaddle : MonoBehaviour
 	void Start()
 	{
 		_halfWidth  = _renderer.bounds.extents.x;
-		ToggleAutoPaddle(progress && progress.Unlocked);
+		ToggleAutoPaddle(progress && progress.unlocked);
 	}
 
 	void Update()
 	{
-		if (!progress.Unlocked) return;
+		if (!progress.unlocked) return;
 		
 		var targetX = GetTargetX(bounds.Value, _halfWidth);
 		var finalTargetPos = new Vector2(targetX, transform.position.y);

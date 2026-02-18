@@ -6,16 +6,15 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Progress/Ball Progress")]
 public class BallProgress: ScriptableObject, ISaveable
 {
-    public string ID =>  "ball_progress";
+    public string ID =>  "ball";
     
-    [Header("Progress")]
     public int damageLevel;
-    
-    [Header("Defaults")]
-    public int defaultDamageLevel;
     
     public void Save(SaveData data) => data.UpgradeIdToLevel[ID] = damageLevel;
 
-    public void Load(SaveData data) => data.UpgradeIdToLevel.TryGetValue(ID, out damageLevel);
+    public void Load(SaveData data)
+    {
+        if(data.UpgradeIdToLevel.TryGetValue(ID, out var d)) damageLevel = d;  
+    } 
     
 }

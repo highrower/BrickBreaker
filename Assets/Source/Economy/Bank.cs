@@ -11,8 +11,6 @@ public class Bank : ScriptableObject, ISaveable
 
 	public event Action<double> OnCoinsChanged;
 
-	void OnEnable() => currentCoins = 0;
-
 	public void Save(SaveData data) => data.totalCoins = currentCoins;
 
 	public void Load(SaveData data)
