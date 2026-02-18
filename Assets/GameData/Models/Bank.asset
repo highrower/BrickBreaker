@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e78c098b40564425a77acda171c86d26, type: 3}
   m_Name: Bank
   m_EditorClassIdentifier: Assembly-CSharp::Bank
+  id: Player_Bank
   currentCoins: 0
-  cumulativeCoins: 0
