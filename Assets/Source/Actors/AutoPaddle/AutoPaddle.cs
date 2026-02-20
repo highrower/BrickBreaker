@@ -59,8 +59,13 @@ public class AutoPaddle : MonoBehaviour
 		if (other.CompareTag("Drop"))
 			CollectDrop(other);
 	}
-	
-	void ToggleAutoPaddle(bool enable) { _renderer.enabled=enable; _collider.enabled=enable; enabled=enable; }
+
+	void ToggleAutoPaddle(bool enable)
+	{
+		_renderer.enabled=enable; 
+		_collider.enabled=enable; 
+		if (_rb) _rb.simulated = enable;
+	}
 
 	float GetTargetX(Rect bound, float xOffset)
 	{
