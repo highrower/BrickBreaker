@@ -13,70 +13,18 @@ public class BrickSpawner : MonoBehaviour
 	[SerializeField] RectReference brickBounds;
 
 	Brick[,] _brickGrid;
-	Coroutine _applyBoundsRoutine;
 
-	void Awake()
+	void Start()
 	{
+		var tempRenderer = brickPrefab.GetComponent<SpriteRenderer>();
+
 		_brickGrid = new Brick[gridSize, gridSize];
 		SpawnBricks();
+		brickBounds.variable.OnValueChanged += UpdateBrickPositions;
+		UpdateBrickPositions(brickBounds.Value);
 	}
 
-	void OnEnable()
-	{
-		if (brickBounds != null && !brickBounds.useConstant && brickBounds.variable != null)
-			brickBounds.variable.OnValueChanged += HandleBoundsChanged;
-
-		KickApplyBounds();
-	}
-	
-	void OnDisable()
-	{
-		if (brickBounds != null && !brickBounds.useConstant && brickBounds.variable != null)
-			brickBounds.variable.OnValueChanged -= HandleBoundsChanged;
-
-		if (_applyBoundsRoutine == null) return;
-		StopCoroutine(_applyBoundsRoutine);
-		_applyBoundsRoutine = null;
-	}
-	
-	void HandleBoundsChanged(Rect bounds)
-	{
-		ApplyBounds(bounds);
-	}
-
-	void KickApplyBounds()
-	{
-		if (_applyBoundsRoutine != null)
-			StopCoroutine(_applyBoundsRoutine);
-
-		_applyBoundsRoutine = StartCoroutine(ApplyBoundsWhenValid());
-	}
-	
-	IEnumerator ApplyBoundsWhenValid()
-	{
-		const int maxFrames = 30;
-
-		for (var i = 0; i < maxFrames; i++)
-		{
-			var bounds = brickBounds.Value;
-			if (bounds is { width: > 0f, height: > 0f })
-			{
-				ApplyBounds(bounds);
-				_applyBoundsRoutine = null;
-				yield break;
-			}
-
-			yield return null;
-		}
-
-		Debug.LogWarning(
-			$"[BrickSpawner] Brick bounds never became valid. useConstant={brickBounds.useConstant}, " +
-			$"hasVariable={brickBounds.variable} value={brickBounds.Value}"
-		);
-
-		_applyBoundsRoutine = null;
-	}
-
+	void OnDestroy() { brickBounds.variable.OnValueChanged -= UpdateBrickPositions; }
 
 	void SpawnBricks()
 	{
@@ -94,27 +42,27 @@ public class BrickSpawner : MonoBehaviour
 			}
 		}
 	}
-	
-	void ApplyBounds(Rect bounds)
+
+	void UpdateBrickPositions(Rect bounds)
 	{
-		if (bounds.width <= 0f || bounds.height <= 0f) return;
+		if (bounds.width <= 0 || bounds.height <= 0) return;
 
 		var leftBound  = bounds.xMin;
 		var upperBound = bounds.yMax;
 
-		var cellWidth  = bounds.width / gridSize;
-		var cellHeight = cellWidth * heightRatio;
+		var cellWidth  = (bounds.xMax - leftBound) / gridSize;
+		var cellHeight = cellWidth                 * heightRatio;
 
-		var targetScaleX = cellWidth  * padding;
-		var targetScaleY = cellHeight * padding;
+		var targetScaleX = (cellWidth  * padding);
+		var targetScaleY = (cellHeight * padding);
 		var finalScale   = new Vector3(targetScaleX, targetScaleY, 1f);
 
 		foreach (var brick in _brickGrid)
 		{
-			if (!brick) continue;
+			if (brick == null) continue;
 
-			var brickXPos = leftBound  + (brick.GridX * cellWidth)  + (cellWidth  * 0.5f);
-			var brickYPos = upperBound - (brick.GridY * cellHeight) - (cellHeight * 0.5f);
+			var brickXPos = leftBound  + (brick.GridX * cellWidth)  + (cellWidth  / 2f);
+			var brickYPos = upperBound - (brick.GridY * cellHeight) - (cellHeight / 2f);
 
 			brick.transform.position = new Vector2(brickXPos, brickYPos);
 			brick.SetScale(finalScale);
