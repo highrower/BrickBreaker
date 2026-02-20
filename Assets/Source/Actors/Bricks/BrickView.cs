@@ -4,20 +4,23 @@ using TMPro;
 using UnityEngine;
 
 public class BrickView : MonoBehaviour {
+	[SerializeField] Transform visualRoot;
+	
 	SpriteRenderer _renderer;
 	TMP_Text       _healthLabel;
 
 	[SerializeField] float textPadding = 0.8f;
 
 	Vector3 _initialScale;
-	Vector3 _originalLocalPos;
-	bool _isShaking = false;
 
 	void Awake() {
-		_renderer     = GetComponent<SpriteRenderer>();
-		_healthLabel  = GetComponentInChildren<TMP_Text>();
-		_initialScale = _healthLabel.transform.localScale;
-		_originalLocalPos = transform.localPosition;
+		if (!visualRoot)
+			visualRoot = transform.Find("VisualRoot") ?? transform;
+		_renderer     = visualRoot.GetComponent<SpriteRenderer>();
+		_healthLabel  = visualRoot.GetComponentInChildren<TMP_Text>(true);
+		
+		if(_healthLabel)
+			_initialScale = _healthLabel.transform.localScale;
 	}
 
 	public void Refresh(int currHealth, BrickSettings settings) {
@@ -38,31 +41,25 @@ public class BrickView : MonoBehaviour {
 	
 	public void Shake(float duration = 0.3f, float magnitude = 0.15f) {
 		StopAllCoroutines();
-		if(_isShaking) transform.localPosition = _originalLocalPos; 
+		visualRoot.localPosition = Vector3.zero; 
 		StartCoroutine(ShakeRoutine(duration, magnitude));
 	}
 	
 	IEnumerator ShakeRoutine(float duration, float magnitude) {
-		_isShaking = true;
-        
-		_originalLocalPos = transform.localPosition;
-		var anchorPos = transform.localPosition;
-
 		var elapsed = 0f;
 
 		while (elapsed < duration) {
 			var x = Random.Range(-1f, 1f) * magnitude;
 			var y = Random.Range(-1f, 1f) * magnitude;
 
-			transform.localPosition = anchorPos + new Vector3(x, y, 0);
+			visualRoot.localPosition = Vector3.zero + new Vector3(x, y, 0);
 
 			elapsed += Time.deltaTime;
 			magnitude = Mathf.Lerp(magnitude, 0f, elapsed / duration);
 			yield return null;
 		}
 
-		transform.localPosition = anchorPos;
-		_isShaking = false;
+		visualRoot.localPosition = Vector3.zero;
 	}
 
 	void ToggleVisible(bool isVisible) {

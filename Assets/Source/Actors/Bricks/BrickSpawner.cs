@@ -14,18 +14,26 @@ public class BrickSpawner : MonoBehaviour
 
 	Brick[,] _brickGrid;
 
-	void Start()
+	void Awake()
 	{
-		var tempRenderer = brickPrefab.GetComponent<SpriteRenderer>();
-
 		_brickGrid = new Brick[gridSize, gridSize];
 		SpawnBricks();
-		brickBounds.variable.OnValueChanged += UpdateBrickPositions;
+	}
+
+	void OnEnable()
+	{
+		if (!brickBounds.useConstant && brickBounds.variable != null)
+			brickBounds.variable.OnValueChanged += UpdateBrickPositions;
+
 		UpdateBrickPositions(brickBounds.Value);
 	}
 
-	void OnDestroy() { brickBounds.variable.OnValueChanged -= UpdateBrickPositions; }
-
+	void OnDisable()
+	{
+		if (!brickBounds.useConstant && brickBounds.variable != null)
+			brickBounds.variable.OnValueChanged -= UpdateBrickPositions;
+	}
+	
 	void SpawnBricks()
 	{
 		for (var y = 0; y < gridSize; y++)
