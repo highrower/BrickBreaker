@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "State/Bank")]
-public class Bank : ScriptableObject, ISaveable
+public class Bank : ScriptableObject
 {
 	[SerializeField] string id = "Player_Bank";
 	public           string ID => id;

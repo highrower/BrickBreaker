@@ -3,23 +3,39 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
-[Serializable]
-public class SaveData : ISerializationCallbackReceiver
+public class SaveData : MonoBehaviour, ISerializationCallbackReceiver
 {
+	
 	[NonSerialized]
 	public Dictionary<string, int> UpgradeIdToLevel = new();
 
 	public double totalCoins;
 
 	[SerializeField]
-	List<UpgradeRecord> upgradeList = new();
+	List<UpgradeRecord> _upgradeList = new();
 
+	public int GetInt(string key, int defaultValue = 0)
+		=> UpgradeIdToLevel.GetValueOrDefault(key, defaultValue);
+
+	public void SetInt(string key, int value, Action a = null)
+	{
+		UpgradeIdToLevel[key] = value;
+		a?.Invoke();
+	}
+
+	public bool GetBool01(string key, bool defaultValue = false)
+		=> GetInt(key, defaultValue ? 1 : 0) == 1;
+
+	public void SetBool01(string key, bool value, Action a = null)
+		=> SetInt(key, value ? 1 : 0, a);
+	
+	
 	public void OnBeforeSerialize()
 	{
-		upgradeList.Clear();
+		_upgradeList.Clear();
 
 		foreach (var kvp in UpgradeIdToLevel)
-			upgradeList.Add(new UpgradeRecord { id = kvp.Key, level = kvp.Value });
+			_upgradeList.Add(new UpgradeRecord { id = kvp.Key, level = kvp.Value });
 	}
 
 	public void OnAfterDeserialize()
@@ -27,7 +43,7 @@ public class SaveData : ISerializationCallbackReceiver
 		UpgradeIdToLevel.Clear();
 
 		foreach (var record in
-				 upgradeList.Where(record => !UpgradeIdToLevel.ContainsKey(record.id)))
+				 _upgradeList.Where(record => !UpgradeIdToLevel.ContainsKey(record.id)))
 			UpgradeIdToLevel.Add(record.id, record.level);
 	}
 }

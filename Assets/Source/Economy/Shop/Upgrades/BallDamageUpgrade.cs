@@ -6,14 +6,14 @@ public class BallDamageUpgrade : ShopUpgrade
 {
 	[SerializeField] BallProgress progress;
 
-	public override int CurrLvl => progress.damageLevel;
+	public override int GetLevel(SaveData data) => BallProgress.GetDamage(data);
 
-	protected override void UpgradeLogic()
+	protected override void UpgradeLogic(SaveData data) 
 	{
-		if (!IsMaxed())
-			progress.damageLevel++;
+		if (!IsMaxed(data))
+			BallProgress.SetDamage(data, BallProgress.GetDamage(data) + 1);
 	}
 
-	public override int GetCost() => (progress.damageLevel + 1) * baseCost;
+	public override int GetCost(SaveData data) => (GetLevel(data) + 1) * baseCost;
 }
 

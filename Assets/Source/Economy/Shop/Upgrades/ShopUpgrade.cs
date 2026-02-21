@@ -13,21 +13,20 @@ public abstract class ShopUpgrade : ScriptableObject
 	public            Vector2           gridPosition;
 	public            List<ShopUpgrade> prereqs = new();
 
-	public abstract int CurrLvl { get; }
-
-	public bool IsMaxed() => CurrLvl >= maxLevel;
+	public abstract int GetLevel(SaveData data);
+	public bool IsMaxed(SaveData data) => GetLevel(data) > maxLevel;
 
 	public event Action<ShopUpgrade> OnStateChanged;
 
-	public void ApplyUpgrade()
+	public void ApplyUpgrade(SaveData data)
 	{
-		if (IsMaxed()) return;
+		if (IsMaxed(data)) return;
 
-		UpgradeLogic();
+		UpgradeLogic(data);
 		OnStateChanged?.Invoke(this);
 	}
 
-	protected abstract void UpgradeLogic();
+	protected abstract void UpgradeLogic(SaveData data);
 
-	public abstract int GetCost();
+	public abstract int GetCost(SaveData data);
 }

@@ -8,6 +8,7 @@ public class Shop : MonoBehaviour
 	[SerializeField] VisualTreeAsset   nodeTemplate;
 	[SerializeField] Bank              bank;
 	[SerializeField] List<ShopUpgrade> upgrades;
+	[SerializeField] SaveData data;
 
 	UpgradeGraph _graph;
 
@@ -49,11 +50,11 @@ public class Shop : MonoBehaviour
 
 	void TryBuy(ShopUpgrade upg)
 	{
-		if (!upg.IsMaxed() && IsUnlocked(upg) && bank.TrySpend(upg.GetCost()))
-			upg.ApplyUpgrade();
+		if (!upg.IsMaxed(data) && IsUnlocked(upg) && bank.TrySpend(upg.GetCost(data)))
+			upg.ApplyUpgrade(data);
 	}
 
-	static bool IsUnlocked(ShopUpgrade item) => item.prereqs.All(x => x.CurrLvl > 0);
+	bool IsUnlocked(ShopUpgrade item) => item.prereqs.All(x => x.GetLevel(data) > 0);
 
 	void RefreshEntry(VisualElement item)
 	{
@@ -63,11 +64,11 @@ public class Shop : MonoBehaviour
 
 		var buyBtn = item.Q<Button>(className: "shop-upgrade-graph-item__buy");
 
-		buyBtn.text = shopItem.IsMaxed() ? "MAX" :
+		buyBtn.text = shopItem.IsMaxed(data) ? "MAX" :
 					  !IsUnlocked(shopItem) ? "LOCKED" :
-					  shopItem.GetCost().ToString();
+					  shopItem.GetCost(data).ToString();
 
-		var canAfford = bank.currentCoins >= shopItem.GetCost();
-		buyBtn.SetEnabled(!shopItem.IsMaxed() && IsUnlocked(shopItem) && canAfford);
+		var canAfford = bank.currentCoins >= shopItem.GetCost(data);
+		buyBtn.SetEnabled(!shopItem.IsMaxed(data) && IsUnlocked(shopItem) && canAfford);
 	}
 }

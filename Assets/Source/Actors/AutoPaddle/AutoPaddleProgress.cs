@@ -1,46 +1,19 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Serialization;
-
-[CreateAssetMenu(menuName = "Progress/Auto Paddle Progress")]
-
-public class AutoPaddleProgress : ScriptableObject, ISaveable
+public static class AutoPaddleProgress
 {
-    public string ID => "auto_paddle";
-    public bool unlocked;
-    public int sizeLevel;
-    public int speedLevel;
-    public event Action OnUnlocked;
-    
-    string KeyUnlocked => $"{ID}_unlocked";
-    string KeySpeed    => $"{ID}_speed";
-    string KeySize     => $"{ID}_size";
+    const string ID = "auto_paddle";
+    static readonly string KeyUnlocked = $"{ID}_unlocked";
+    static readonly string KeySpeed = $"{ID}_speed";
+    static readonly string KeySize = $"{ID}_size";
+    public static event Action OnUnlocked; 
 
-    
-    public void Unlock()
-    {
-        if (unlocked) return;
-        unlocked = true;
+    public static bool GetUnlocked(SaveData data) => data.GetBool01(KeyUnlocked);
+    public static void SetUnlocked(SaveData data, bool v) => 
+        data.SetBool01(KeyUnlocked, v, OnUnlocked);   
 
-        OnUnlocked?.Invoke();
-    }
+    public static int GetSpeedLevel(SaveData data) => data.GetInt(KeySpeed);
+    public static void SetSpeedLevel(SaveData data, int v) => data.SetInt(KeySpeed, v);
 
-    public void Save(SaveData data)
-    {
-        data.UpgradeIdToLevel[KeyUnlocked] = unlocked ? 1 : 0;
-        data.UpgradeIdToLevel[KeySpeed] = speedLevel;
-        data.UpgradeIdToLevel[KeySize] = sizeLevel;
-    }
-
-    public void Load(SaveData data)
-    {
-        if (data.UpgradeIdToLevel.TryGetValue(KeyUnlocked, out var unlockedInt) && unlockedInt == 1)
-            Unlock();
-        if (data.UpgradeIdToLevel.TryGetValue(KeySpeed, out var s)) 
-            speedLevel = s;
-        if (data.UpgradeIdToLevel.TryGetValue(KeySize, out var z)) 
-            sizeLevel = z;
-    }
+    public static int GetSizeLevel(SaveData data) => data.GetInt(KeySize);
+    public static void SetSizeLevel(SaveData data, int v) => data.SetInt(KeySize, v);
 }

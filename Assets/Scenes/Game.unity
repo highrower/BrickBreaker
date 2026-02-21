@@ -473,7 +473,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   startPosition: {x: 0, y: -1, z: 0}
   model: {fileID: 11400000, guid: 4704bfb8cd7554731837f18fb25a3071, type: 2}
-  progress: {fileID: 11400000, guid: 15c1a41e6d526fb4d954734e9a291038, type: 2}
+  data: {fileID: 671766699}
 --- !u!114 &324800420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -790,7 +790,7 @@ MonoBehaviour:
     variable: {fileID: 11400000, guid: 85dd9f38268a245228b32ddede98712f, type: 2}
   bank: {fileID: 11400000, guid: d7bb8f353f30c4f6390edd7f5b7590fa, type: 2}
   speed: 0.25
-  progress: {fileID: 11400000, guid: a86524a70d4f44342b4251520abba447, type: 2}
+  progress: {fileID: 671766699}
 --- !u!50 &624786859
 Rigidbody2D:
   serializedVersion: 5
@@ -939,6 +939,7 @@ GameObject:
   m_Component:
   - component: {fileID: 671766698}
   - component: {fileID: 671766697}
+  - component: {fileID: 671766699}
   m_Layer: 0
   m_Name: SaveManager
   m_TagString: Untagged
@@ -958,10 +959,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee492b1744a5048e6b9d7e6ee46f0f54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  objectsToSave:
-  - {fileID: 11400000, guid: a86524a70d4f44342b4251520abba447, type: 2}
-  - {fileID: 11400000, guid: d7bb8f353f30c4f6390edd7f5b7590fa, type: 2}
-  - {fileID: 11400000, guid: 15c1a41e6d526fb4d954734e9a291038, type: 2}
 --- !u!4 &671766698
 Transform:
   m_ObjectHideFlags: 0
@@ -977,6 +974,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &671766699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671766696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208d5cc23cb44490b99403ef79fd2a1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveData
+  totalCoins: 0
 --- !u!1 &729044837
 GameObject:
   m_ObjectHideFlags: 0
@@ -1136,6 +1146,7 @@ MonoBehaviour:
   upgrades:
   - {fileID: 11400000, guid: b35ffdc8ac581487a85d28473f9aa110, type: 2}
   - {fileID: 11400000, guid: ac90812d13cbe034483d781388a2ef27, type: 2}
+  data: {fileID: 671766699}
 --- !u!1 &959480687
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ public class AutoPaddle : MonoBehaviour
 	[SerializeField] RectReference bounds;
 	[SerializeField] Bank          bank;
 	[SerializeField] float speed;
-	[SerializeField] AutoPaddleProgress progress;
+	[SerializeField] SaveData progress;
 
 	Rigidbody2D _rb;
 	SpriteRenderer _renderer;
@@ -20,7 +20,7 @@ public class AutoPaddle : MonoBehaviour
 
 	void Awake()
 	{
-		_onUnlockedHandler = () => ToggleAutoPaddle(progress.unlocked);
+		_onUnlockedHandler = () => ToggleAutoPaddle(AutoPaddleProgress.GetUnlocked(progress));
 		_rb = GetComponent<Rigidbody2D>();
 		_renderer = GetComponent<SpriteRenderer>();
 		_collider = GetComponent<CapsuleCollider2D>();
@@ -29,24 +29,24 @@ public class AutoPaddle : MonoBehaviour
 	void OnEnable()
 	{
 		if (progress)
-			progress.OnUnlocked +=  _onUnlockedHandler;
+			AutoPaddleProgress.OnUnlocked +=  _onUnlockedHandler;
 	}
 
 	void OnDisable()
 	{
 		if (progress)
-			progress.OnUnlocked -=  _onUnlockedHandler;
+			AutoPaddleProgress.OnUnlocked -=  _onUnlockedHandler;
 	}
 
 	void Start()
 	{
 		_halfWidth  = _renderer.bounds.extents.x;
-		ToggleAutoPaddle(progress && progress.unlocked);
+		ToggleAutoPaddle(progress && AutoPaddleProgress.GetUnlocked(progress));
 	}
 
 	void Update()
 	{
-		if (!progress.unlocked) return;
+		if (!AutoPaddleProgress.GetUnlocked(progress)) return;
 		
 		var targetX = GetTargetX(bounds.Value, _halfWidth);
 		var finalTargetPos = new Vector2(targetX, transform.position.y);

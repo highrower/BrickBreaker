@@ -9,8 +9,6 @@ public class BrickView : MonoBehaviour {
 	SpriteRenderer _renderer;
 	TMP_Text       _healthLabel;
 
-	[SerializeField] float textPadding = 0.8f;
-
 	Vector3 _initialScale;
 
 	void Awake() {
